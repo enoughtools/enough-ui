@@ -1,0 +1,5 @@
+# Keep release policy and workflow changes in maintainer review.
+* @RussellBloxwich
+/.github/ @RussellBloxwich
+/scripts/release.mjs @RussellBloxwich
+/scripts/renderer-packages.mjs @RussellBloxwich

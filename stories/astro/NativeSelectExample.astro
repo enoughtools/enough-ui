@@ -1,0 +1,82 @@
+---
+import NativeSelect from '../../src/astro/NativeSelect.astro';
+import NativeSelectOption from '../../src/astro/NativeSelectOption.astro';
+import NativeSelectOptGroup from '../../src/astro/NativeSelectOptGroup.astro';
+---
+<div class="flex flex-col gap-8 max-w-md p-6 font-sans">
+  <div>
+    <label for="framework" class="block font-sans text-sm font-semibold text-[var(--color-ink)] mb-1.5">
+      Framework
+    </label>
+    <NativeSelect id="framework" name="framework">
+      <NativeSelectOption value="astro" selected>Astro</NativeSelectOption>
+      <NativeSelectOption value="next">Next.js</NativeSelectOption>
+      <NativeSelectOption value="remix">Remix</NativeSelectOption>
+      <NativeSelectOption value="sveltekit">SvelteKit</NativeSelectOption>
+    </NativeSelect>
+  </div>
+
+  <div>
+    <label for="timezone" class="block font-sans text-sm font-semibold text-[var(--color-ink)] mb-1.5">
+      Timezone
+    </label>
+    <NativeSelect id="timezone" name="timezone">
+      <NativeSelectOptGroup label="North America">
+        <NativeSelectOption value="est" selected>Eastern Standard Time (EST)</NativeSelectOption>
+        <NativeSelectOption value="cst">Central Standard Time (CST)</NativeSelectOption>
+        <NativeSelectOption value="pst">Pacific Standard Time (PST)</NativeSelectOption>
+      </NativeSelectOptGroup>
+      <NativeSelectOptGroup label="Europe">
+        <NativeSelectOption value="gmt">Greenwich Mean Time (GMT)</NativeSelectOption>
+        <NativeSelectOption value="cet">Central European Time (CET)</NativeSelectOption>
+      </NativeSelectOptGroup>
+    </NativeSelect>
+  </div>
+
+  <div>
+    <label for="disabled-select" class="block font-sans text-sm font-semibold text-[var(--color-ink)] opacity-50 mb-1.5">
+      Plan (Unavailable)
+    </label>
+    <NativeSelect id="disabled-select" name="plan" disabled>
+      <NativeSelectOption value="enterprise" selected>Enterprise Tier</NativeSelectOption>
+      <NativeSelectOption value="pro">Pro Tier</NativeSelectOption>
+    </NativeSelect>
+  </div>
+
+  <div>
+    <label for="invalid-select" class="block font-sans text-sm font-semibold text-[var(--color-ink)] mb-1.5">
+      Required Selection
+    </label>
+    <NativeSelect id="invalid-select" name="country" aria-invalid="true" required>
+      <NativeSelectOption value="">Select a region…</NativeSelectOption>
+      <NativeSelectOption value="us">United States</NativeSelectOption>
+      <NativeSelectOption value="ca">Canada</NativeSelectOption>
+    </NativeSelect>
+    <p class="mt-1.5 font-sans text-xs text-[var(--color-warn)]">
+      Selection is required. Please choose a valid region.
+    </p>
+  </div>
+
+  <div>
+    <label for="roles" class="block font-sans text-sm font-semibold text-[var(--color-ink)] mb-1.5">
+      Assigned Roles (Multiple list box)
+    </label>
+    <NativeSelect id="roles" name="roles" multiple size={4}>
+      <NativeSelectOption value="admin" selected>Administrator</NativeSelectOption>
+      <NativeSelectOption value="editor" selected>Editor</NativeSelectOption>
+      <NativeSelectOption value="viewer">Viewer</NativeSelectOption>
+      <NativeSelectOption value="billing">Billing Manager</NativeSelectOption>
+    </NativeSelect>
+  </div>
+
+  <div>
+    <label for="compact" class="block font-sans text-sm font-semibold text-[var(--color-ink)] mb-1.5">
+      Compact Density
+    </label>
+    <NativeSelect id="compact" name="compact" size="sm">
+      <NativeSelectOption value="10">10 per page</NativeSelectOption>
+      <NativeSelectOption value="25" selected>25 per page</NativeSelectOption>
+      <NativeSelectOption value="50">50 per page</NativeSelectOption>
+    </NativeSelect>
+  </div>
+</div>

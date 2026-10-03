@@ -1,0 +1,15 @@
+---
+import Badge from '../../src/astro/Badge.astro';
+import Button from '../../src/astro/Button.astro';
+import Card from '../../src/astro/Card.astro';
+import CardContent from '../../src/astro/CardContent.astro';
+import CardDescription from '../../src/astro/CardDescription.astro';
+import CardFooter from '../../src/astro/CardFooter.astro';
+import CardHeader from '../../src/astro/CardHeader.astro';
+import CardTitle from '../../src/astro/CardTitle.astro';
+import CardAction from '../../src/astro/CardAction.astro';
+import Marker from '../../src/astro/Marker.astro';
+interface Props { withAction?: boolean; size?: 'default' | 'sm' }
+const { withAction = false, size = 'default' } = Astro.props;
+---
+<Card size={size}><CardHeader><CardTitle>Ready to make something?</CardTitle><CardDescription>Cards, type, forms and navigation use the same design tokens.</CardDescription>{withAction && <CardAction><Button href="#native-card-details" variant="outline" size="sm">Details</Button></CardAction>}</CardHeader><CardContent id="native-card-details"><Badge>First edition</Badge> <Marker>Make it yours.</Marker></CardContent><CardFooter><Button id="native-button" href="#form" variant="accent">Start here</Button><Button id="disabled-button" href="/unavailable" disabled>Unavailable</Button></CardFooter></Card>

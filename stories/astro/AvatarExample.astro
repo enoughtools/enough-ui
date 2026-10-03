@@ -1,0 +1,107 @@
+---
+import Avatar from '../../src/astro/Avatar.astro';
+import AvatarBadge from '../../src/astro/AvatarBadge.astro';
+import AvatarGroup from '../../src/astro/AvatarGroup.astro';
+import AvatarGroupCount from '../../src/astro/AvatarGroupCount.astro';
+import AvatarImage from '../../src/astro/AvatarImage.astro';
+import AvatarFallback from '../../src/astro/AvatarFallback.astro';
+
+const avatarSvg1 =
+  "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22%233b4fe4%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2238%22%20r%3D%2220%22%20fill%3D%22%23fafbfc%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2295%22%20r%3D%2238%22%20fill%3D%22%23fafbfc%22%2F%3E%3C%2Fsvg%3E";
+
+const avatarSvg2 =
+  "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22%2312151c%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2238%22%20r%3D%2220%22%20fill%3D%22%23fafbfc%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2295%22%20r%3D%2238%22%20fill%3D%22%23fafbfc%22%2F%3E%3C%2Fsvg%3E";
+
+const avatarSvg3 =
+  "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22%23626b7a%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2238%22%20r%3D%2220%22%20fill%3D%22%23fafbfc%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2295%22%20r%3D%2238%22%20fill%3D%22%23fafbfc%22%2F%3E%3C%2Fsvg%3E";
+---
+<div class="flex flex-col gap-8 max-w-xl">
+  <div class="flex items-center gap-4">
+    <Avatar id="composed-image-avatar"><AvatarImage src={avatarSvg1} alt="Alex Morgan" /></Avatar>
+    <Avatar id="composed-fallback-avatar" aria-label="Sam Lee"><AvatarFallback>SL</AvatarFallback></Avatar>
+  </div>
+  <div>
+    <h3 class="mb-3 font-sans text-sm font-semibold text-[var(--color-ink)]">
+      Avatar Sizes (Native Astro)
+    </h3>
+    <div class="flex items-center gap-6">
+      <div class="flex flex-col items-center gap-1.5">
+        <Avatar
+          size="sm"
+          src={avatarSvg1}
+          alt="Small native avatar representation"
+        />
+        <span class="font-sans text-xs text-[var(--color-text-3)]">Small</span>
+      </div>
+
+      <div class="flex flex-col items-center gap-1.5">
+        <Avatar
+          size="default"
+          src={avatarSvg2}
+          alt="Default native avatar representation"
+        />
+        <span class="font-sans text-xs text-[var(--color-text-3)]">Default</span>
+      </div>
+
+      <div class="flex flex-col items-center gap-1.5">
+        <Avatar
+          size="lg"
+          src={avatarSvg3}
+          alt="Large native avatar representation"
+        />
+        <span class="font-sans text-xs text-[var(--color-text-3)]">Large</span>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h3 class="mb-3 font-sans text-sm font-semibold text-[var(--color-ink)]">
+      Server Fallback Presentation (Native Astro)
+    </h3>
+    <div class="flex items-center gap-4">
+      <Avatar fallback="JD" />
+      <Avatar fallback="AB" />
+      <Avatar fallback="EU" />
+    </div>
+  </div>
+
+  <div>
+    <h3 class="mb-3 font-sans text-sm font-semibold text-[var(--color-ink)]">
+      Avatars with Badges (Native Astro)
+    </h3>
+    <div class="flex items-center gap-6">
+      <Avatar src={avatarSvg1} alt="Team member avatar with online status">
+        <AvatarBadge variant="online" title="Online" />
+      </Avatar>
+
+      <Avatar src={avatarSvg2} alt="Team member avatar with warning status">
+        <AvatarBadge variant="destructive" title="Away" />
+      </Avatar>
+
+      <Avatar fallback="TG">
+        <AvatarBadge variant="default" title="Verified" />
+      </Avatar>
+    </div>
+  </div>
+
+  <div>
+    <h3 class="mb-3 font-sans text-sm font-semibold text-[var(--color-ink)]">
+      Overlapping Avatar Groups (Native Astro)
+    </h3>
+    <div class="space-y-4">
+      <AvatarGroup>
+        <Avatar src={avatarSvg1} alt="Group member 1" />
+        <Avatar src={avatarSvg2} alt="Group member 2" />
+        <Avatar src={avatarSvg3} alt="Group member 3" />
+        <AvatarGroupCount>+3</AvatarGroupCount>
+      </AvatarGroup>
+
+      <AvatarGroup size="sm">
+        <Avatar size="sm" src={avatarSvg1} alt="Small group member 1" />
+        <Avatar size="sm" src={avatarSvg2} alt="Small group member 2" />
+        <Avatar size="sm" fallback="SM" />
+        <AvatarGroupCount size="sm">+2</AvatarGroupCount>
+      </AvatarGroup>
+    </div>
+  </div>
+</div>

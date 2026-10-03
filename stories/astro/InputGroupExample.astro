@@ -1,0 +1,12 @@
+---
+import InputGroup from '../../src/astro/InputGroup.astro';
+import InputGroupAddon from '../../src/astro/InputGroupAddon.astro';
+import InputGroupButton from '../../src/astro/InputGroupButton.astro';
+import InputGroupInput from '../../src/astro/InputGroupInput.astro';
+import InputGroupText from '../../src/astro/InputGroupText.astro';
+import type { VariantProps } from 'class-variance-authority';
+import { buttonVariants } from '../../src/lib/variants.js';
+interface Props { buttonVariant?: VariantProps<typeof buttonVariants>['variant']; }
+const { buttonVariant = 'ghost' } = Astro.props;
+---
+<InputGroup><InputGroupAddon><InputGroupText>@</InputGroupText></InputGroupAddon><InputGroupInput aria-label="Username" placeholder="username"/><InputGroupAddon align="inline-end"><InputGroupButton variant={buttonVariant}>Search</InputGroupButton></InputGroupAddon></InputGroup>

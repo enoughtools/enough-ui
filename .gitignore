@@ -1,0 +1,33 @@
+node_modules/
+dist/
+storybook-static/
+.storybook/catalog/manifest.json
+*.tgz
+.DS_Store
+
+.astro/
+.wrangler/
+
+# Renderer build output and release archives
+packages/react/dist/
+packages/astro/dist/
+packages/react/LICENSE
+packages/astro/LICENSE
+packages/react/THIRD_PARTY_NOTICES.md
+packages/astro/THIRD_PARTY_NOTICES.md
+artifacts/
+
+# Local checks and machine state
+coverage/
+test-results/
+playwright-report/
+.cache/
+.pnpm-store/
+*.log
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# Local provenance from the private application extraction
+docs/extraction-manifest.json

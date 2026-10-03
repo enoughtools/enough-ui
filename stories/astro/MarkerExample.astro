@@ -1,0 +1,10 @@
+---
+import Marker from '../../src/astro/Marker.astro';
+import MarkerContent from '../../src/astro/MarkerContent.astro';
+import MarkerIcon from '../../src/astro/MarkerIcon.astro';
+interface Props { composed?: boolean; variant?: 'default' | 'border' | 'separator' }
+const { composed = false, variant = 'default' } = Astro.props;
+---
+<Marker variant={variant} role={composed && variant !== 'separator' ? 'status' : undefined}>
+  {composed ? <>{variant !== 'separator' && <MarkerIcon>✓</MarkerIcon>}<MarkerContent>{variant === 'separator' ? 'Today' : 'Reviewed all project files'}</MarkerContent></> : 'Make it yours'}
+</Marker>

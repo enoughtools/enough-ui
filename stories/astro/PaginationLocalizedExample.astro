@@ -1,0 +1,9 @@
+---
+import Pagination from '../../src/astro/Pagination.astro';
+import PaginationContent from '../../src/astro/PaginationContent.astro';
+import PaginationItem from '../../src/astro/PaginationItem.astro';
+import PaginationLink from '../../src/astro/PaginationLink.astro';
+import PaginationNext from '../../src/astro/PaginationNext.astro';
+import PaginationPrevious from '../../src/astro/PaginationPrevious.astro';
+---
+<Pagination aria-label="Páginas de resultados"><PaginationContent><PaginationItem><PaginationPrevious href="?page=1" text="Anterior" aria-label="Ir a la página anterior" size="sm" /></PaginationItem><PaginationItem><PaginationLink href="?page=2" isActive aria-label="Página 2, página actual" size="icon-sm">2</PaginationLink></PaginationItem><PaginationItem><PaginationNext href="?page=3" text="Siguiente" aria-label="Ir a la página siguiente" size="sm" /></PaginationItem></PaginationContent></Pagination>

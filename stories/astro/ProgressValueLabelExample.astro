@@ -1,0 +1,6 @@
+---
+import Progress from '../../src/astro/Progress.astro';
+import type { ComponentProps } from 'astro/types';
+type Props = ComponentProps<typeof Progress>;
+---
+<Progress {...Astro.props} getValueLabel={(value, max) => `${value} of ${max} files`} />

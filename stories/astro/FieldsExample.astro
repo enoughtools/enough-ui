@@ -1,0 +1,13 @@
+---
+import Button from '../../src/astro/Button.astro';
+import Field from '../../src/astro/Field.astro';
+import FieldDescription from '../../src/astro/FieldDescription.astro';
+import FieldError from '../../src/astro/FieldError.astro';
+import FieldGroup from '../../src/astro/FieldGroup.astro';
+import FieldLabel from '../../src/astro/FieldLabel.astro';
+import FieldLegend from '../../src/astro/FieldLegend.astro';
+import FieldSet from '../../src/astro/FieldSet.astro';
+import Input from '../../src/astro/Input.astro';
+import Textarea from '../../src/astro/Textarea.astro';
+---
+<form id="form"><FieldSet><FieldLegend>Join the list</FieldLegend><FieldGroup><Field><FieldLabel for="email">Email</FieldLabel><Input id="email" type="email" required placeholder="you@example.com"/><FieldDescription>One email when we're ready.</FieldDescription></Field><Field><FieldLabel for="note">Note</FieldLabel><Textarea id="note">Hello from Astro.</Textarea></Field><FieldError errors={[{message:'Please enter an email.'},{message:'Please enter an email.'}]} /><Button type="submit">Join</Button></FieldGroup></FieldSet></form>

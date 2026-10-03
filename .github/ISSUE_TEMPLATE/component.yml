@@ -1,0 +1,26 @@
+name: Component or parity request
+description: Propose a component or improve React/Astro compatibility.
+body:
+  - type: input
+    id: component
+    attributes:
+      label: Component
+    validations:
+      required: true
+  - type: input
+    id: upstream
+    attributes:
+      label: Upstream shadcn/ui reference
+      description: Link the component or API where an upstream equivalent exists.
+  - type: textarea
+    id: usecase
+    attributes:
+      label: Supported use case
+      description: Describe what users should be able to do and any current workaround.
+    validations:
+      required: true
+  - type: textarea
+    id: parity
+    attributes:
+      label: React and Astro behavior
+      description: Describe native presentation, interaction, hydration, and framework limitations.

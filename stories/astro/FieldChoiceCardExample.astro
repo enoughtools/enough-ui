@@ -1,0 +1,20 @@
+---
+import Field from '../../src/astro/Field.astro';
+import FieldContent from '../../src/astro/FieldContent.astro';
+import FieldDescription from '../../src/astro/FieldDescription.astro';
+import FieldGroup from '../../src/astro/FieldGroup.astro';
+import FieldLabel from '../../src/astro/FieldLabel.astro';
+import FieldTitle from '../../src/astro/FieldTitle.astro';
+---
+<FieldGroup>
+  <FieldLabel for="native-choice-archive">
+    <Field orientation="horizontal">
+      <FieldContent>
+        <FieldTitle id="native-choice-title">Archive completed projects</FieldTitle>
+        <FieldDescription>Keep your workspace focused while retaining your project history.</FieldDescription>
+      </FieldContent>
+      <input type="checkbox" id="native-choice-archive" checked aria-labelledby="native-choice-title" aria-describedby="native-choice-description" class="size-4 shrink-0 accent-[var(--color-accent)]" />
+    </Field>
+  </FieldLabel>
+  <p id="native-choice-description" class="text-sm text-[var(--color-text-3)]">Select the card or checkbox to update this preference.</p>
+</FieldGroup>

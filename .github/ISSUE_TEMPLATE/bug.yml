@@ -1,0 +1,39 @@
+name: Bug report
+description: Report rendering, accessibility, interaction, or package problems.
+body:
+  - type: markdown
+    attributes:
+      value: For suspected vulnerabilities, follow SECURITY.md and use private reporting.
+  - type: input
+    id: version
+    attributes:
+      label: Package and version
+      placeholder: '@enoughtools/ui-react 0.3.0 or @enoughtools/ui-astro 0.3.0'
+    validations:
+      required: true
+  - type: dropdown
+    id: renderer
+    attributes:
+      label: Renderer
+      options: [React, Astro, Both]
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Include a small example, repository, or failing Storybook scenario.
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+      description: Include keyboard or screen-reader steps if relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Framework version, browser, operating system, theme, and hydration directive if applicable.

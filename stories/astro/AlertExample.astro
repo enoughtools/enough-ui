@@ -1,0 +1,11 @@
+---
+import Alert from '../../src/astro/Alert.astro';
+import AlertDescription from '../../src/astro/AlertDescription.astro';
+import AlertTitle from '../../src/astro/AlertTitle.astro';
+import AlertAction from '../../src/astro/AlertAction.astro';
+import Button from '../../src/astro/Button.astro';
+interface Props { withAction?: boolean }
+const { withAction = false } = Astro.props;
+---
+<Alert><AlertTitle>All set</AlertTitle><AlertDescription>Your project is ready.</AlertDescription>{withAction && <AlertAction><Button href="#native-alert-details" variant="outline" size="sm">Details</Button></AlertAction>}</Alert>
+{withAction && <p id="native-alert-details" class="mt-4 text-sm">Your project can now be shared with your team.</p>}

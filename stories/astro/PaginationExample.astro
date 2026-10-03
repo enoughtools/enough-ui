@@ -1,0 +1,9 @@
+---
+import Pagination from '../../src/astro/Pagination.astro';
+import PaginationContent from '../../src/astro/PaginationContent.astro';
+import PaginationItem from '../../src/astro/PaginationItem.astro';
+import PaginationLink from '../../src/astro/PaginationLink.astro';
+import PaginationNext from '../../src/astro/PaginationNext.astro';
+import PaginationPrevious from '../../src/astro/PaginationPrevious.astro';
+---
+<Pagination><PaginationContent><PaginationItem><PaginationPrevious href="/previous" disabled /></PaginationItem><PaginationItem><PaginationLink href="/1" isActive>1</PaginationLink></PaginationItem><PaginationItem><PaginationNext href="/2" /></PaginationItem></PaginationContent></Pagination>

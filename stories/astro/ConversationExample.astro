@@ -1,0 +1,46 @@
+---
+import Attachment from '../../src/astro/Attachment.astro';
+import AttachmentAction from '../../src/astro/AttachmentAction.astro';
+import AttachmentActions from '../../src/astro/AttachmentActions.astro';
+import AttachmentContent from '../../src/astro/AttachmentContent.astro';
+import AttachmentDescription from '../../src/astro/AttachmentDescription.astro';
+import AttachmentGroup from '../../src/astro/AttachmentGroup.astro';
+import AttachmentMedia from '../../src/astro/AttachmentMedia.astro';
+import AttachmentTitle from '../../src/astro/AttachmentTitle.astro';
+import AttachmentTrigger from '../../src/astro/AttachmentTrigger.astro';
+import Bubble from '../../src/astro/Bubble.astro';
+import BubbleContent from '../../src/astro/BubbleContent.astro';
+import BubbleGroup from '../../src/astro/BubbleGroup.astro';
+import BubbleReactions from '../../src/astro/BubbleReactions.astro';
+import Message from '../../src/astro/Message.astro';
+import MessageAvatar from '../../src/astro/MessageAvatar.astro';
+import MessageContent from '../../src/astro/MessageContent.astro';
+import MessageFooter from '../../src/astro/MessageFooter.astro';
+import MessageGroup from '../../src/astro/MessageGroup.astro';
+import MessageHeader from '../../src/astro/MessageHeader.astro';
+interface Props { state?: 'idle' | 'uploading' | 'processing' | 'error' | 'done'; disabled?: boolean; }
+const { state = 'done', disabled = false } = Astro.props;
+const description = state === 'error' ? 'Upload failed. Please try again.' : state === 'uploading' ? 'Uploading · 64%' : 'PDF · 2.4 MB';
+---
+<MessageGroup class="w-[min(38rem,calc(100vw-2rem))]">
+  <Message>
+    <MessageAvatar aria-hidden="true" class="h-8 w-8 text-xs font-semibold">AL</MessageAvatar>
+    <MessageContent>
+      <MessageHeader>Alex <time datetime="2026-10-03T14:00:00">2:00 PM</time></MessageHeader>
+      <BubbleGroup>
+        <Bubble variant="secondary"><BubbleContent>The summary is ready for review.</BubbleContent><BubbleReactions aria-label="Reactions"><span aria-label="One thumbs up reaction">👍 1</span></BubbleReactions></Bubble>
+        <Bubble variant="tinted"><BubbleContent as="a" href="#release-notes">Read the release notes</BubbleContent></Bubble>
+      </BubbleGroup>
+      <AttachmentGroup role="group" aria-label="Attached files" tabindex={0}>
+        <Attachment state={state}>
+          <AttachmentMedia aria-hidden="true">▤</AttachmentMedia>
+          <AttachmentContent><AttachmentTitle>research-summary.pdf</AttachmentTitle><AttachmentDescription>{description}</AttachmentDescription></AttachmentContent>
+          <AttachmentActions><AttachmentAction size="sm" aria-label="Download research-summary.pdf" href="data:application/pdf;base64,JVBERi0xLjQKJSVFT0Y=" download="research-summary.pdf" disabled={disabled}>Download</AttachmentAction></AttachmentActions>
+          <AttachmentTrigger href="#preview" aria-label="Preview research-summary.pdf" disabled={disabled} />
+        </Attachment>
+      </AttachmentGroup>
+      <MessageFooter>Delivered</MessageFooter>
+    </MessageContent>
+  </Message>
+  <Message align="end"><MessageContent><MessageHeader>You</MessageHeader><Bubble><BubbleContent>Thanks. I’ll take a look today.</BubbleContent></Bubble><MessageFooter>Read</MessageFooter></MessageContent></Message>
+</MessageGroup>
