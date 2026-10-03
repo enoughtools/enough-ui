@@ -2,6 +2,7 @@ node_modules/
 dist/
 storybook-static/
 .storybook/catalog/manifest.json
+.storybook/catalog/editor-assets/
 .storybook/catalog/previews/*.png
 .storybook/catalog/previews/report.json
 .storybook/catalog/previews/index.json

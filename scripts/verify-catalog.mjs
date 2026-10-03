@@ -152,7 +152,11 @@ try {
   await check('source inspection and clipboard copy', async () => {
     await visit('?path=/catalog/button&renderer=react&example=ui-button--accent');
     await page.getByRole('tab', { name: 'Source', exact: true }).click();
-    const source = await page.locator('.eui-source code').textContent();
+    await page.locator('.eui-source .monaco-editor').waitFor();
+    const source = await page.evaluate(async () => {
+      const { monaco } = await import('/editor/editor.js');
+      return monaco.editor.getEditors()[0].getValue();
+    });
     assert.match(source, /@enoughtools\/ui-react\/button/);
     assert.match(source, /export const Accent: Story/);
     try { await context.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: url }); }

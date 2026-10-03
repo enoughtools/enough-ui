@@ -154,7 +154,7 @@ Rebuild after source changes. Local development must follow the directory or an 
 pnpm storybook
 ```
 
-The public catalog lives at [ui.enoughtools.com](https://ui.enoughtools.com), with [enoughui.reb.run](https://enoughui.reb.run) retained as an alternate address. Its custom Storybook manager provides component search, category filters, live React/Astro previews, example selection, source, responsive previews, and controls for supported story arguments. The **Storybook** link on a component opens the standard manager with full controls, docs, and accessibility tools.
+The public catalog lives at [ui.enoughtools.com](https://ui.enoughtools.com), with [enoughui.reb.run](https://enoughui.reb.run) retained as an alternate address. Its custom Storybook manager provides component search, category filters, live React/Astro previews, example selection, source, responsive previews, and controls for supported story arguments. Source uses a read-only Monaco viewer with syntax highlighting, line numbers, search, wrapping, and separate native Astro files. Its scripts and workers are hosted with the site and load when Source opens. The **Storybook** link on a component opens the standard manager with full controls, docs, and accessibility tools.
 
 One [Storybook Astro](https://storybook-astro.org/) catalog contains the native **Astro** stories and **UI** React stories. Portable rendering tests reuse those stories, and browser tests use the built catalog. A static build goes to `storybook-static/`; there is no separate showcase application. The catalog manifest is generated from those same source fixtures before development and production builds.
 
@@ -163,6 +163,7 @@ Every component tile includes a preview image captured from a real story. `build
 ```sh
 pnpm build-storybook
 pnpm verify:catalog
+pnpm verify:source
 pnpm verify:previews
 pnpm verify:stories
 pnpm deploy:catalog
