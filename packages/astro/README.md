@@ -128,7 +128,10 @@ pnpm build
 pnpm typecheck
 pnpm check:astro
 pnpm test
+pnpm exec playwright install chromium
 pnpm build-storybook
+pnpm verify:previews
+pnpm verify:catalog
 pnpm verify:package
 pnpm verify:browser
 ```
