@@ -122,9 +122,22 @@ function rewriteImports(source, renderer) {
     .replace(/VariantProps<typeof buttonVariants>/g, 'ComponentProps<typeof InputGroupButton>');
 }
 
+async function inlineFixtureData(file, source, ast) {
+  for (const node of ast.statements) {
+    if (!ts.isImportDeclaration(node)) continue;
+    const path = node.moduleSpecifier.text;
+    // Keep shared example data readable and portable without evaluating it.
+    // The fixture contains only declarations and has no runtime imports.
+    if (!path.startsWith('.') || !path.endsWith('/country-heatmap-data.js')) continue;
+    const fixture = await readFile(resolve(dirname(file), path.replace(/\.js$/, '.ts')), 'utf8');
+    source = source.replace(node.getText(ast), fixture.replace(/^export /gm, '').trim());
+  }
+  return source;
+}
+
 async function fixtureSource(file, source, ast, statement, renderer) {
   const kept = ast.statements.filter((node) => node === statement || !ts.isVariableStatement(node) || !node.modifiers?.some((modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword));
-  let snippet = rewriteImports(kept.map((node) => node.getText(ast)).join('\n\n'), renderer);
+  let snippet = await inlineFixtureData(file, rewriteImports(kept.map((node) => node.getText(ast)).join('\n\n'), renderer), ast);
   const imports = kept.filter(ts.isImportDeclaration).map((node) => rewriteImports(node.getText(ast), renderer)).filter((text) => text.includes(`@enoughtools/ui-${renderer}/`));
   if (renderer === 'react') {
     for (const node of ast.statements) {
@@ -139,10 +152,12 @@ async function fixtureSource(file, source, ast, statement, renderer) {
     if (!ts.isImportDeclaration(node)) continue;
     const path = node.moduleSpecifier.text;
     if (!path.startsWith('./') || !path.endsWith('.astro')) continue;
-    const nativeSource = rewriteImports(await readFile(resolve(dirname(file), path), 'utf8'), renderer).trim();
-    examples.push(`/* ${path.slice(2)} — native example used by this story */\n${nativeSource}`);
+    const nativeFile = resolve(dirname(file), path);
+    let nativeSource = rewriteImports(await readFile(nativeFile, 'utf8'), renderer).trim();
     const frontmatter = nativeSource.split(/^---\s*$/m)[1] ?? '';
     const nativeAst = ts.createSourceFile(path, frontmatter, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+    nativeSource = await inlineFixtureData(nativeFile, nativeSource, nativeAst);
+    examples.push(`/* ${path.slice(2)} — native example used by this story */\n${nativeSource}`);
     imports.push(...nativeAst.statements.filter(ts.isImportDeclaration).map((statement) => statement.getText(nativeAst)).filter((text) => text.includes('@enoughtools/ui-astro/')));
   }
   return { source: [snippet, ...examples].join('\n\n'), imports: [...new Set(imports)] };

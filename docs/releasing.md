@@ -64,10 +64,12 @@ pnpm build
 pnpm typecheck
 pnpm check:astro
 pnpm test
-pnpm build-storybook
-node scripts/release.mjs pack --tag v0.3.0
-pnpm verify:package --archives artifacts/release
 pnpm exec playwright install chromium
+pnpm build-storybook
+pnpm verify:previews
+pnpm verify:catalog
+node scripts/release.mjs pack --tag v0.4.0
+pnpm verify:package --archives artifacts/release
 pnpm verify:stories
 pnpm verify:browser --archives artifacts/release
 ```

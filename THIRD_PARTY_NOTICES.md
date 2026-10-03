@@ -4,6 +4,14 @@ EnoughUI contains component patterns and adaptations from [shadcn/ui](https://gi
 
 Runtime dependencies remain separate npm packages and retain their own licenses. When distributing a bundled application, preserve the notices required by those dependencies as well as this file and EnoughUI's `LICENSE`.
 
+## Natural Earth
+
+CountryHeatmap uses adapted country boundaries from Natural Earth, 1:110m Admin 0 Countries. Natural Earth map data is in the public domain. Source and projection details are recorded in the country heatmap documentation.
+
+Source: <https://www.naturalearthdata.com/downloads/110m-cultural-vectors/110m-admin-0-countries/>
+
+Terms: <https://www.naturalearthdata.com/about/terms-of-use/>
+
 ## shadcn/ui
 
 Source: <https://github.com/shadcn-ui/ui/blob/main/LICENSE.md>

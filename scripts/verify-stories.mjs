@@ -246,6 +246,93 @@ try {
   await scenario('astro-button--disabled-link', async () => { const link = page.locator('#disabled-button'); assert.equal(await link.getAttribute('href'), null); assert.equal(await link.getAttribute('tabindex'), '-1'); assert.equal(await link.getAttribute('aria-disabled'), 'true'); });
   await scenario('astro-fields--composed', async () => { await page.getByRole('textbox', { name: 'Email', exact: true }).fill('person@example.com'); await page.getByRole('textbox', { name: 'Note', exact: true }).fill('Native Astro forms work without hydration.'); });
 
+  let countryHeatmapPresentation;
+  for (const id of ['ui-countryheatmap--default', 'astro-countryheatmap--default']) {
+    await scenario(id, async () => {
+      const details = page.locator('[data-slot="country-heatmap-data"]');
+      const summary = details.locator('summary');
+      const table = page.getByRole('table', { name: 'Activity around the world: Sessions' });
+      // Storybook can run the React story's play function on entry. Establish
+      // the native collapsed state before testing both keyboard defaults.
+      if (await details.getAttribute('open') !== null) await summary.click();
+      assert.equal(await table.isVisible(), false);
+      await focus(summary).catch((error) => { error.message = `Focus country summary before Enter: ${error.message}`; throw error; });
+      await page.keyboard.press('Enter');
+      await table.waitFor({ state: 'visible' });
+      assert.equal(await table.locator('tbody tr').count(), 14);
+      assert.match(await table.locator('tr[data-country="NZ"]').textContent(), /New ZealandNZ0/);
+      assert.match(await table.locator('tr[data-country="IS"]').textContent(), /IcelandISNo data/);
+      assert.match(await table.locator('tr[data-country="SG"]').textContent(), /SingaporeSGNot shown at this map scale125/);
+      assert.equal(await page.locator('svg path[data-country="SG"]').count(), 0, 'Small-country data must remain visible without inventing map geometry.');
+      assert.equal(await page.locator('svg path[data-country="NZ"]').getAttribute('data-state'), 'zero');
+      assert.equal(await page.locator('svg path[data-country="IS"]').getAttribute('data-state'), 'no-data');
+      const presentation = await page.locator('[data-slot="country-heatmap"]').evaluate((figure) => {
+        const svg = figure.querySelector('svg');
+        const references = ['aria-labelledby', 'aria-describedby'].map((attribute) => document.getElementById(svg.getAttribute(attribute))?.textContent);
+        return {
+          classes: figure.className, references,
+          paths: [...svg.querySelectorAll('path')].map((path) => ({ code: path.getAttribute('data-country'), state: path.getAttribute('data-state'), geometry: path.getAttribute('d'), fill: getComputedStyle(path).fill })),
+        };
+      });
+      assert.equal(presentation.references[0], 'Activity around the world');
+      assert.match(presentation.references[1], /Missing data is separate from a measured zero/);
+      assert.notEqual(presentation.paths.find((path) => path.code === 'NZ').fill, presentation.paths.find((path) => path.code === 'IS').fill);
+      assert.equal(await page.locator('svg [tabindex]').count(), 0, 'The data table is the keyboard alternative to hundreds of shape stops.');
+      if (countryHeatmapPresentation) assert.deepEqual(presentation, countryHeatmapPresentation, 'Both renderers must use the same geometry, computed colors, classes, and accessible descriptions.');
+      else countryHeatmapPresentation = presentation;
+      await scan(id, 'country data expanded');
+      await page.keyboard.press('Space'); await table.waitFor({ state: 'hidden' });
+      await focused(summary).catch(async (error) => {
+        error.message = `Retain country summary focus after Space: ${error.message}`;
+        error.details = await page.evaluate(() => ({ activeTag: document.activeElement?.tagName, activeSlot: document.activeElement?.getAttribute('data-slot'), summaryPresent: Boolean(document.querySelector('[data-slot="country-heatmap-data"] summary')) }));
+        throw error;
+      });
+      await mkdir(output, { recursive: true });
+      await page.locator('[data-slot="country-heatmap"]').screenshot({ path: resolve(output, `${id}-desktop.png`) });
+      await page.keyboard.press('Space'); await table.waitFor({ state: 'visible' });
+    });
+  }
+
+  for (const width of [320, 390]) {
+    await page.setViewportSize({ width, height: 844 });
+    for (const renderer of ['ui', 'astro']) {
+      for (const variant of ['default', 'zero-and-missing', 'localized', 'extreme-values', 'custom-formatting']) {
+        const id = `${renderer}-countryheatmap--${variant}`;
+        if (!matches(id)) continue;
+        try {
+          await visit(id);
+          const details = page.locator('[data-slot="country-heatmap-data"]');
+          if (await details.getAttribute('open') === null) await details.locator('summary').click();
+          await page.getByRole('table').waitFor({ state: 'visible' });
+          assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `${id} overflows at ${width}px`);
+          const map = await page.locator('[data-slot="country-heatmap-map"]').boundingBox();
+          assert.ok(map && map.x >= 0 && map.x + map.width <= width, 'Country map must fit its narrow viewport.');
+          if (variant === 'zero-and-missing') assert.equal(await page.locator('[data-slot="country-heatmap-empty"]').count(), 0, 'An all-zero dataset is not an empty dataset.');
+          if (variant === 'localized') assert.match(await page.locator('tr[data-country="US"]').textContent(), /Estados Unidos/);
+          if (variant === 'extreme-values') {
+            assert.ok((await page.locator('tr[data-country="US"] td').textContent()).length > 300, 'A large measurement must preserve its formatted value.');
+            assert.match(await page.locator('tr[data-country="CA"] td').textContent(), /0005/);
+          }
+          if (variant === 'custom-formatting') {
+            assert.equal((await page.locator('tr[data-country="US"] td').textContent()).split('VeryLongCustomMeasurement').length - 1, 12, 'A custom formatter must keep its complete text.');
+          }
+          if (variant === 'extreme-values' || variant === 'custom-formatting') {
+            const region = page.locator('[data-slot="country-heatmap-table-scroll"]');
+            assert.equal(await region.getAttribute('role'), 'region');
+            await focus(region); await page.keyboard.press('ArrowRight');
+            await page.waitForFunction((element) => element.scrollLeft > 0, await region.elementHandle());
+          }
+          await scan(id, `country table at ${width}px`);
+          if (variant === 'default' && width === 390) {
+            await mkdir(output, { recursive: true });
+            await page.locator('[data-slot="country-heatmap"]').screenshot({ path: resolve(output, `${id}-mobile.png`) });
+          }
+          verified.push(`${id}:mobile-${width}`);
+        } catch (error) { reportFailure(id, `mobile-${width}`, error); }
+      }
+    }
+  }
+
   // Responsive catalog rendering uses the same fixtures, without a showcase app.
   await page.setViewportSize({ width: 390, height: 844 });
   for (const id of ['ui-interactive-catalog--top-nav', 'astro-topnav--with-action', 'ui-drawer--default', 'ui-input-otp--default', 'ui-calendar--default', 'ui-date-picker--open']) {

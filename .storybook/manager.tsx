@@ -8,7 +8,7 @@ import './catalog/catalog.css';
 const font = '"Space Grotesk", "Helvetica Neue", Arial, sans-serif';
 addons.setConfig({
   theme: create({
-    base: 'light', brandTitle: 'EnoughUI', brandUrl: '/?path=/catalog/',
+    base: 'light', brandTitle: 'EnoughUI', brandUrl: '/?path=/catalog/', brandImage: '/brand/enough-ui-ink.svg',
     fontBase: font, fontCode: font, colorPrimary: '#12151c', colorSecondary: '#3b4fe4',
     appBg: '#f4f5f8', appContentBg: '#ffffff', appBorderColor: '#dde1e8', appBorderRadius: 0,
     textColor: '#12151c', barSelectedColor: '#3b4fe4',

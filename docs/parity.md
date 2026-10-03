@@ -20,11 +20,13 @@ Native Astro components use proportional typography and the same variant definit
 
 | Renderer | Families |
 | --- | --- |
-| Native Astro | Alert, Aspect Ratio, Attachment, Badge, Breadcrumb, Bubble, Button, Button Group, Card, Empty, Field, Input, Input Group, Item, Kbd, Label, Marker, Message, Native Select, Pagination, Progress, Separator, Skeleton, Spinner, Table, Textarea, Typography. |
+| Native Astro | Alert, Aspect Ratio, Attachment, Badge, Breadcrumb, Bubble, Button, Button Group, Card, Country Heatmap, Empty, Field, Input, Input Group, Item, Kbd, Label, Marker, Message, Native Select, Pagination, Progress, Separator, Skeleton, Spinner, Table, Textarea, Typography. |
 | Native presentation with optional island behavior | Avatar: deterministic server-rendered image/fallback presentation; browser image-loading detection and delayed fallback require React. |
 | React islands | Accordion, Alert Dialog, Calendar, Carousel, Chart, Checkbox, Collapsible, Combobox, Command, Context Menu, Data Table, Date Picker, Dialog, Direction context, Drawer, Dropdown Menu, Form, Hover Card, Input OTP, Menubar, Message Scroller, Navigation Menu, Popover, Questionnaire, Radio Group, Resizable, Scroll Area, Select, Sheet, Sidebar, Slider, Sonner, Switch, Tabs, Toast, Toggle, Toggle Group, Tooltip. |
 
 The manifest is authoritative for each required native component name, including compound parts. Additional native helpers include Direction's HTML wrapper and Popover header/title/description; the interactive Popover remains a React island.
+
+[CountryHeatmap](./country-heatmap.md) is an EnoughUI addition beyond the pinned shadcn catalog. Both renderers share static SVG geometry, color scales, labels, and a native expandable exact-value table; it requires no React island in Astro.
 
 ### Legitimate renderer differences
 

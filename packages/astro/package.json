@@ -1,6 +1,6 @@
 {
   "name": "@enoughtools/ui-astro",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Native EnoughUI components and design tokens for Astro.",
   "type": "module",
   "license": "MIT",
@@ -9,7 +9,7 @@
     "url": "https://github.com/enoughtools/enough-ui.git",
     "directory": "packages/astro"
   },
-  "homepage": "https://github.com/enoughtools/enough-ui#readme",
+  "homepage": "https://ui.enoughtools.com",
   "bugs": "https://github.com/enoughtools/enough-ui/issues",
   "files": [
     "dist",
@@ -86,6 +86,7 @@
     "./card-footer": "./dist/astro/CardFooter.astro",
     "./card-header": "./dist/astro/CardHeader.astro",
     "./card-title": "./dist/astro/CardTitle.astro",
+    "./country-heatmap": "./dist/astro/CountryHeatmap.astro",
     "./direction-provider": "./dist/astro/DirectionProvider.astro",
     "./empty": "./dist/astro/Empty.astro",
     "./empty-action": "./dist/astro/EmptyAction.astro",

@@ -1,6 +1,14 @@
 # EnoughUI
 
-EnoughUI is a component library for React and Astro, with proportional typography, square shapes, and shared design tokens. It follows shadcn/ui’s Radix component catalog while preserving EnoughUI’s visual identity.
+[![EnoughUI. Enough to build on. Components for React and Astro, with square edges, clear type, and shared foundations.](docs/assets/repository/repo-hero.png)](https://ui.enoughtools.com)
+
+**[Explore the live demo](https://ui.enoughtools.com)** · [Original demo address](https://enoughui.reb.run) · [React on npm](https://www.npmjs.com/package/@enoughtools/ui-react) · [Astro on npm](https://www.npmjs.com/package/@enoughtools/ui-astro)
+
+EnoughUI is a component library for React and Astro, with proportional typography, square shapes, and shared design tokens. Fine rules, paper surfaces, editorial serif headings, and purposeful indigo give it a clear visual language. It follows shadcn/ui’s Radix component catalog while preserving EnoughUI’s identity.
+
+[![Real EnoughUI Storybook examples: a questionnaire, a visitors chart, a native Astro card, and an open framework combobox.](docs/assets/repository/component-overview.png)](https://ui.enoughtools.com)
+
+Try the components, switch renderers, inspect their source, and make them yours in the [live catalog](https://ui.enoughtools.com). These previews come from the same stories used in rendering and interaction checks. The [Enough brand resources](https://brand.enoughtools.com) provide the approved logo, palette, and typography.
 
 ## Choose your renderer
 
@@ -12,6 +20,8 @@ EnoughUI is a component library for React and Astro, with proportional typograph
 Both packages include compiled CSS and their own component entry points. Native Astro components render HTML without hydration. Interactive controls use the same React implementation in React apps and Astro islands, so their state and accessibility behavior stay consistent.
 
 The [parity contract](docs/parity.md) records the pinned upstream catalog, required exports, renderer mapping, and intentional differences. A catalog or export count alone does not establish behavioral parity. The project verifies source contracts, story rendering, interactions, browser accessibility, and isolated package consumers.
+
+[CountryHeatmap](docs/country-heatmap.md) adds a responsive world map with shared color scales and an exact-value table in both React and native Astro. It uses public-domain Natural Earth boundaries and works without hydration. [Try the country heatmap](https://ui.enoughtools.com/?path=/catalog/country-heatmap).
 
 ## React
 
@@ -141,18 +151,21 @@ Rebuild after source changes. Local development must follow the directory or an 
 pnpm storybook
 ```
 
-The public catalog lives at [enoughui.reb.run](https://enoughui.reb.run). Its custom Storybook manager provides component search, category filters, live React/Astro previews, example selection, source, responsive previews, and controls for supported story arguments. The **Storybook** link on a component opens the standard manager with full controls, docs, and accessibility tools.
+The public catalog lives at [ui.enoughtools.com](https://ui.enoughtools.com), with [enoughui.reb.run](https://enoughui.reb.run) retained as an alternate address. Its custom Storybook manager provides component search, category filters, live React/Astro previews, example selection, source, responsive previews, and controls for supported story arguments. The **Storybook** link on a component opens the standard manager with full controls, docs, and accessibility tools.
 
 One [Storybook Astro](https://storybook-astro.org/) catalog contains the native **Astro** stories and **UI** React stories. Portable rendering tests reuse those stories, and browser tests use the built catalog. A static build goes to `storybook-static/`; there is no separate showcase application. The catalog manifest is generated from those same source fixtures before development and production builds.
+
+Every component tile includes a preview image captured from a real story. `build-storybook` regenerates those images with Playwright after compiling the stories, then includes them in the deployed assets. Install Chromium with `pnpm exec playwright install chromium` before the first build. Local development falls back to a live story when generated images are unavailable.
 
 ```sh
 pnpm build-storybook
 pnpm verify:catalog
+pnpm verify:previews
 pnpm verify:stories
 pnpm deploy:catalog
 ```
 
-Deployment uses Cloudflare Workers static assets with the custom domain in `wrangler.jsonc`. Authenticate Wrangler to the account that owns `reb.run` before publishing. `deploy:catalog` rebuilds the renderer packages and Storybook before uploading. Catalog browser checks save screenshots and a report in `artifacts/catalog/`.
+Deployment uses Cloudflare Workers static assets with the custom domains in `wrangler.jsonc`. Authenticate Wrangler to the account that owns `enoughtools.com` and `reb.run` before publishing. `deploy:catalog` rebuilds the renderer packages and Storybook before uploading. Catalog browser checks save screenshots and a report in `artifacts/catalog/`.
 
 See [contributing](CONTRIBUTING.md) for component, parity, accessibility, and review requirements; [release instructions](docs/releasing.md) for npm setup and publishing; and [security policy](SECURITY.md) for reporting vulnerabilities.
 

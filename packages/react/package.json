@@ -1,6 +1,6 @@
 {
   "name": "@enoughtools/ui-react",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "EnoughUI components and design tokens for React.",
   "type": "module",
   "license": "MIT",
@@ -9,7 +9,7 @@
     "url": "https://github.com/enoughtools/enough-ui.git",
     "directory": "packages/react"
   },
-  "homepage": "https://github.com/enoughtools/enough-ui#readme",
+  "homepage": "https://ui.enoughtools.com",
   "bugs": "https://github.com/enoughtools/enough-ui/issues",
   "files": [
     "dist",
@@ -129,6 +129,10 @@
     "./context-menu": {
       "types": "./dist/components/ui/context-menu.d.ts",
       "import": "./dist/components/ui/context-menu.js"
+    },
+    "./country-heatmap": {
+      "types": "./dist/components/ui/country-heatmap.d.ts",
+      "import": "./dist/components/ui/country-heatmap.js"
     },
     "./data-table": {
       "types": "./dist/components/ui/data-table.d.ts",
