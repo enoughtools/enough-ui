@@ -139,8 +139,9 @@ try {
     await page.getByRole('group', { name: 'Renderer', exact: true }).getByRole('button', { name: /^Astro/ }).click();
     await frame().getByRole('button', { name: 'Get started', exact: true }).waitFor();
     assert.equal(await frame().locator('#storybook-root astro-island').count(), 0);
-    await page.locator('.eui-controls').getByLabel('variant', { exact: true }).selectOption('accent');
-    await page.waitForFunction(() => new URL(document.querySelector('.eui-playground iframe').src).searchParams.get('args')?.includes('variant:accent'));
+    assert.equal(await page.locator('.eui-controls').count(), 0, 'Static native previews must not advertise unsupported live args controls.');
+    await page.getByLabel('Example', { exact: true }).selectOption('astro-button--accent');
+    await page.waitForFunction(() => new URL(document.querySelector('.eui-playground iframe').src).searchParams.get('id') === 'astro-button--accent');
     await page.waitForFunction(() => document.querySelector('.eui-playground iframe')?.contentDocument?.querySelector('[data-slot="button"]')?.classList.contains('bg-[var(--color-accent)]'));
     await frame().getByRole('button', { name: 'Get started', exact: true }).waitFor();
     assert.match(await frame().getByRole('button', { name: 'Get started', exact: true }).getAttribute('class'), /bg-\[var\(--color-accent\)\]/);

@@ -55,6 +55,8 @@ jobs:
         run: pnpm exec playwright install --with-deps chromium
       - name: Verify Storybook rendering, accessibility, and interactions
         run: pnpm verify:stories
+      - name: Verify catalog navigation and controls
+        run: pnpm verify:catalog
       - name: Verify browser behavior from the release archives
         run: pnpm verify:browser --archives artifacts/release
       - name: Save verified archives
