@@ -21,6 +21,7 @@ export * from "./components/ui/collapsible.js";
 export * from "./components/ui/combobox.js";
 export * from "./components/ui/command.js";
 export * from "./components/ui/context-menu.js";
+export * from "./components/ui/country-heatmap.js";
 export * from "./components/ui/data-table.js";
 export * from "./components/ui/date-picker.js";
 export * from "./components/ui/dialog.js";

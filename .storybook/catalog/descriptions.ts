@@ -30,6 +30,7 @@ export const componentInfo: Record<string, { description: string; category: stri
   checkbox: { description: 'Let people select independent options or confirm a choice.', category: 'Forms' },
   collapsible: { description: 'Expand or hide a section of content from a trigger.', category: 'Layout' },
   combobox: { description: 'Find and select an option from a searchable list.', category: 'Forms' },
+  'country-heatmap': { description: 'Compare country values on a world map, with a shared scale and an exact data table.', category: 'Data' },
   command: { description: 'Search a list of commands and choose an action with the keyboard.', category: 'Actions' },
   'context-menu': { description: 'Offer actions for an item through a contextual menu.', category: 'Actions' },
   'data-table': { description: 'Explore tabular data with sorting, filtering, selection, and pagination.', category: 'Data' },

@@ -96,7 +96,7 @@ async function verifyReact(input) {
   await writeFile(join(directory, 'main.tsx'), `
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { Button, Checkbox, Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription, Toaster, toast } from '${input.name}';
+import { Button, Checkbox, CountryHeatmap, Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription, Toaster, toast } from '${input.name}';
 import type { ButtonProps } from '${input.name}/button';
 import '${input.name}/styles.css';
 const props: ButtonProps = { variant: 'accent' };
@@ -106,6 +106,7 @@ createRoot(document.getElementById('root')!).render(<main><h1>Installed React pa
   <Dialog><DialogTrigger asChild><Button>Open dialog</Button></DialogTrigger>
     <DialogContent><DialogTitle>Portable dialog</DialogTitle><DialogDescription>Installed from a tested archive.</DialogDescription></DialogContent>
   </Dialog><Toaster />
+  <CountryHeatmap title="Packaged country values" data={[{ code: 'MX', value: 42 }, { code: 'NZ', value: 0 }, { code: 'SG', value: 7 }]} />
 </main>);
 `);
   await writeJSON(join(directory, 'tsconfig.json'), {
@@ -154,8 +155,13 @@ async function verifyReactBrowser(directory) {
     await page.getByRole('dialog').waitFor({ state: 'hidden' });
     await save.click();
     await page.getByText('Saved from package', { exact: true }).waitFor();
+    const countryData = page.getByText('View country data', { exact: true });
+    await countryData.focus();
+    await page.keyboard.press('Enter');
+    await page.getByRole('row', { name: /Singapore.*SG.*7/ }).waitFor();
+    assert.equal(await page.locator('svg [data-country="NZ"]').getAttribute('data-state'), 'zero');
     assert.deepEqual(errors, []);
-    console.log('Installed React package browser: theme, checkbox, dialog dismissal and toast passed.');
+    console.log('Installed React package browser: theme, checkbox, dialog dismissal, toast and country heatmap table passed.');
   } finally {
     await browser.close();
     await new Promise(resolve => server.httpServer.close(resolve));
@@ -184,13 +190,15 @@ ${imports}
 ---
 <!doctype html><html lang="en"><head><title>Installed Astro package</title></head><body><main>
 <h1>Installed native Astro package</h1><Button variant="accent">Portable Astro button</Button>
-${components.map(([key], index) => `<Component${index}${key === './callout' ? ' label="Package callout"' : key === './tool-row' ? ' title="Package tool"' : ''}>Native export</Component${index}>`).join('\n')}
+${components.map(([key], index) => `<Component${index}${key === './callout' ? ' label="Package callout"' : key === './tool-row' ? ' title="Package tool"' : key === './country-heatmap' ? ' data={[{ code: "MX", value: 42 }, { code: "NZ", value: 0 }, { code: "SG", value: 7 }]}' : ''}>Native export</Component${index}>`).join('\n')}
 </main></body></html>
 `);
   run('node', ['node_modules/astro/bin/astro.mjs', 'check'], directory);
   run('node', ['node_modules/astro/bin/astro.mjs', 'build'], directory);
   const html = await readFile(join(directory, 'dist/index.html'), 'utf8');
   assert.match(html, /Portable Astro button/);
+  assert.match(html, /data-slot="country-heatmap"/);
+  assert.match(html, /data-country="NZ" data-state="zero"/);
   assert.doesNotMatch(html, /astro-island|react\/jsx-runtime/);
   console.log(`${input.name}: every native export and named barrel passed Astro check and static production build without React installed.`);
 }

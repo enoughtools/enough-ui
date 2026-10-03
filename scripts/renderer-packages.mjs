@@ -24,6 +24,21 @@ export async function hookNames(root) {
 }
 
 const jsExport = file => ({ types: `./dist/${file}.d.ts`, import: `./dist/${file}.js` });
+
+// Package READMEs live outside the repository tree. Resolve repository artwork
+// and documentation against the matching release without packing catalog assets.
+export function packageReadme(source, version) {
+  const ref = `v${encodeURIComponent(version)}`;
+  const repository = 'enoughtools/enough-ui';
+  return source.replace(/(!?)\[([^\[\]]*)\]\(([^\s)]+)\)/g, (match, image, label, target) => {
+    if (/^(?:[a-z][a-z\d+.-]*:|\/|#)/i.test(target)) return match;
+    const path = target.replace(/^\.\//, '');
+    const base = image
+      ? `https://raw.githubusercontent.com/${repository}/${ref}/`
+      : `https://github.com/${repository}/blob/${ref}/`;
+    return `${image}[${label}](${base}${path})`;
+  });
+}
 export function reactExports(names, hooks = ['use-toast']) {
   return {
     '.': jsExport('index'),
@@ -142,6 +157,7 @@ export async function buildRendererPackages(root, rootManifest, reactNames, astr
       version: rootManifest.version,
       license: rootManifest.license,
       engines: rootManifest.engines,
+      homepage: rootManifest.homepage,
       main: './dist/index.js',
       types: './dist/index.d.ts',
       exports: renderer === 'react' ? reactExports(reactNames, hooks) : astroExports(astroNames),
@@ -150,7 +166,8 @@ export async function buildRendererPackages(root, rootManifest, reactNames, astr
       ...(renderer === 'astro' ? { peerDependenciesMeta: { astro: { optional: true } } } : {}),
     };
     await writeFile(join(directory, 'package.json'), JSON.stringify(manifest, null, 2) + '\n');
-    for (const name of ['README.md', 'LICENSE', 'THIRD_PARTY_NOTICES.md']) {
+    await writeFile(join(directory, 'README.md'), packageReadme(await readFile(join(root, 'README.md'), 'utf8'), manifest.version));
+    for (const name of ['LICENSE', 'THIRD_PARTY_NOTICES.md']) {
       try { await cp(join(root, name), join(directory, name)); }
       catch (error) { if (error.code !== 'ENOENT') throw error; }
     }

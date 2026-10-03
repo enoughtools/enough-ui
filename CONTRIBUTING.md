@@ -33,12 +33,16 @@ pnpm build
 pnpm typecheck
 pnpm check:astro
 pnpm test
-pnpm build-storybook
-pnpm verify:package
 pnpm exec playwright install chromium
+pnpm build-storybook
+pnpm verify:previews
+pnpm verify:catalog
+pnpm verify:package
 pnpm verify:stories
 pnpm verify:browser
 ```
+
+The catalog build captures real story images with Playwright. Install Chromium before its first build; generated previews stay out of Git.
 
 For interactive controls, cover keyboard navigation, focus movement and restoration, accessible state, disabled behavior, and controlled/uncontrolled state where supported. For shared styling, inspect both renderers in light and dark themes, narrow layouts, and visible focus states. Package verification must exercise installed archives in isolated React and Astro projects so repository dependencies cannot hide missing files or dependency declarations.
 

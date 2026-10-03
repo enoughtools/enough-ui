@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.0
+
+- Add CountryHeatmap for React and native Astro, sharing country geometry, color scales, labels, missing-data handling, and an expandable exact-value table. Include documented Natural Earth data provenance.
+- Apply the existing Enough brand pack to the public repository and Storybook catalog, with approved `e.` artwork, component images, local catalog fonts, and social preview assets.
+- Add [ui.enoughtools.com](https://ui.enoughtools.com) as a catalog address while retaining [enoughui.reb.run](https://enoughui.reb.run).
+- Keep package README images and documentation links usable on npm through release-specific repository URLs. Update the catalog setup guide for public npm installation.
+
 ## 0.3.0
 
 First public release under the EnoughTools organization, licensed under MIT.

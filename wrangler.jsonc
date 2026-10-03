@@ -7,7 +7,8 @@
     "directory": "./storybook-static"
   },
   "routes": [
-    { "pattern": "enoughui.reb.run", "custom_domain": true }
+    { "pattern": "enoughui.reb.run", "custom_domain": true },
+    { "pattern": "ui.enoughtools.com", "custom_domain": true }
   ],
   "workers_dev": false,
   "preview_urls": false

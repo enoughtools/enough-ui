@@ -1,0 +1,19 @@
+---
+import CountryHeatmap from '../../src/astro/CountryHeatmap.astro';
+import { countryHeatmapChange, countryHeatmapCustom, countryHeatmapExtreme, countryHeatmapSample, countryHeatmapSkewed, formatCountryHeatmapLongValue } from '../country-heatmap-data.js';
+
+const { variant = 'default' } = Astro.props;
+const variants = {
+  default: { title: 'Activity around the world', data: countryHeatmapSample, note: 'Illustrative values. Grey means no data; New Zealand has a measured zero. Singapore is retained in the data table.' },
+  log: { title: 'A broad range of values', data: countryHeatmapSkewed, scale: 'log' as const, note: 'Log scale makes smaller values visible alongside a large outlier. The table always contains the original values.' },
+  empty: { title: 'No observations yet', data: [], note: 'Missing observations are not a measured zero.' },
+  zero: { title: 'Zero is a value', data: [{ code: 'NZ', value: 0 }, { code: 'AU', value: null }], tableOpen: true, note: 'New Zealand has a measured zero. Australia has no data. Other countries have not been supplied.' },
+  domain: { title: 'Comparable reporting periods', data: countryHeatmapSample, domain: [0, 1000] as const, note: 'A fixed 0–1,000 color domain lets multiple reporting periods share one scale.' },
+  signed: { title: 'Change from last period', data: countryHeatmapChange, domain: [-25, 25] as const, valueLabel: 'Percentage points', tableOpen: true, note: 'Linear scales accept negative values. Log scales use signed log1p to preserve zero and negative values.' },
+  localized: { data: countryHeatmapSample, locale: 'es-MX', title: 'Actividad por país', countryLabel: 'País', valueLabel: 'Sesiones', noDataLabel: 'Sin datos', tableLabel: 'Ver datos por país', legendLabel: 'Leyenda del mapa', unmappedLabel: 'No aparece a esta escala', emptyLabel: 'Aún no hay datos', description: 'El color representa las sesiones. Los valores exactos están en la tabla, incluidos los países pequeños.', note: 'Datos ilustrativos.', tableOpen: true },
+  extreme: { data: countryHeatmapExtreme, scale: 'log' as const, title: 'Very large and small values', tableOpen: true, note: 'Long numeric labels wrap inside the legend. The native table can scroll horizontally to preserve precise values.' },
+  custom: { data: countryHeatmapCustom, formatValue: formatCountryHeatmapLongValue, title: 'Custom formatted values', tableOpen: true, note: 'Even a long, unbroken custom value label stays inside a narrow viewport.' },
+};
+const props = variants[variant as keyof typeof variants] ?? variants.default;
+---
+<CountryHeatmap valueLabel="Sessions" {...props} class="max-w-4xl" />

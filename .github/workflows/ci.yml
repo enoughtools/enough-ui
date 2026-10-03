@@ -43,12 +43,14 @@ jobs:
         run: pnpm check:astro
       - name: Run component and story rendering tests
         run: pnpm test
-      - name: Build the shared Storybook catalog
-        run: pnpm build-storybook
-      - name: Verify isolated packed consumers
-        run: pnpm verify:package
       - name: Install browser runtime
         run: pnpm exec playwright install --with-deps chromium
+      - name: Build the shared Storybook catalog
+        run: pnpm build-storybook
+      - name: Verify component preview images
+        run: pnpm verify:previews
+      - name: Verify isolated packed consumers
+        run: pnpm verify:package
       - name: Verify Storybook rendering, accessibility, and interactions
         run: pnpm verify:stories
       - name: Verify catalog navigation and controls
