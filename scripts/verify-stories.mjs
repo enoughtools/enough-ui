@@ -54,11 +54,24 @@ try {
     assert.ok(index.entries[id], `Missing story ${id}; component behavior must have a reusable catalog fixture.`);
     runtimeErrors.length = 0;
     await page.goto(`${url}/iframe.html?id=${encodeURIComponent(id)}&viewMode=story`, { waitUntil: 'networkidle' });
-    await page.waitForFunction((empty) => {
-      const story = document.querySelector('#storybook-root');
-      const error = document.querySelector('.sb-errordisplay');
-      return (error && getComputedStyle(error).display !== 'none' && error.getBoundingClientRect().height > 0) || (story && (empty || story.children.length > 0));
-    }, id === 'astro-fielderror--empty');
+    try {
+      await page.waitForFunction((empty) => {
+        const story = document.querySelector('#storybook-root');
+        const error = document.querySelector('.sb-errordisplay');
+        return (error && getComputedStyle(error).display !== 'none' && error.getBoundingClientRect().height > 0) || (story && (empty || story.children.length > 0));
+      }, id === 'astro-fielderror--empty');
+    } catch (error) {
+      error.details = {
+        url: page.url(),
+        runtimeErrors: [...runtimeErrors],
+        render: await page.evaluate(() => ({
+          readyState: document.readyState,
+          root: document.querySelector('#storybook-root')?.outerHTML ?? null,
+          errors: [...document.querySelectorAll('.sb-errordisplay')].filter((element) => getComputedStyle(element).display !== 'none').map((element) => element.textContent?.trim()),
+        })),
+      };
+      throw error;
+    }
     const errorDisplay = page.locator('.sb-errordisplay:visible');
     if (await errorDisplay.count()) throw new Error((await errorDisplay.textContent())?.trim() || 'Storybook rendering failed');
     assert.deepEqual(runtimeErrors, [], `${id} has a runtime error`);
@@ -83,13 +96,14 @@ try {
       throw error;
     }
   };
-  for (const entry of stories) {
+  for (const [position, entry] of stories.entries()) {
     try {
       await visit(entry.id);
       await scan(entry.id);
       if (entry.title.startsWith('Astro/')) assert.equal(await page.locator('#storybook-root astro-island').count(), 0, 'Presentational Astro stories should render without hydration.');
       verified.push(entry.id);
     } catch (error) { reportFailure(entry.id, 'catalog', error); }
+    if ((position + 1) % 50 === 0) console.log(`Catalog scan: ${position + 1}/${stories.length} stories; ${failures.length} failures.`);
   }
   const scenario = async (id, action) => {
     if (!matches(id)) return;

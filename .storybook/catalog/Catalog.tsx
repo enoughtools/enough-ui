@@ -76,20 +76,6 @@ export function Catalog() {
   }, []);
   useEffect(() => { if (menuOpen && smallScreen) searchRef.current?.focus(); }, [menuOpen, smallScreen]);
   useEffect(() => {
-    // These embeds select their own story and args through their URL. Keep their
-    // lifecycle events out of the manager's single-preview communication channel.
-    const isolateEmbeds = (event: MessageEvent) => {
-      const frames = document.querySelectorAll<HTMLIFrameElement>('.eui-catalog iframe');
-      if (![...frames].some(frame => frame.contentWindow === event.source)) return;
-      try {
-        const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-        if (data?.key === 'storybook-channel') event.stopImmediatePropagation();
-      } catch { /* Other messages do not belong to the Storybook channel. */ }
-    };
-    window.addEventListener('message', isolateEmbeds, true);
-    return () => window.removeEventListener('message', isolateEmbeds, true);
-  }, []);
-  useEffect(() => {
     const handler = (event: KeyboardEvent) => { if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); setMenuOpen(true); searchRef.current?.focus(); } if (event.key === 'Escape') setMenuOpen(false); };
     window.addEventListener('keydown', handler); return () => window.removeEventListener('keydown', handler);
   }, []);
@@ -149,7 +135,9 @@ function ComponentPage({ component }: { component: Component }) {
   const [mobile, setMobile] = useState(false);
   const [reset, setReset] = useState(0);
   const [shared, setShared] = useState(false);
-  const controls = example.controls ?? [];
+  // Storybook Astro pre-renders static exports; its compiled variants remain
+  // selectable, while React stories can accept live argument updates.
+  const controls = renderer === 'react' ? example.controls ?? [] : [];
   const choose = (nextRenderer: Renderer, nextId?: string) => {
     setRenderer(nextRenderer); setSelected(nextId ?? component[nextRenderer][0].id); setValues({}); setReset(value => value + 1);
     const url = new URL(location.href); url.searchParams.set('renderer', nextRenderer); url.searchParams.set('example', nextId ?? component[nextRenderer][0].id); history.replaceState(null, '', url);
@@ -160,13 +148,14 @@ function ComponentPage({ component }: { component: Component }) {
   return <>
     <div className="eui-breadcrumb"><a href={href()}>Components</a><span>/</span>{component.name}</div>
     <div className="eui-component-heading"><div><span className="eui-eyebrow">{info(component).category}</span><h1>{component.name}</h1><p>{info(component).description}</p></div><a className="eui-button eui-small" href={`?path=/story/${example.id}`}><SlidersHorizontal size={15} />Storybook <ArrowUpRight size={14} /></a></div>
-    <div className="eui-renderer-tabs" role="group" aria-label="Renderer">{(['react', 'astro'] as Renderer[]).filter(type => component[type].length > 0).map(type => <button key={type} aria-pressed={renderer === type} onClick={() => choose(type)}>{type === 'react' ? 'React' : 'Astro'}<span>{component[type].length}</span></button>)}<span className="eui-runtime-label">{renderer === 'astro' ? 'Native HTML · no hydration' : 'Interactive React components'}</span></div>
+    <div className="eui-renderer-tabs" role="group" aria-label="Renderer">{(['react', 'astro'] as Renderer[]).filter(type => component[type].length > 0).map(type => <button key={type} aria-pressed={renderer === type} onClick={() => choose(type)}>{type === 'react' ? 'React' : 'Astro'}<span>{component[type].length}</span></button>)}<span className="eui-runtime-label">{renderer === 'astro' ? 'Native HTML · select an example' : 'Interactive React components'}</span></div>
     <section className="eui-playground" aria-label={`${component.name} playground`}>
       <div className="eui-playground-top"><div className="eui-view-tabs" role="tablist" aria-label="Example view" onKeyDown={event => { if (["ArrowRight", "ArrowLeft", "Home", "End"].includes(event.key)) { event.preventDefault(); const next = event.key === "Home" ? "preview" : event.key === "End" ? "source" : tab === "preview" ? "source" : "preview"; setTab(next); document.getElementById(`${next}-tab`)?.focus(); } }}><button role="tab" id="preview-tab" aria-controls="example-preview" aria-selected={tab === 'preview'} tabIndex={tab === 'preview' ? 0 : -1} onClick={() => setTab('preview')}>Preview</button><button role="tab" id="source-tab" aria-controls="example-source" aria-selected={tab === 'source'} tabIndex={tab === 'source' ? 0 : -1} onClick={() => setTab('source')}>Source</button></div><div className="eui-preview-actions">{tab === 'preview' ? <><button className="eui-icon-button" aria-label="Desktop preview" aria-pressed={!mobile} onClick={() => setMobile(false)}><Monitor size={17} /></button><button className="eui-icon-button" aria-label="Mobile preview" aria-pressed={mobile} onClick={() => setMobile(true)}><Smartphone size={17} /></button><button className="eui-icon-button" aria-label="Reset example" onClick={() => { setValues({}); setReset(value => value + 1); }}><RotateCcw size={16} /></button></> : <CopyButton value={example.source} />}</div></div>
       <div className="eui-example-select"><label htmlFor="example-select">Example</label><select id="example-select" value={example.id} onChange={event => choose(renderer, event.target.value)}>{examples.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</select><span>{examples.length} {examples.length === 1 ? 'example' : 'examples'}</span></div>
       {tab === 'preview' ? <div role="tabpanel" id="example-preview" aria-labelledby="preview-tab"><StoryFrame example={example} values={values} mobile={mobile} reset={reset} /></div> : <div className="eui-source" role="tabpanel" id="example-source" aria-labelledby="source-tab"><div className="eui-source-note">Story source · {renderer === 'react' ? 'React' : 'Astro'} · includes imports and composition</div><pre tabIndex={0}><code>{example.source}</code></pre></div>}
       <div className="eui-playground-footer"><span>{example.name} / {renderer === 'react' ? 'React' : 'Astro'}</span><a href={previewURL(example, values)} target="_blank" rel="noreferrer">Open preview <ArrowUpRight size={14} /></a></div>
     </section>
+    {renderer === 'astro' && <p className="eui-native-note">Astro examples render native HTML. Choose an example above to explore the compiled variants.</p>}
     {controls.length > 0 && <section className="eui-controls"><div className="eui-section-heading"><h2>Make it yours</h2><span>Adjust the live example</span></div><div className="eui-control-grid">{controls.map(control => <label className={`eui-control ${control.type === 'boolean' ? 'eui-control-boolean' : ''}`} key={control.name}><span>{control.name}</span>{control.type === 'select' || control.options ? <select aria-label={control.name} value={String(values[control.name] ?? example.args[control.name] ?? control.options?.[0] ?? '')} onChange={event => setValues(previous => ({ ...previous, [control.name]: control.options?.find(option => String(option) === event.target.value) ?? event.target.value }))}>{control.options?.map(option => <option key={String(option)} value={option}>{option}</option>)}</select> : control.type === 'boolean' ? <input aria-label={control.name} type="checkbox" checked={Boolean(values[control.name] ?? example.args[control.name])} onChange={event => setValues(previous => ({ ...previous, [control.name]: event.target.checked }))} /> : <input aria-label={control.name} type={(control.type === 'number' || control.type === 'range') ? 'number' : 'text'} pattern={(control.type === 'number' || control.type === 'range') ? undefined : '[a-zA-Z0-9 _-]*'} min={control.min} max={control.max} step={control.step} value={String(values[control.name] ?? example.args[control.name] ?? '')} onChange={event => { if ((control.type === 'number' || control.type === 'range')) { if (event.target.value !== '') setValues(previous => ({ ...previous, [control.name]: Number(event.target.value) })); } else if (/^[a-zA-Z0-9 _-]*$/.test(event.target.value)) setValues(previous => ({ ...previous, [control.name]: event.target.value })); }} />}</label>)}</div></section>}
     <section className="eui-usage"><div className="eui-section-heading"><h2>Use this component</h2><a href={href('getting-started')}>Setup guide <ArrowRight size={15} /></a></div><div className="eui-import"><code>{importText}</code><CopyButton value={importText} label="Copy import" /></div>{renderer === 'astro' && <p>Use native attributes and slots. Keep stateful controls together in a React island.</p>}</section>
     <section className="eui-example-links"><div className="eui-section-heading"><h2>All examples</h2><span>{examples.length} variations</span></div><div>{examples.map(item => <button key={item.id} className={item.id === example.id ? 'is-selected' : ''} onClick={() => { choose(renderer, item.id); setTab('preview'); document.querySelector('.eui-playground')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}>{item.name}<ArrowUpRight size={14} /></button>)}</div></section>

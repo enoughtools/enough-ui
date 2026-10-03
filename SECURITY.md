@@ -2,6 +2,8 @@
 
 ## Supported versions
 
+See [upstream dependency status](docs/security-status.md) for reviewed dependency findings and any unresolved upstream advisory.
+
 Security fixes target the latest stable release of `@enoughtools/ui-react` and `@enoughtools/ui-astro`. The renderer packages share a version; upgrade both when using both. Prereleases are intended for evaluation and receive fixes through the next prerelease or stable release. Older release lines do not have a separate maintenance commitment.
 
 ## Reporting a vulnerability
