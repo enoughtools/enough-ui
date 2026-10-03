@@ -3,7 +3,7 @@ import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { afterEach, describe, expect, test, vi } from 'vitest';
-import { waitFor } from '@testing-library/react';
+import { waitFor, within } from '@testing-library/react';
 import {
   getCoreRowModel,
   getPaginationRowModel,
@@ -33,6 +33,7 @@ import {
   PaginationPrevious,
 } from '../../src/components/ui/pagination.js';
 import { FirstPage } from '../../src/components/ui/pagination.stories.js';
+import { ChoiceCard } from '../../src/components/ui/field.stories.js';
 
 (globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT: boolean })
   .IS_REACT_ACT_ENVIRONMENT = true;
@@ -163,6 +164,18 @@ describe('Dialog', () => {
     await click(button(container, 'Edit account'));
     await click(button(document.querySelector('[role="dialog"]')!, 'Close'));
     expect(document.querySelector('[role="dialog"]')).toBeNull();
+  });
+});
+
+describe('Field choice cards', () => {
+  test('names the checkbox from its title and toggles it when the card is selected', async () => {
+    const Story = ChoiceCard.render as React.ComponentType;
+    const { container } = await mount(<Story />);
+    const checkbox = within(container).getByRole('checkbox', { name: 'Archive completed projects' });
+    expect(checkbox).toHaveAccessibleDescription('Select the card or checkbox to update this preference.');
+    expect(checkbox).toHaveAttribute('aria-checked', 'true');
+    await click(container.querySelector<HTMLLabelElement>('label[for="field-choice-archive"]')!);
+    expect(checkbox).toHaveAttribute('aria-checked', 'false');
   });
 });
 

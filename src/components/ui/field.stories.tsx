@@ -185,10 +185,10 @@ export const ChoiceCard: Story = {
       <FieldLabel htmlFor="field-choice-archive">
         <Field orientation="horizontal">
           <FieldContent>
-            <FieldTitle>Archive completed projects</FieldTitle>
+            <FieldTitle id="field-choice-title">Archive completed projects</FieldTitle>
             <FieldDescription>Keep your workspace focused while retaining your project history.</FieldDescription>
           </FieldContent>
-          <Checkbox id="field-choice-archive" defaultChecked aria-describedby="field-choice-description" />
+          <Checkbox id="field-choice-archive" defaultChecked aria-labelledby="field-choice-title" aria-describedby="field-choice-description" />
         </Field>
       </FieldLabel>
       <p id="field-choice-description" className="text-sm text-[var(--color-text-3)]">Select the card or checkbox to update this preference.</p>
