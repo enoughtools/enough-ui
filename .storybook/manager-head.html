@@ -1,10 +1,10 @@
-<meta name="description" content="Explore EnoughUI components for React and Astro. Search the catalog, try live examples, and inspect the source.">
+<meta name="description" content="Explore EnoughUI components for React, Astro and SwiftUI. Search the catalog, try live examples, and inspect the source.">
 <meta name="theme-color" content="#f4f5f8">
 <link rel="stylesheet" href="/brand/fonts.css">
 <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:title" content="EnoughUI — Enough to build on.">
-<meta property="og:description" content="Square edges. Clear type. Shared components for React and native Astro. Explore the live catalog.">
+<meta property="og:description" content="Square edges. Clear type. Shared components for React, native Astro and SwiftUI. Explore the live catalog.">
 <meta property="og:url" content="https://ui.enoughtools.com">
 <meta property="og:image" content="https://ui.enoughtools.com/brand/social-preview.png">
 <meta property="og:image:alt" content="EnoughUI, with the e. mark and the line Enough to build on.">
@@ -19,7 +19,11 @@
       if (data?.key === 'storybook-channel') event.stopImmediatePropagation();
     } catch {}
   }, true);
-  if (!new URLSearchParams(location.search).has('path') || new URLSearchParams(location.search).get('path') === '/catalog') {
+  if (location.pathname === '/swift' || location.pathname === '/swift/') {
+    const url = new URL(location.href);
+    if (!url.searchParams.get('path')?.startsWith('/swift')) url.searchParams.set('path', '/swift/');
+    history.replaceState(null, '', url);
+  } else if (!new URLSearchParams(location.search).has('path') || new URLSearchParams(location.search).get('path') === '/catalog') {
     const url = new URL(location.href);
     url.searchParams.set('path', '/catalog/');
     history.replaceState(null, '', url);

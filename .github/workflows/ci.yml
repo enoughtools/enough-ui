@@ -47,6 +47,8 @@ jobs:
         run: pnpm exec playwright install --with-deps chromium
       - name: Build the shared Storybook catalog
         run: pnpm build-storybook
+      - name: Verify the Swift gallery
+        run: pnpm verify:swift-gallery
       - name: Verify component preview images
         run: pnpm verify:previews
       - name: Verify isolated packed consumers

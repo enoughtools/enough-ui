@@ -42,6 +42,8 @@ EnoughThemeProvider {
 
 The [Swift guide](https://github.com/enoughtools/enough-ui/blob/v0.5.0/packages/swift/README.md) covers the component API, native equivalents, platform differences, theming and installation. Run `swift run --package-path examples/swift-catalog EnoughUICatalog` for the native examples. The Swift library has no third-party dependencies and does not need Node or npm. Its palette is generated from the shared web theme. Native system controls retain their Apple behavior and styling.
 
+Browse the dedicated [Swift gallery](https://ui.enoughtools.com/swift) for 24 component families, real macOS and iPhone captures in light and dark appearance, complete Swift examples, and installation instructions. The screenshots and runnable native demo share the same compiled fixtures. React and Astro continue to share the web gallery.
+
 ## React
 
 ```sh

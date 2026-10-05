@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Add a dedicated Swift gallery at `/swift` within the existing EnoughUI catalog, with 24 compiled example families, 96 real macOS/iPhone light/dark screenshots, Swift source, search, category filters and SwiftPM installation guidance.
+- Use the same native fixtures in the runnable demo and screenshot capture workflow. Verify native evidence freshness, browser navigation, appearance selection, accessible layouts and exact source copying.
+
 ## 0.5.0
 
 - Add the `EnoughUI` SwiftUI library for macOS 13+ and iOS/iPadOS 16+, installable with Swift Package Manager from the repository's shared release tags.

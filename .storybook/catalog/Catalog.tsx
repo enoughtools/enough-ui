@@ -105,7 +105,7 @@ export function Catalog() {
         <a href={href()} onClick={event => link(event, href())} aria-current={route !== 'getting-started' ? 'page' : undefined}>Components</a>
         <a href={href('getting-started')} onClick={event => link(event, href('getting-started'))} aria-current={route === 'getting-started' ? 'page' : undefined}>Get started</a>
       </nav>
-      <div className="eui-header-right"><span className="eui-status"><i />React & Astro</span><a className="eui-github" href="https://github.com/enoughtools/enough-ui" target="_blank" rel="noreferrer" aria-label="EnoughUI on GitHub"><Code size={18} /></a><button className="eui-mobile-menu eui-icon-button" aria-label={menuOpen ? 'Close component menu' : 'Open component menu'} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X size={20} /> : <Menu size={20} />}</button></div>
+      <div className="eui-header-right"><a className="eui-web-swift-link" href="/swift">Swift</a><span className="eui-status"><i />React & Astro</span><a className="eui-github" href="https://github.com/enoughtools/enough-ui" target="_blank" rel="noreferrer" aria-label="EnoughUI on GitHub"><Code size={18} /></a><button className="eui-mobile-menu eui-icon-button" aria-label={menuOpen ? 'Close component menu' : 'Open component menu'} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X size={20} /> : <Menu size={20} />}</button></div>
     </header>
     {menuOpen && <button className="eui-menu-backdrop" aria-label="Close component menu" onClick={() => setMenuOpen(false)} />}
     <aside className={`eui-sidebar ${menuOpen ? 'is-open' : ''}`} aria-label="Component navigation" inert={smallScreen && !menuOpen} aria-hidden={smallScreen && !menuOpen ? true : undefined}>
