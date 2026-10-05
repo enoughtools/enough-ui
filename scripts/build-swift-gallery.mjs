@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile, readdir, writeFile, mkdir } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 import { renderingInputs, screenshotHashes } from './swift-gallery-evidence.mjs';
@@ -31,7 +32,9 @@ assert.deepEqual(evidence.renderingInputs, await renderingInputs(root), 'Native 
 assert.deepEqual(evidence.screenshots, await screenshotHashes(root), 'Native screenshot evidence changed. Regenerate native captures.');
 for (const component of components) assert.equal(evidence.sources[component.id], component.sourceHash, `Native screenshot source changed: ${component.id}. Regenerate native captures.`);
 assert.equal(new Set(components.map(item => item.id)).size, components.length);
-const output = JSON.stringify({ components, platforms: ['macos', 'ios'], evidence }, null, 2) + '\n';
+const sourceRef = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
+assert.match(sourceRef, /^[a-f0-9]{40}$/);
+const output = JSON.stringify({ components, platforms: ['macos', 'ios'], sourceRef, evidence }, null, 2) + '\n';
 const destination = join(root, '.storybook/catalog/swift-manifest.json');
 if (process.argv.includes('--check')) assert.equal(await readFile(destination, 'utf8'), output, 'Swift gallery manifest is stale.');
 else { await mkdir(join(root, '.storybook/catalog'), { recursive: true }); await writeFile(destination, output); }
