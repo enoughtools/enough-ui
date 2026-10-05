@@ -1,11 +1,12 @@
 # Releasing EnoughUI
 
-EnoughUI publishes two packages with the same version:
+EnoughUI publishes two npm packages and one Swift package with the same version:
 
 | Package | Build directory | Audience |
 | --- | --- | --- |
 | `@enoughtools/ui-react` | `packages/react/` | React applications and interactive Astro islands |
 | `@enoughtools/ui-astro` | `packages/astro/` | Native Astro presentation without a React dependency |
+| `EnoughUI` | Root `Package.swift`, sources in `packages/swift/` | SwiftUI for macOS and iOS/iPadOS |
 
 The private root package is the development source. Update its version in `package.json`; `pnpm build` generates the renderer manifests and artifacts. Generated directories are never the source of release edits. A version tag must exactly match the root and both renderer versions. Stable tags such as `v0.3.0` publish to `latest`; tags such as `v0.3.1-rc.1` publish to `next`. Build metadata in release tags is rejected.
 
@@ -54,12 +55,18 @@ New publisher configurations default to staged publishing, which this workflow d
 
 ## Preparing a release
 
-1. Update the private root version and describe changes in release notes, including breaking API changes, new component coverage, renderer differences, and migration instructions. Both packages move together. During `0.x`, communicate breaking changes explicitly; a `1.0.0` release requires a deliberate stability decision.
+1. Update the private root version and describe changes in release notes, including breaking API changes, new component coverage, renderer differences, and migration instructions. All three renderers move together. During `0.x`, communicate breaking changes explicitly; a `1.0.0` release requires a deliberate stability decision.
 2. Review component coverage and known exceptions. Catalog presence alone does not establish interaction or accessibility parity. Keep native Astro presentation and React islands clearly documented.
 3. Run the complete verification sequence from a clean install:
 
 ```sh
 pnpm install --frozen-lockfile
+node scripts/build-swift-tokens.mjs --check
+swift test
+swift test -Xswiftc -swift-version -Xswiftc 6
+swift build --package-path examples/swift-catalog
+xcodebuild -scheme EnoughUI -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
+node scripts/pack-swift.mjs
 pnpm build
 pnpm typecheck
 pnpm check:astro
@@ -84,7 +91,7 @@ The verification job rebuilds source, validates metadata and version tags, runs 
 
 The publishing job targets the `npm` environment, which accepts only authorized release tags. In the sole-maintainer setup it proceeds automatically after verification. It downloads the verified archives, checks their hashes and source commit, preflights both registry versions, and publishes with OIDC and provenance. No install cache or long-lived npm token is used for release builds. Package names, repository metadata, versions, registry, visibility, and distribution channel are validated before publication.
 
-After success, inspect both npm package pages, their versions, distribution tags, and provenance links. Create a GitHub release for the same tag with the reviewed release notes. Mark prerelease GitHub releases accordingly. Do not announce the release until both renderer packages are available.
+After success, inspect both npm package pages, their versions, distribution tags, and provenance links. The workflow creates a GitHub release for the same tag and attaches the verified Swift source archive and SHA256SUMS after npm publication succeeds. Review its generated notes and add the relevant changelog details. Mark prerelease GitHub releases accordingly. Do not announce the release until both renderer packages are available.
 
 ## Failure recovery
 
@@ -94,3 +101,13 @@ After success, inspect both npm package pages, their versions, distribution tags
 - **Artifact expired or changed:** do not replace an already published version with rebuilt content. Prepare a new shared version, verify both packages, and release it. npm versions cannot be reused.
 - **Wrong distribution tag:** the workflow will not move `latest` or `next` backwards or automatically retag a skipped version. A maintainer must review and repair tags explicitly for both packages using authenticated npm administration. A prerelease stays on `next`; promotion requires a new stable version. See [npm distribution tags](https://docs.npmjs.com/adding-dist-tags-to-packages/).
 - **Faulty published release:** publish a corrected version of both packages and document the impact. Deprecate affected versions with a clear upgrade message when warranted. Keep the original tag and release records for traceability.
+
+## Swift distribution
+
+From 0.5.0 onward, the repository-root `Package.swift` makes the existing Git URL a SwiftPM package. There is no separate Swift registry publication step: the verified `v<version>` tag is the version developers install in Xcode/SwiftPM. Preserve the tag once published. Swift consumers do not need npm.
+
+The reusable Swift workflow checks generated palette freshness, tests macOS rendering and Swift 6 compatibility, builds an independent native consumer and the iOS simulator library, and compiles/tests the exact source archive in a temporary directory. The release waits for this job as well as web verification before publishing. Its source tarball is an additional GitHub download; SwiftPM normally installs from Git.
+
+After the first tagged Swift release, submit `https://github.com/enoughtools/enough-ui.git` through [Swift Package Index](https://swiftpackageindex.com/add-a-package). Its maintainers decide when to accept and index it. A submission does not mean listing is live. Indexing is independent of SwiftPM installation.
+
+CocoaPods, Carthage binaries and Homebrew are not targets for this SwiftUI source library. See the [Swift distribution guide](../packages/swift/README.md#distribution) for the rationale. RepoReach adoption is a separate consuming-product migration.

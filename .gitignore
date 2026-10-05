@@ -35,3 +35,9 @@ playwright-report/
 
 # Local provenance from the private application extraction
 docs/extraction-manifest.json
+
+# Swift Package Manager and Xcode
+.build/
+.swiftpm/
+DerivedData/
+*.xcuserstate

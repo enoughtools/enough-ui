@@ -1,6 +1,6 @@
 {
   "name": "@enoughtools/ui-astro",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Native EnoughUI components and design tokens for Astro.",
   "type": "module",
   "license": "MIT",

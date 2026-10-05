@@ -1,7 +1,7 @@
 {
   "name": "@rebnz/enough-ui",
-  "version": "0.4.0",
-  "description": "EnoughUI: reusable React and Astro components and design tokens.",
+  "version": "0.5.0",
+  "description": "EnoughUI: reusable React, Astro and SwiftUI components and design tokens.",
   "type": "module",
   "license": "MIT",
   "packageManager": "pnpm@10.34.5",
@@ -486,7 +486,11 @@
     "verify:previews": "node scripts/verify-catalog-previews.mjs",
     "verify:source": "node scripts/verify-catalog-source.mjs",
     "deploy:catalog": "pnpm build && pnpm build-storybook && wrangler deploy",
-    "pretypecheck": "node scripts/build-catalog-manifest.mjs"
+    "pretypecheck": "node scripts/build-catalog-manifest.mjs",
+    "build:swift-tokens": "node scripts/build-swift-tokens.mjs",
+    "check:swift-tokens": "node scripts/build-swift-tokens.mjs --check",
+    "test:swift": "swift test",
+    "pack:swift": "node scripts/pack-swift.mjs"
   },
   "peerDependencies": {
     "react": "^19.0.0",
