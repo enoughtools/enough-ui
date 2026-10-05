@@ -19,7 +19,7 @@
     "inputs": "585caca9cc2b0bae48a54d8f635ae93b5db5c5cbc8c4e35df93ab52194ab65d7",
     "layout": "d89b657325c6020f91c9d3d1ce1098adc24dfeadf265710630c00b6c371f9bb4",
     "menus": "9793f5f39cb05024fab54e0564caf0e57dd629e2762faf99a22fd017ac72e226",
-    "navigation": "cd8dc46fbdc37abe533051d514bb42c7d80006c9ca38b6712b29ae5445f311aa",
+    "navigation": "5efdd88932c22ca515e43efb792f9206195f4dfdac3fb7c2e194a5294b85307b",
     "pagination": "4a83a6795da685bed28e051b934455f7891bc727c90defecadc322697406c3f7",
     "pickers": "2366d838572a53945a1fbf8480a74223900aa7b26295a9411ce9949f0d6bcb76",
     "presentations": "d7dfd7576841ed97a7ad12a15475355d37c983c98ec60094aa90c998cdebe6e3",
@@ -46,7 +46,7 @@
     "examples/swift-catalog/Sources/EnoughUICatalog/Gallery/InputsGalleryExample.swift": "585caca9cc2b0bae48a54d8f635ae93b5db5c5cbc8c4e35df93ab52194ab65d7",
     "examples/swift-catalog/Sources/EnoughUICatalog/Gallery/LayoutGalleryExample.swift": "d89b657325c6020f91c9d3d1ce1098adc24dfeadf265710630c00b6c371f9bb4",
     "examples/swift-catalog/Sources/EnoughUICatalog/Gallery/MenusGalleryExample.swift": "9793f5f39cb05024fab54e0564caf0e57dd629e2762faf99a22fd017ac72e226",
-    "examples/swift-catalog/Sources/EnoughUICatalog/Gallery/NavigationGalleryExample.swift": "cd8dc46fbdc37abe533051d514bb42c7d80006c9ca38b6712b29ae5445f311aa",
+    "examples/swift-catalog/Sources/EnoughUICatalog/Gallery/NavigationGalleryExample.swift": "5efdd88932c22ca515e43efb792f9206195f4dfdac3fb7c2e194a5294b85307b",
     "examples/swift-catalog/Sources/EnoughUICatalog/Gallery/PaginationGalleryExample.swift": "4a83a6795da685bed28e051b934455f7891bc727c90defecadc322697406c3f7",
     "examples/swift-catalog/Sources/EnoughUICatalog/Gallery/PickersGalleryExample.swift": "2366d838572a53945a1fbf8480a74223900aa7b26295a9411ce9949f0d6bcb76",
     "examples/swift-catalog/Sources/EnoughUICatalog/Gallery/PresentationsGalleryExample.swift": "d7dfd7576841ed97a7ad12a15475355d37c983c98ec60094aa90c998cdebe6e3",
@@ -65,7 +65,7 @@
     "packages/swift/Sources/EnoughUI/Presentation.swift": "b96bd91f08c8e19a101c9c5473c20912d3f6b28cef9c6c33bf2260ef5f5223b9",
     "packages/swift/Sources/EnoughUI/Selection.swift": "4f6b443179ebdbaff047828b22caeaece52f0e114fbad5ee8615b5fc549fcb60",
     "packages/swift/Sources/EnoughUI/Theme.swift": "fb1d9eed5a2a15cf3739c52efc52b4411a28b04be44bc2509bd1d78e1497faef",
-    "scripts/swift/GalleryCaptureApp.swift": "468d950d8b4f646949c244a6d4dceaf1df9bfc536d41b5106657b13c89c44d20"
+    "scripts/swift/GalleryCaptureApp.swift": "e9841a7ace56e402e2ddbde2f06f7e645ff0e18653f8d27019b8758b0790aa27"
   },
   "screenshots": {
     "accordion-ios-dark.png": "09b99852511a9d7e10649cf947b569cfeae607daa07fc0649efed37c01784cc4",
@@ -140,8 +140,8 @@
     "presentations-ios-light.png": "c76adbeba067de47ad8ea7ac5516e0d38fe56df5bc073bc450e412cd5fb9594f",
     "presentations-macos-dark.png": "588befec7f49904e9c276be660c8e367da57038c96113a80def299dd91df9dac",
     "presentations-macos-light.png": "3b67af92572ed21b996bcf032f2f7d9feb8d55a36dfa43dd57bcfb761f31ca9c",
-    "progress-ios-dark.png": "e851437ad56824f7ef6a5d7951fbddb43aecd7195e1416f115ff86111c28bb12",
-    "progress-ios-light.png": "efdb0b6da2c6e2447ec1c73edbf161aed007b69bd531b8fb2b9f0903087ca63e",
+    "progress-ios-dark.png": "ce0c0007dd687ad1e7592401a69c8b6130d14d10a0f50e1a4616ab7df9f4b984",
+    "progress-ios-light.png": "fbd32def0434e1ae1fbaf03dce1d7f27b19127bb1034321f211c8c43021e241d",
     "progress-macos-dark.png": "3420e0cc5261357bdb1f528404ec9dd7fbd9ce0b5876d6f6f4fab5c5d1f3b91e",
     "progress-macos-light.png": "c4a9475645c8d2220a2e76dd0e9507238864b989397d9dcc3323d93f67760af0",
     "search-ios-dark.png": "db9ee8a498c76898e977e596c09fa448a3805c5895bf76a58bb534a7d878d9e6",

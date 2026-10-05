@@ -5,9 +5,20 @@ import EnoughUI
 /// An isolated simulator app that captures the same compiled fixtures as the native demo.
 @main
 final class GalleryCaptureApp: UIResponder, UIApplicationDelegate {
+    func application(_ application: UIApplication, configurationForConnecting session: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        let configuration = UISceneConfiguration(name: "Default", sessionRole: session.role)
+        configuration.sceneClass = UIWindowScene.self
+        configuration.delegateClass = GalleryCaptureScene.self
+        return configuration
+    }
+}
+
+@MainActor
+final class GalleryCaptureScene: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-        let window = UIWindow(frame: UIScreen.main.bounds)
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        guard let windowScene = scene as? UIWindowScene else { return }
+        let window = UIWindow(windowScene: windowScene)
         let container = UIViewController()
         window.rootViewController = container
         window.makeKeyAndVisible()
@@ -46,6 +57,5 @@ final class GalleryCaptureApp: UIResponder, UIApplicationDelegate {
                 try? String(describing: error).write(to: directory.appendingPathComponent("ERROR"), atomically: true, encoding: .utf8)
             }
         }
-        return true
     }
 }

@@ -8,7 +8,7 @@ struct NavigationGalleryExample: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             EnoughBreadcrumbs([
-                EnoughBreadcrumb(id: "home", title: "EnoughUI", destination: URL(string: "https://ui.enoughtools.com")),
+                EnoughBreadcrumb(id: "home", title: "EnoughUI", destination: URL(string: "https://enoughui.com")),
                 EnoughBreadcrumb(id: "swift", title: "Swift")
             ])
             EnoughTabs(selection: $tab) {

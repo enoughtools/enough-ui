@@ -1,14 +1,14 @@
 # EnoughUI
 
-[![EnoughUI. Enough to build on. Components for React and Astro, with square edges, clear type, and shared foundations.](docs/assets/repository/repo-hero.png)](https://ui.enoughtools.com)
+[![EnoughUI. Enough to build on. Components for React and Astro, with square edges, clear type, and shared foundations.](docs/assets/repository/repo-hero.png)](https://enoughui.com)
 
-**[Explore the live demo](https://ui.enoughtools.com)** · [Original demo address](https://enoughui.reb.run) · [React on npm](https://www.npmjs.com/package/@enoughtools/ui-react) · [Astro on npm](https://www.npmjs.com/package/@enoughtools/ui-astro)
+**[Explore the live demo](https://enoughui.com)** · [React on npm](https://www.npmjs.com/package/@enoughtools/ui-react) · [Astro on npm](https://www.npmjs.com/package/@enoughtools/ui-astro)
 
 EnoughUI is a component library for React, Astro and SwiftUI, with proportional typography, square shapes, and shared design tokens. Fine rules, paper surfaces, editorial serif headings, and purposeful indigo give it a clear visual language. It follows shadcn/ui’s Radix component catalog while preserving EnoughUI’s identity.
 
-[![Real EnoughUI Storybook examples: a questionnaire, a visitors chart, a native Astro card, and an open framework combobox.](docs/assets/repository/component-overview.png)](https://ui.enoughtools.com)
+[![Real EnoughUI Storybook examples: a questionnaire, a visitors chart, a native Astro card, and an open framework combobox.](docs/assets/repository/component-overview.png)](https://enoughui.com)
 
-Try the components, switch renderers, inspect their source, and make them yours in the [live catalog](https://ui.enoughtools.com). These previews come from the same stories used in rendering and interaction checks. The [Enough brand resources](https://brand.enoughtools.com) provide the approved logo, palette, and typography.
+Try the components, switch renderers, inspect their source, and make them yours in the [live catalog](https://enoughui.com). These previews come from the same stories used in rendering and interaction checks. The [Enough brand resources](https://brand.enoughtools.com) provide the approved logo, palette, and typography.
 
 ## Choose your renderer
 
@@ -22,7 +22,7 @@ Both web packages include compiled CSS and their own component entry points. Nat
 
 The [parity contract](docs/parity.md) records the pinned upstream catalog, required exports, renderer mapping, and intentional differences. A catalog or export count alone does not establish behavioral parity. The project verifies source contracts, story rendering, interactions, browser accessibility, and isolated package consumers.
 
-[CountryHeatmap](docs/country-heatmap.md) adds a responsive world map with shared color scales and an exact-value table in both React and native Astro. It uses public-domain Natural Earth boundaries and works without hydration. [Try the country heatmap](https://ui.enoughtools.com/?path=/catalog/country-heatmap).
+[CountryHeatmap](docs/country-heatmap.md) adds a responsive world map with shared color scales and an exact-value table in both React and native Astro. It uses public-domain Natural Earth boundaries and works without hydration. [Try the country heatmap](https://enoughui.com/?path=/catalog/country-heatmap).
 
 ## SwiftUI
 
@@ -42,7 +42,7 @@ EnoughThemeProvider {
 
 The [Swift guide](packages/swift/README.md) covers the component API, native equivalents, platform differences, theming and installation. Run `swift run --package-path examples/swift-catalog EnoughUICatalog` for the native examples. The Swift library has no third-party dependencies and does not need Node or npm. Its palette is generated from the shared web theme. Native system controls retain their Apple behavior and styling.
 
-Browse the dedicated [Swift gallery](https://ui.enoughtools.com/swift) for 24 component families, real macOS and iPhone captures in light and dark appearance, complete Swift examples, and installation instructions. The screenshots and runnable native demo share the same compiled fixtures. React and Astro continue to share the web gallery.
+Browse the dedicated [Swift gallery](https://enoughui.com/swift) for 24 component families, real macOS and iPhone captures in light and dark appearance, complete Swift examples, and installation instructions. The screenshots and runnable native demo share the same compiled fixtures. React and Astro continue to share the web gallery.
 
 ## React
 
@@ -175,7 +175,7 @@ Rebuild after source changes. Local development must follow the directory or an 
 pnpm storybook
 ```
 
-The public catalog lives at [ui.enoughtools.com](https://ui.enoughtools.com), with [enoughui.reb.run](https://enoughui.reb.run) retained as an alternate address. Its custom Storybook manager provides component search, category filters, live React/Astro previews, example selection, source, responsive previews, and controls for supported story arguments. Source uses a read-only Monaco viewer with syntax highlighting, line numbers, search, wrapping, and separate native Astro files. Its scripts and workers are hosted with the site and load when Source opens. The **Storybook** link on a component opens the standard manager with full controls, docs, and accessibility tools.
+The public catalog lives at [enoughui.com](https://enoughui.com), with `ui.enoughtools.com`, `enoughui.reb.run` and `www.enoughui.com` permanently redirecting to the same path on the canonical domain. Its custom Storybook manager provides component search, category filters, live React/Astro previews, example selection, source, responsive previews, and controls for supported story arguments. Source uses a read-only Monaco viewer with syntax highlighting, line numbers, search, wrapping, and separate native Astro files. Its scripts and workers are hosted with the site and load when Source opens. The **Storybook** link on a component opens the standard manager with full controls, docs, and accessibility tools.
 
 One [Storybook Astro](https://storybook-astro.org/) catalog contains the native **Astro** stories and **UI** React stories. Portable rendering tests reuse those stories, and browser tests use the built catalog. A static build goes to `storybook-static/`; there is no separate showcase application. The catalog manifest is generated from those same source fixtures before development and production builds.
 

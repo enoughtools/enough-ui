@@ -145,7 +145,7 @@ struct Catalog: View {
         EnoughCard {
             EnoughCardHeader("Navigation")
             EnoughBreadcrumbs([
-                EnoughBreadcrumb(id: "home", title: "EnoughUI", destination: URL(string: "https://ui.enoughtools.com")),
+                EnoughBreadcrumb(id: "home", title: "EnoughUI", destination: URL(string: "https://enoughui.com")),
                 EnoughBreadcrumb(id: "swift", title: "Swift")
             ])
             EnoughTabs(selection: $tab) {

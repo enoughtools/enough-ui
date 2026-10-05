@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { updateCanonicalURL } from './canonical';
 import { useStorybookApi, useStorybookState } from 'storybook/manager-api';
 import { ArrowLeft, Search, Copy, Check, X, Menu, SlidersHorizontal, RotateCcw, Monitor, Smartphone, Code, Blocks } from 'lucide-react';
 import manifestData from './manifest.json';
@@ -77,7 +78,7 @@ export function Catalog() {
   const searchRef = useRef<HTMLInputElement>(null);
   const go = (url: string) => { api.navigate(url, { plain: true }); setMenuOpen(false); };
   const link = (event: React.MouseEvent, url: string) => { if (!event.metaKey && !event.ctrlKey && !event.shiftKey && event.button === 0) { event.preventDefault(); go(url); } };
-  useEffect(() => { document.title = `${component?.name ?? (route === 'getting-started' ? 'Get started' : 'Components')} — EnoughUI`; }, [route, component]);
+  useEffect(() => { document.title = `${component?.name ?? (route === 'getting-started' ? 'Get started' : 'Components')} — EnoughUI`; updateCanonicalURL('catalog', route); }, [route, component]);
   useEffect(() => { document.querySelector('.eui-catalog')?.scrollTo(0, 0); }, [route]);
   useEffect(() => {
     const media = window.matchMedia('(max-width: 650px)');

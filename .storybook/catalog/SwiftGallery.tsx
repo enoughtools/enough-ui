@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { updateCanonicalURL } from './canonical';
 import { useStorybookState } from 'storybook/manager-api';
 import { ArrowLeft, Check, Code, Copy, Search } from 'lucide-react';
 import manifestData from './swift-manifest.json';
@@ -43,7 +44,7 @@ export function SwiftGallery() {
   const [category, setCategory] = useState('All components');
   const [platform, setPlatform] = useState<Platform>('macos');
   const [theme, setTheme] = useState<Theme>('light');
-  useEffect(() => { document.title = `${component?.title ?? (route === 'getting-started' ? 'Install Swift' : 'SwiftUI components')} — EnoughUI`; document.querySelector('.eui-catalog')?.scrollTo(0, 0); }, [route, component]);
+  useEffect(() => { document.title = `${component?.title ?? (route === 'getting-started' ? 'Install Swift' : 'SwiftUI components')} — EnoughUI`; updateCanonicalURL('swift', route); document.querySelector('.eui-catalog')?.scrollTo(0, 0); }, [route, component]);
   const matches = useMemo(() => manifest.components.filter(item =>
     (category === 'All components' || item.category === category) && `${item.title} ${item.description} ${item.category}`.toLowerCase().includes(query.toLowerCase())
   ), [category, query]);

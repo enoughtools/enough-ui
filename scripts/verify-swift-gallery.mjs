@@ -45,6 +45,7 @@ const audit = async () => {
 try {
   await mkdir(output, { recursive: true });
   await visit();
+  assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), 'https://enoughui.com/swift/');
   assert.equal(await page.locator('.eui-swift-grid .eui-tile').count(), manifest.components.length);
   for (const component of manifest.components) for (const preview of Object.values(component.previews)) {
     const response = await fetch(url + preview.path);
@@ -66,6 +67,7 @@ try {
   for (const component of manifest.components) {
     await visit(component.id);
     await page.getByRole('heading', { name: component.title, exact: true }).waitFor();
+    assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), `https://enoughui.com/swift/?path=${encodeURIComponent(`/swift/${component.id}`)}`);
     for (const platform of ['macos', 'ios']) for (const theme of ['light', 'dark']) {
       await page.getByRole('button', { name: platform === 'macos' ? 'macOS' : 'iPhone · iOS', exact: true }).click();
       await page.getByRole('button', { name: theme === 'light' ? 'Light' : 'Dark', exact: true }).click();

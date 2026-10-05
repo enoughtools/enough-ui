@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Make `enoughui.com` the canonical website domain, update package homepages and gallery metadata, and permanently redirect the previous domains and `www` while preserving deep links.
+
 - Add a dedicated Swift gallery at `/swift` within the existing EnoughUI catalog, with 24 compiled example families, 96 real macOS/iPhone light/dark screenshots, Swift source, search, category filters and SwiftPM installation guidance.
 - Use the same native fixtures in the runnable demo and screenshot capture workflow. Verify native evidence freshness, browser navigation, appearance selection, accessible layouts and exact source copying.
 

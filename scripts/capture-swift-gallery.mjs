@@ -18,7 +18,7 @@ const sdk = run('xcrun', ['--sdk', 'iphonesimulator', '--show-sdk-path']).trim()
 const product = join(root, 'artifacts/swift-gallery-derived/Build/Products/Debug-iphonesimulator');
 const fixtureDirectory = join(root, 'examples/swift-catalog/Sources/EnoughUICatalog/Gallery');
 const fixtures = (await readdir(fixtureDirectory)).filter(file => file.endsWith('.swift')).map(file => join(fixtureDirectory, file));
-run('xcrun', ['swiftc', '-profile-generate', '-parse-as-library', '-sdk', sdk, '-target', 'arm64-apple-ios16.0-simulator', '-I', product,
+run('xcrun', ['swiftc', '-module-name', 'SwiftGalleryCapture', '-profile-generate', '-parse-as-library', '-sdk', sdk, '-target', 'arm64-apple-ios16.0-simulator', '-I', product,
   join(product, 'EnoughUI.o'), ...fixtures, 'examples/swift-catalog/Sources/EnoughUICatalog/GalleryFixtures.swift',
   'scripts/swift/GalleryCaptureApp.swift', '-o', join(app, 'SwiftGalleryCapture')]);
 await writeFile(join(app, 'Info.plist'), `<?xml version="1.0" encoding="UTF-8"?><plist version="1.0"><dict>
@@ -26,10 +26,11 @@ await writeFile(join(app, 'Info.plist'), `<?xml version="1.0" encoding="UTF-8"?>
 <key>CFBundleName</key><string>SwiftGalleryCapture</string><key>CFBundlePackageType</key><string>APPL</string>
 <key>CFBundleSupportedPlatforms</key><array><string>iPhoneSimulator</string></array><key>MinimumOSVersion</key><string>16.0</string>
 <key>UIDeviceFamily</key><array><integer>1</integer><integer>2</integer></array><key>UILaunchScreen</key><dict/>
+<key>UIApplicationSceneManifest</key><dict><key>UIApplicationSupportsMultipleScenes</key><false/><key>UISceneConfigurations</key><dict><key>UIWindowSceneSessionRoleApplication</key><array><dict><key>UISceneConfigurationName</key><string>Default</string><key>UISceneClassName</key><string>UIWindowScene</string><key>UISceneDelegateClassName</key><string>SwiftGalleryCapture.GalleryCaptureScene</string></dict></array></dict></dict>
 </dict></plist>`);
 run('codesign', ['--force', '--sign', '-', app]);
 const runtimes = JSON.parse(run('xcrun', ['simctl', 'list', 'runtimes', '--json'])).runtimes;
-const runtime = runtimes.filter(item => item.isAvailable && item.name.startsWith('iOS')).at(-1);
+const runtime = runtimes.find(item => item.isAvailable && item.name.startsWith('iOS') && (!process.env.ENOUGH_UI_IOS_RUNTIME || item.name === process.env.ENOUGH_UI_IOS_RUNTIME));
 if (!runtime) throw new Error('Install an iOS simulator runtime in Xcode before capturing native previews.');
 const device = run('xcrun', ['simctl', 'create', 'EnoughUI Gallery Capture', 'com.apple.CoreSimulator.SimDeviceType.iPhone-16', runtime.identifier]).trim();
 try {
