@@ -125,4 +125,15 @@ jobs:
           if ! gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
             gh release create "$RELEASE_TAG" --verify-tag --generate-notes "${args[@]}"
           fi
-          gh release upload "$RELEASE_TAG" artifacts/swift-release/* --clobber
+          # Preserve already-published assets; retries must match their bytes.
+          existing=$(gh release view "$RELEASE_TAG" --json assets --jq '.assets[].name')
+          downloaded=$(mktemp -d)
+          for file in artifacts/swift-release/*; do
+            name=$(basename "$file")
+            if printf '%s\n' "$existing" | grep -Fxq "$name"; then
+              gh release download "$RELEASE_TAG" --pattern "$name" --dir "$downloaded"
+              cmp "$file" "$downloaded/$name"
+            else
+              gh release upload "$RELEASE_TAG" "$file"
+            fi
+          done
