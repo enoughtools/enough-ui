@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.0
+
+- Add the `EnoughUI` SwiftUI library for macOS 13+ and iOS/iPadOS 16+, installable with Swift Package Manager from the repository's shared release tags.
+- Add native theme, typography, buttons, form controls, cards, status, selection, navigation, layout and presentation components. Preserve native control behavior and document platform differences and direct SwiftUI composition for tables/charts and system features.
+- Generate the Swift palette from the existing shared web theme, support automatic light/dark appearance and optional app-supplied fonts, and include native examples with Xcode previews.
+- Validate macOS rendering, Swift 6 compatibility, iOS simulator compilation and an independent consumer. Attach a verified Swift source package with checksums to shared GitHub releases after npm publication succeeds.
+
 ## 0.4.0
 
 - Add CountryHeatmap for React and native Astro, sharing country geometry, color scales, labels, missing-data handling, and an expandable exact-value table. Include documented Natural Earth data provenance.

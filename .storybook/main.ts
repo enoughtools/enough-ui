@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.stories.tsx', '../stories/astro/**/*.stories.{js,ts}'],
-  staticDirs: [{ from: '../docs/assets/brand', to: '/brand' }, { from: './catalog/previews', to: '/previews' }],
+  staticDirs: [{ from: '../docs/assets/brand', to: '/brand' }, { from: './catalog/previews', to: '/previews' }, { from: './catalog/editor-assets', to: '/editor' }],
   addons: ['@storybook/addon-a11y', '@storybook/addon-docs'],
   framework: {
     name: '@storybook-astro/framework',

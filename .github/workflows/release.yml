@@ -70,8 +70,11 @@ jobs:
           retention-days: 30
           compression-level: 0
 
+  verify-swift:
+    uses: ./.github/workflows/swift.yml
+
   publish:
-    needs: verify
+    needs: [verify, verify-swift]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment: npm
@@ -96,3 +99,41 @@ jobs:
           path: artifacts/release/
       - name: Publish both renderers with OIDC and provenance
         run: node scripts/release.mjs publish
+
+  github-release:
+    needs: [publish, verify-swift]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: swift-release-${{ github.sha }}
+          path: artifacts/swift-release
+      - name: Create the shared release and attach verified Swift sources
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        shell: bash
+        run: |
+          args=()
+          if [[ "$RELEASE_TAG" == *-* ]]; then args+=(--prerelease); fi
+          if ! gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release create "$RELEASE_TAG" --verify-tag --generate-notes "${args[@]}"
+          fi
+          # Preserve already-published assets; retries must match their bytes.
+          existing=$(gh release view "$RELEASE_TAG" --json assets --jq '.assets[].name')
+          downloaded=$(mktemp -d)
+          for file in artifacts/swift-release/*; do
+            name=$(basename "$file")
+            if printf '%s\n' "$existing" | grep -Fxq "$name"; then
+              gh release download "$RELEASE_TAG" --pattern "$name" --dir "$downloaded"
+              cmp "$file" "$downloaded/$name"
+            else
+              gh release upload "$RELEASE_TAG" "$file"
+            fi
+          done

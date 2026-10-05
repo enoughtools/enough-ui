@@ -2,6 +2,7 @@ node_modules/
 dist/
 storybook-static/
 .storybook/catalog/manifest.json
+.storybook/catalog/editor-assets/
 .storybook/catalog/previews/*.png
 .storybook/catalog/previews/report.json
 .storybook/catalog/previews/index.json
@@ -34,3 +35,9 @@ playwright-report/
 
 # Local provenance from the private application extraction
 docs/extraction-manifest.json
+
+# Swift Package Manager and Xcode
+.build/
+.swiftpm/
+DerivedData/
+*.xcuserstate

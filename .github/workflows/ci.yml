@@ -55,5 +55,7 @@ jobs:
         run: pnpm verify:stories
       - name: Verify catalog navigation and controls
         run: pnpm verify:catalog
+      - name: Verify source viewer highlighting and controls
+        run: pnpm verify:source
       - name: Verify browser behavior from installed packages
         run: pnpm verify:browser

@@ -1,0 +1,56 @@
+name: Swift
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-swift:
+    runs-on: macos-15
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Check the shared Swift palette
+        run: node scripts/build-swift-tokens.mjs --check
+      - name: Test the macOS library and render native controls
+        run: swift test
+      - name: Check Swift 6 language compatibility
+        run: swift test -Xswiftc -swift-version -Xswiftc 6
+      - name: Compile the independent native consumer
+        run: swift build --package-path examples/swift-catalog
+      - name: Compile the iOS simulator library
+        run: xcodebuild -scheme EnoughUI -destination 'generic/platform=iOS Simulator' -derivedDataPath artifacts/swift-derived CODE_SIGNING_ALLOWED=NO build
+      - name: Compile the native API documentation
+        run: xcodebuild docbuild -scheme EnoughUI -destination 'generic/platform=macOS' -derivedDataPath artifacts/swift-docs CODE_SIGNING_ALLOWED=NO
+      - name: Pack the Swift source release
+        run: node scripts/pack-swift.mjs
+      - name: Test the exact source archive outside the checkout
+        shell: bash
+        run: |
+          consumer=$(mktemp -d)
+          tar -xzf artifacts/swift-release/EnoughUI-Swift-*.tar.gz -C "$consumer"
+          (cd "$consumer" && swift test)
+      - name: Save verified Swift sources
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: swift-release-${{ github.sha }}
+          path: artifacts/swift-release/
+          if-no-files-found: error
+      - name: Save native rendering evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: swift-previews-${{ github.sha }}
+          path: artifacts/swift/*.png
+          if-no-files-found: error
