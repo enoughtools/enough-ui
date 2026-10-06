@@ -22,6 +22,8 @@ jobs:
         with:
           node-version: '24'
           package-manager-cache: false
+      - name: Validate native gallery evidence
+        run: node scripts/build-swift-gallery.mjs
       - name: Check the shared Swift palette
         run: node scripts/build-swift-tokens.mjs --check
       - name: Test the macOS library and render native controls
