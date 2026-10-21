@@ -571,7 +571,7 @@
     "tailwindcss": "^4.3.3",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "~5.9.3",
-    "vite": "^8.2.2",
+    "vite": "^8.3.3",
     "vitest": "^4.1.11",
     "wrangler": "4.147.0"
   },
