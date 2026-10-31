@@ -21,6 +21,20 @@ function dayButton(day: number) {
 }
 
 describe("Calendar", () => {
+  it("includes visible day text in the accessible name while preserving date and selection context", () => {
+    render(<Calendar mode="single" selected={today} {...fixedCalendar} />)
+    expect(dayButton(3)).toHaveAccessibleName(/^3, Today, Saturday, October 3rd, 2026, selected$/)
+    expect(dayButton(12)).toHaveAccessibleName(/^12, Monday, October 12th, 2026$/)
+  })
+
+  it("uses custom day formatting for its default label and preserves explicit label overrides", () => {
+    const result = render(<Calendar mode="single" {...fixedCalendar} formatters={{ formatDay: () => "Choose day" }} />)
+    expect(dayButton(12)).toHaveTextContent("Choose day")
+    expect(dayButton(12)).toHaveAccessibleName(/^Choose day, Monday, October 12th, 2026$/)
+    result.rerender(<Calendar mode="single" {...fixedCalendar} labels={{ labelDayButton: () => "Custom day label" }} />)
+    expect(dayButton(12)).toHaveAccessibleName("Custom day label")
+  })
+
   it("selects dates internally and prevents disabled-date selection", async () => {
     const user = userEvent.setup()
     render(<Calendar mode="single" {...fixedCalendar} disabled={october(14)} />)

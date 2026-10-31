@@ -4,7 +4,9 @@ import * as React from "react"
 import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react"
 import {
   DayPicker,
+  formatDay,
   getDefaultClassNames,
+  labelDayButton,
   type DayButton,
   type Locale,
 } from "react-day-picker"
@@ -29,6 +31,7 @@ function Calendar({
   buttonVariant = "ghost",
   locale,
   formatters,
+  labels,
   components,
   ...props
 }: CalendarProps) {
@@ -55,6 +58,13 @@ function Calendar({
       formatters={{
         formatMonthDropdown: (date) => date.toLocaleString(locale?.code ?? "en-US", { month: "short" }),
         ...formatters,
+      }}
+      labels={{
+        // Ordinal dates such as "12th" do not contain the visible "12" token
+        // used by voice control. Keep that token alongside the full date/state.
+        labelDayButton: (date, modifiers, options, dateLib) =>
+          `${(formatters?.formatDay ?? formatDay)(date, options, dateLib)}, ${labelDayButton(date, modifiers, options, dateLib)}`,
+        ...labels,
       }}
       classNames={{
         root: defaults.root,

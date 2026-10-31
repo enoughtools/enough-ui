@@ -7,3 +7,8 @@
 - Provide native Astro components for presentational UI. Share variants and base styles with React; keep stateful controls in React islands. Verify both renderers when changing shared styling.
 
 - Use Storybook Astro for the component catalog, alongside React stories. Do not build a separate showcase site; reuse stories in rendering tests.
+
+# Ongoing maintenance
+
+- The owner authorizes validated maintenance changes directly to `main` without additional approval. Follow `docs/maintenance.md` for recurring security, code-health, and shadcn compatibility work.
+- Fix actual issues and verify behavior; do not manufacture activity, weaken checks, or dismiss security findings to produce a clean report.

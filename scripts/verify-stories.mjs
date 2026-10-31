@@ -206,21 +206,21 @@ try {
     assert.equal(await page.getByRole('button', { name: 'Next page' }).isDisabled(), true);
   });
   await scenario('ui-calendar--default', async () => {
-    const day = page.getByRole('button', { name: 'Monday, October 12th, 2026', exact: true });
+    const day = page.getByRole('button', { name: '12, Monday, October 12th, 2026', exact: true });
     await focus(day); await page.keyboard.press('ArrowRight');
-    const next = page.getByRole('button', { name: 'Tuesday, October 13th, 2026', exact: true });
+    const next = page.getByRole('button', { name: '13, Tuesday, October 13th, 2026', exact: true });
     await focused(next);
     await page.keyboard.press('Enter'); await attr(page.locator('[data-slot="calendar-day-button"][data-day="10/13/2026"]'), 'data-selected-single', 'true');
   });
   await scenario('ui-calendar--disabled-dates', async () => {
-    assert.equal(await page.getByRole('button', { name: 'Saturday, October 10th, 2026', exact: true }).isDisabled(), true);
-    await focus(page.getByRole('button', { name: 'Friday, October 9th, 2026', exact: true })); await page.keyboard.press('ArrowRight');
-    await focused(page.getByRole('button', { name: 'Monday, October 12th, 2026', exact: true }));
+    assert.equal(await page.getByRole('button', { name: '10, Saturday, October 10th, 2026', exact: true }).isDisabled(), true);
+    await focus(page.getByRole('button', { name: '9, Friday, October 9th, 2026', exact: true })); await page.keyboard.press('ArrowRight');
+    await focused(page.getByRole('button', { name: '12, Monday, October 12th, 2026', exact: true }));
   });
   await scenario('ui-date-picker--default', async () => {
     const trigger = page.getByRole('button', { name: 'Appointment date: Pick a date', exact: true });
     await focus(trigger); await page.keyboard.press('Enter');
-    const day = page.getByRole('button', { name: 'Monday, October 12th, 2026', exact: true }); await day.waitFor();
+    const day = page.getByRole('button', { name: '12, Monday, October 12th, 2026', exact: true }); await day.waitFor();
     await focus(day); await page.keyboard.press('Enter'); await day.waitFor({ state: 'hidden' });
     const selected = page.getByRole('button', { name: 'Appointment date: October 12th, 2026', exact: true });
     await focused(selected);

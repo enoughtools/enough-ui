@@ -7,7 +7,7 @@ type Props = HTMLAttributes<'header'> & {
   homeHref?:string; homeLabel?:string; skipToHref?:string;
   cta?:string; ctaHref?:string;
 };
-const { links = [], active, brand = 'EnoughUI', homeHref = '/', homeLabel = 'Home',
+const { links = [], active, brand = 'EnoughUI', homeHref = '/', homeLabel,
   skipToHref = '#main', cta, ctaHref = '/', class: className, ...attributes } = Astro.props;
 ---
 <header {...attributes} class={cn('border-b border-[var(--color-ink)] bg-[var(--color-paper)] font-sans',className)}>

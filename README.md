@@ -190,7 +190,7 @@ pnpm deploy:catalog
 
 Deployment uses Cloudflare Workers static assets with the custom domains in `wrangler.jsonc`. Authenticate Wrangler to the account that owns `enoughtools.com` and `reb.run` before publishing. `deploy:catalog` rebuilds the renderer packages and Storybook before uploading. Catalog browser checks save screenshots and a report in `artifacts/catalog/`.
 
-See [contributing](CONTRIBUTING.md) for component, parity, accessibility, and review requirements; [release instructions](docs/releasing.md) for npm setup and publishing; and [security policy](SECURITY.md) for reporting vulnerabilities.
+See [contributing](CONTRIBUTING.md) for component, parity, accessibility, and review requirements; [release instructions](docs/releasing.md) for npm setup and publishing; [recurring maintenance](docs/maintenance.md) for automated security and compatibility work; and [security policy](SECURITY.md) for reporting vulnerabilities.
 
 ## License
 
