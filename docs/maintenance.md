@@ -2,6 +2,8 @@
 
 The repository owner authorizes tested maintenance changes directly to `main` without another approval. Preserve unrelated work, fetch before starting, and never force-push. Publishing a new package release remains a separate operation.
 
+GitHub currently protects `main` with a pull request and required `verify (22)` and `verify (24)` checks. When a direct push is rejected, open a maintenance PR, monitor its checks, and merge after validation without requesting another approval. Keep branch protection enabled.
+
 ## Automation
 
 Two persistent T3 Code tasks report into the maintenance conversation:
