@@ -562,7 +562,7 @@
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.1",
     "astro": "^7.3.2",
-    "happy-dom": "^20.14.5",
+    "happy-dom": "^21.0.4",
     "monaco-editor": "^0.57.0",
     "playwright": "^1.63.0",
     "react": "^19.3.0",
