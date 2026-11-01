@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { after, test } from 'node:test';
-import { artifactGraph, astroComponentNames, astroExports, componentNames, hookNames, reactExports, rootExports, packageReadme } from '../scripts/renderer-packages.mjs';
+import { artifactGraph, astroComponentNames, astroExports, componentNames, hookNames, reactExports, rootExports, packageReadme, importsOf } from '../scripts/renderer-packages.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const packCache = await mkdtemp(join(tmpdir(), 'enough-ui-pack-cache-'));
@@ -100,6 +100,10 @@ test('Astro graph rejects transitive React imports and references outside its pa
       '<SCRIPT>import React from "react";</SCRIPT>',
       '<ScRiPt>import React from "react";</sCrIpT >',
       '<SCRIPT SRC="react"></SCRIPT>',
+      '<script>import React from "react";</script\t\n bar>',
+      '<script data-label=">">import React from "react";</script/>',
+      '<script SRC=react></script>',
+      '<script src="&#114;eact"></script>',
     ]) {
       await writeFile(join(directory, 'astro/Button.astro'), `<button />${script}\n`);
       await assert.rejects(artifactGraph(directory, ['astro/Button.astro'], 'astro'), /Native Astro cannot depend on react/, script);
@@ -107,4 +111,16 @@ test('Astro graph rejects transitive React imports and references outside its pa
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
+});
+
+test('Astro import discovery ignores template prose and comments while preserving script text', () => {
+  const source = `---
+import { clsx } from "clsx";
+const example = '<script src="not-a-dependency"></script>';
+---
+<!-- <script src="also-not-a-dependency"></script> -->
+<p>import React from "react";</p>
+<script>import first from "first&amp;module"; // trailing comment</script>
+<script>import second from "second-module";</script>`;
+  assert.deepEqual(importsOf(source, 'Example.astro'), ['clsx', 'first&amp;module', 'second-module']);
 });
