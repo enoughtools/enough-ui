@@ -95,8 +95,15 @@ test('Astro graph rejects transitive React imports and references outside its pa
     await assert.rejects(artifactGraph(directory, ['astro/Button.astro'], 'astro'), /Native Astro cannot depend on react/);
     await writeFile(join(directory, 'lib/helper.js'), 'export { helper } from "../../private.js";\n');
     await assert.rejects(artifactGraph(directory, ['astro/Button.astro'], 'astro'), /Invalid astro artifact import/);
-    await writeFile(join(directory, 'astro/Button.astro'), '<button /><script>import React from "react";</script>\n');
-    await assert.rejects(artifactGraph(directory, ['astro/Button.astro'], 'astro'), /Native Astro cannot depend on react/);
+    for (const script of [
+      '<script>import React from "react";</script>',
+      '<SCRIPT>import React from "react";</SCRIPT>',
+      '<ScRiPt>import React from "react";</sCrIpT >',
+      '<SCRIPT SRC="react"></SCRIPT>',
+    ]) {
+      await writeFile(join(directory, 'astro/Button.astro'), `<button />${script}\n`);
+      await assert.rejects(artifactGraph(directory, ['astro/Button.astro'], 'astro'), /Native Astro cannot depend on react/, script);
+    }
   } finally {
     await rm(directory, { recursive: true, force: true });
   }

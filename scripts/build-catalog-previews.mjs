@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
-import { createServer } from 'node:http';
+import { createCatalogServer } from './catalog-server.mjs';
 import { copyFile, mkdir, readFile, stat, writeFile } from 'node:fs/promises';
-import { extname, resolve, sep } from 'node:path';
+import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 
@@ -10,7 +10,6 @@ const built = resolve(root, 'storybook-static');
 const output = resolve(root, '.storybook/catalog/previews');
 const published = resolve(built, 'previews');
 const dimensions = { width: 720, height: 440 };
-const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff2': 'font/woff2' };
 
 // These are existing stories, including native Astro fixtures. Keep the card
 // image useful by choosing a visible composition and opening transient UI.
@@ -78,15 +77,7 @@ let browser;
 
 async function serve() {
   await stat(resolve(built, 'index.json')).catch(() => { throw new Error('Build Storybook before generating catalog previews.'); });
-  server = createServer(async (request, response) => {
-    try {
-      const path = resolve(built, '.' + decodeURIComponent(new URL(request.url, 'http://localhost').pathname));
-      if (path !== built && !path.startsWith(built + sep)) { response.writeHead(403).end(); return; }
-      const file = (await stat(path)).isDirectory() ? resolve(path, 'index.html') : path;
-      response.writeHead(200, { 'content-type': mime[extname(file)] ?? 'application/octet-stream' });
-      response.end(await readFile(file));
-    } catch { response.writeHead(404).end('Not found'); }
-  });
+  server = createCatalogServer(built);
   await new Promise((done, reject) => { server.once('error', reject); server.listen(0, '127.0.0.1', done); });
   return `http://127.0.0.1:${server.address().port}`;
 }

@@ -1,6 +1,6 @@
 # Dependency security status
 
-Reviewed October 31, 2026. This records a dependency audit, not a blanket security certification. See [recurring maintenance](maintenance.md) for detection and remediation schedules.
+Reviewed November 1, 2026. This records a dependency audit, not a blanket security certification. See [recurring maintenance](maintenance.md) for detection and remediation schedules.
 
 ## Dependency updates
 
@@ -19,6 +19,10 @@ The earlier open `http-cache-semantics` finding is no longer present: Astro now 
 
 ## Other security surfaces
 
-The GitHub secret-scanning API returned no open alerts during this review. Secret scanning and push protection are enabled. Code-scanning initially returned `404: no analysis found`; the Security workflow now configures CodeQL analysis for JavaScript and TypeScript. Analysis results must be checked after the workflow runs before claiming a clean code-scanning state.
+GitHub Dependabot and secret scanning returned no open alerts on November 1. Secret scanning and push protection remain enabled. The first CodeQL analysis of main reported six high-severity findings in repository tooling: five filesystem races in the local catalog servers and one case-sensitive HTML script-tag matcher in the artifact dependency checker.
+
+The follow-up uses one catalog server that reads metadata and content through the same open file handle, confines resolved assets to the catalog directory, and rejects paths and symlinks escaping that directory. Astro script dependency discovery now handles uppercase and mixed-case tags and source attributes. Regression tests exercise served assets, directory indexes, malformed URLs, path/symlink escapes and hidden React imports. CodeQL results must confirm closure after the follow-up merges; no findings are dismissed or suppressed.
+
+The CodeQL action init/analyze steps use the same updated revision. All Node setup steps request the latest matching version instead of relying on a cached minor version: a previous Node 22 CI failure selected 22.23.3 while Astro requires at least 22.23.4.
 
 Daily GitHub audits detect newly published dependency advisories even without a code change. The T3 security task checks every six hours and attempts fixes at every severity; unavailable upstream fixes or failed verification remain explicit blockers rather than being silently dismissed.

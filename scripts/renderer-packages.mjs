@@ -72,9 +72,9 @@ export function importsOf(source, filename) {
   const scriptSources = [];
   if (filename.endsWith('.astro')) {
     const frontmatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/)?.[1] ?? '';
-    const scripts = [...source.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)];
+    const scripts = [...source.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi)];
     for (const [, attributes] of scripts) {
-      const src = attributes.match(/\bsrc\s*=\s*(['"])(.*?)\1/);
+      const src = attributes.match(/\bsrc\s*=\s*(['"])(.*?)\1/i);
       if (src) scriptSources.push(src[2]);
     }
     source = [frontmatter, ...scripts.map(([, , code]) => code)].join('\n');
