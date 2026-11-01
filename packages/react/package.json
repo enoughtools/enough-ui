@@ -9,7 +9,7 @@
     "url": "https://github.com/enoughtools/enough-ui.git",
     "directory": "packages/react"
   },
-  "homepage": "https://ui.enoughtools.com",
+  "homepage": "https://enoughui.com",
   "bugs": "https://github.com/enoughtools/enough-ui/issues",
   "files": [
     "dist",

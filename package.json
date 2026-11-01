@@ -629,7 +629,7 @@
     "type": "git",
     "url": "https://github.com/enoughtools/enough-ui.git"
   },
-  "homepage": "https://ui.enoughtools.com",
+  "homepage": "https://enoughui.com",
   "bugs": "https://github.com/enoughtools/enough-ui/issues",
   "pnpm": {
     "overrides": {

@@ -7,6 +7,7 @@
 - Refresh the shared catalog with runtime-neutral agent examples, native Astro stories, responsive layouts and real component previews. Keep optional runtime integrations in a separate developer example package.
 - Advance the pinned shadcn Radix baseline to `c0d63c339d6cd2fc26135590a54cf1f362269451`. Ship compatibility metadata with both packages and verify immutable upstream evidence plus public interface fixtures. EnoughUI versions remain independent of the shadcn CLI.
 - Pin production dependencies exactly and include the optional example in security and compatibility checks. Existing public component interfaces remain supported; Base UI is outside the pinned Radix contract.
+- Point catalog and component links to the live `enoughui.com` address; preserve existing alternate domains.
 - SwiftUI remains available under the shared release tag; this release adds web components only.
 
 ## 0.5.0
