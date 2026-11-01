@@ -14,6 +14,8 @@ Terms: <https://www.naturalearthdata.com/about/terms-of-use/>
 
 ## shadcn/ui
 
+Trace, CodeBlock and the optional streaming highlighting helpers adapt source at commit `c0d63c339d6cd2fc26135590a54cf1f362269451`. Immutable source/documentation evidence is archived in `docs/shadcn-snapshot.json`; the parity manifest records component blob IDs. EnoughUI supplies its own shared styles and proportional typography.
+
 Source: <https://github.com/shadcn-ui/ui/blob/main/LICENSE.md>
 
 MIT License

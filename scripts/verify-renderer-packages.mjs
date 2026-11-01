@@ -96,7 +96,7 @@ async function verifyReact(input) {
   await writeFile(join(directory, 'main.tsx'), `
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { Button, Checkbox, CountryHeatmap, Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription, Toaster, toast } from '${input.name}';
+import { Button, Checkbox, CountryHeatmap, Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription, Toaster, toast, Trace, TraceCollapsible, TraceCollapsibleTrigger, TraceCollapsibleContent, TraceLine, TraceTitle, CodeBlock, CodeBlockContent, AgentConfirmation } from '${input.name}';
 import type { ButtonProps } from '${input.name}/button';
 import '${input.name}/styles.css';
 const props: ButtonProps = { variant: 'accent' };
@@ -107,6 +107,8 @@ createRoot(document.getElementById('root')!).render(<main><h1>Installed React pa
     <DialogContent><DialogTitle>Portable dialog</DialogTitle><DialogDescription>Installed from a tested archive.</DialogDescription></DialogContent>
   </Dialog><Toaster />
   <CountryHeatmap title="Packaged country values" data={[{ code: 'MX', value: 42 }, { code: 'NZ', value: 0 }, { code: 'SG', value: 7 }]} />
+  <Trace><TraceCollapsible><TraceCollapsibleTrigger><TraceLine><TraceTitle>Read bundled output</TraceTitle></TraceLine></TraceCollapsibleTrigger><TraceCollapsibleContent><CodeBlock><CodeBlockContent lineNumbers>{'Bundled output\\n\\nComplete'}</CodeBlockContent></CodeBlock></TraceCollapsibleContent></TraceCollapsible></Trace>
+  <AgentConfirmation request={{id:'packed-approval',title:'Verify package?'}} onDecision={async () => {}} />
 </main>);
 `);
   await writeJSON(join(directory, 'tsconfig.json'), {
@@ -160,8 +162,14 @@ async function verifyReactBrowser(directory) {
     await page.keyboard.press('Enter');
     await page.getByRole('row', { name: /Singapore.*SG.*7/ }).waitFor();
     assert.equal(await page.locator('svg [data-country="NZ"]').getAttribute('data-state'), 'zero');
+    await page.getByRole('button',{name:'Read bundled output'}).click();
+    await page.getByText('Bundled output',{exact:true}).waitFor();
+    assert.equal(await page.locator('[data-slot="code-block-line"]').count(),3);
+    await page.getByRole('button',{name:'Approve',exact:true}).click();
+    await page.getByText('Approved',{exact:true}).waitFor();
+    assert.equal(await page.getByRole('button',{name:'Approve',exact:true}).count(),0);
     assert.deepEqual(errors, []);
-    console.log('Installed React package browser: theme, checkbox, dialog dismissal, toast and country heatmap table passed.');
+    console.log('Installed React package browser: theme, checkbox, dialog dismissal, toast, country heatmap, Trace/CodeBlock and approval receipt passed.');
   } finally {
     await browser.close();
     await new Promise(resolve => server.httpServer.close(resolve));
@@ -183,6 +191,15 @@ async function verifyAstro(input) {
   await writeFile(join(directory, 'astro.config.mjs'), "import { defineConfig } from 'astro/config';\nexport default defineConfig({ output: 'static' });\n");
   const components = Object.entries(input.manifest.exports).filter(([, target]) => typeof target === 'string' && target.endsWith('.astro'));
   const imports = components.map(([key], index) => `import Component${index} from '${input.name}${key.slice(1)}';`).join('\n');
+  const requiredProps = {
+    './agent-confirmation': ' request={{id:"recorded",title:"Run build?"}} resolution="approved"',
+    './agent-work': ' steps={[{id:"build",title:"Built packages",status:"completed",output:"Done"}]}',
+    './inline-citation': ' source={{id:"source",title:"Reference",href:"https://example.com"}} index={1}',
+    './sources': ' sources={[{id:"source",title:"Reference",href:"https://example.com"}]}',
+    './callout': ' label="Package callout"',
+    './tool-row': ' title="Package tool"',
+    './country-heatmap': ' data={[{ code: "MX", value: 42 }, { code: "NZ", value: 0 }, { code: "SG", value: 7 }]}',
+  };
   await writeFile(join(directory, 'src/pages/index.astro'), `---
 import { Button } from '${input.name}';
 import '${input.name}/styles.css';
@@ -190,7 +207,7 @@ ${imports}
 ---
 <!doctype html><html lang="en"><head><title>Installed Astro package</title></head><body><main>
 <h1>Installed native Astro package</h1><Button variant="accent">Portable Astro button</Button>
-${components.map(([key], index) => `<Component${index}${key === './callout' ? ' label="Package callout"' : key === './tool-row' ? ' title="Package tool"' : key === './country-heatmap' ? ' data={[{ code: "MX", value: 42 }, { code: "NZ", value: 0 }, { code: "SG", value: 7 }]}' : ''}>Native export</Component${index}>`).join('\n')}
+${components.map(([key], index) => `<Component${index}${requiredProps[key] ?? ''}>Native export</Component${index}>`).join('\n')}
 </main></body></html>
 `);
   run('node', ['node_modules/astro/bin/astro.mjs', 'check'], directory);

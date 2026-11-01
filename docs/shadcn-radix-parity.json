@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "reference": {
     "repository": "https://github.com/shadcn-ui/ui",
-    "commit": "295a1f114a138f23b5dfee0e0c6812394dfeb90c",
-    "commitDate": "2026-10-02T11:31:59Z",
-    "verifiedDate": "2026-10-03",
+    "commit": "c0d63c339d6cd2fc26135590a54cf1f362269451",
+    "commitDate": "2026-10-31T20:40:44Z",
+    "verifiedDate": "2026-11-01",
     "catalog": "https://ui.shadcn.com/docs/components/radix/accordion",
     "registryDirectory": "apps/v4/registry/bases/radix/ui",
     "baseline": "Current Radix catalog plus legacy Form compatibility",
-    "activeCatalogFamilies": 65,
+    "activeCatalogFamilies": 67,
     "legacyCompatibilityFamilies": 1
   },
-  "guarantee": "EnoughUI targets documented capabilities and all public exports in this pinned baseline. Native Astro uses HTML attributes and slots; stateful behavior uses React islands. Export coverage alone does not certify behavior or UI quality.",
+  "guarantee": "EnoughUI targets the documented Radix interface at this immutable baseline. Provenance, export coverage, declared props and selected positive/negative public usage fixtures are automated. Native Astro uses HTML attributes and slots; stateful behavior uses React islands. These checks do not certify every prop combination or behavior.",
   "families": [
     {
       "id": "accordion",
@@ -461,6 +461,75 @@
         "documented composition, native attributes and accessibility"
       ],
       "verification": "API coverage is automated; behavior and visual equivalence require renderer and browser tests."
+    },
+    {
+      "id": "code-block",
+      "origin": "radix-registry",
+      "upstreamSource": "apps/v4/registry/bases/radix/ui/code-block.tsx",
+      "upstreamBlob": "7edba201930175e60e4691cc0e8f0c92363b60a6",
+      "react": {
+        "runtimeExports": [
+          "CodeBlock",
+          "CodeBlockHeader",
+          "CodeBlockTitle",
+          "CodeBlockActions",
+          "CodeBlockCopyButton",
+          "CodeBlockContent",
+          "CodeBlockLine",
+          "CodeBlockFooter"
+        ],
+        "typeExports": [],
+        "requiredProps": {
+          "CodeBlock": {
+            "variant": [
+              "default",
+              "destructive"
+            ],
+            "size": [
+              "default",
+              "sm"
+            ]
+          },
+          "CodeBlockContent": {
+            "wrap": [
+              "boolean"
+            ],
+            "lineNumbers": [
+              "boolean"
+            ],
+            "startLine": [
+              "number"
+            ]
+          },
+          "CodeBlockLine": {
+            "variant": [
+              "default",
+              "added",
+              "removed",
+              "highlighted"
+            ]
+          }
+        }
+      },
+      "astro": {
+        "mode": "native-with-island-behavior",
+        "requiredComponents": [
+          "CodeBlock",
+          "CodeBlockHeader",
+          "CodeBlockTitle",
+          "CodeBlockActions",
+          "CodeBlockContent",
+          "CodeBlockLine",
+          "CodeBlockFooter"
+        ]
+      },
+      "requiredCapabilities": [
+        "plain text and composed lines; numbering, wrapping, starting line, diff/highlight variants",
+        "exact clipboard text; retryable failures and cancelled clicks",
+        "left-to-right code in direction-aware surroundings; proportional typography",
+        "optional streamed highlighting; native static output and React clipboard control"
+      ],
+      "verification": "tests/contracts/public.tsx; tests/units/agent-primitives.test.tsx; tests/astro/agent-primitives.test.ts; scripts/verify-stories.mjs. Optional highlighting is exercised in the Streaming story; this is targeted coverage, not universal certification."
     },
     {
       "id": "collapsible",
@@ -1882,6 +1951,55 @@
         "keyboard focus and hover behavior"
       ],
       "verification": "API coverage is automated; behavior and visual equivalence require renderer and browser tests."
+    },
+    {
+      "id": "trace",
+      "origin": "radix-registry",
+      "upstreamSource": "apps/v4/registry/bases/radix/ui/trace.tsx",
+      "upstreamBlob": "7bdb64cde56de910ef0cd24fcd4af21bcff5d71b",
+      "react": {
+        "runtimeExports": [
+          "Trace",
+          "TraceLine",
+          "TraceIcon",
+          "TraceTitle",
+          "TraceDescription",
+          "TraceCollapsible",
+          "TraceCollapsibleTrigger",
+          "TraceCollapsibleContent"
+        ],
+        "typeExports": [],
+        "requiredProps": {
+          "TraceLine": {
+            "status": [
+              "running",
+              "error",
+              "pending"
+            ]
+          },
+          "TraceCollapsible": {
+            "open": [
+              "boolean"
+            ]
+          }
+        }
+      },
+      "astro": {
+        "mode": "native-with-island-behavior",
+        "requiredComponents": [
+          "Trace",
+          "TraceLine",
+          "TraceIcon",
+          "TraceTitle",
+          "TraceDescription"
+        ]
+      },
+      "requiredCapabilities": [
+        "running/error/pending states; completion omits status",
+        "controlled and uncontrolled disclosure with keyboard support and nested steps",
+        "native static presentation; disclosure behavior uses React islands"
+      ],
+      "verification": "tests/contracts/public.tsx; tests/units/agent-primitives.test.tsx; tests/astro/agent-primitives.test.ts; scripts/verify-stories.mjs. Optional highlighting is exercised in the Streaming story; this is targeted coverage, not universal certification."
     },
     {
       "id": "typography",

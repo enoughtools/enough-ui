@@ -1,0 +1,259 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      '@enoughtools/ui-react':
+        specifier: link:../../packages/react
+        version: link:../../packages/react
+      '@json-render/core':
+        specifier: 0.21.3
+        version: 0.21.3(zod@4.6.6)
+      '@json-render/react':
+        specifier: 0.21.3
+        version: 0.21.3(react@19.3.1)(zod@4.6.6)
+      '@tanstack/ai':
+        specifier: 1.0.1
+        version: 1.0.1(zod@4.6.6)
+      '@tanstack/ai-client':
+        specifier: 1.0.1
+        version: 1.0.1(zod@4.6.6)
+      '@tanstack/ai-react':
+        specifier: 1.0.1
+        version: 1.0.1(@tanstack/ai@1.0.1(zod@4.6.6))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(zod@4.6.6)
+      react:
+        specifier: 19.3.1
+        version: 19.3.1
+      react-dom:
+        specifier: 19.3.1
+        version: 19.3.1(react@19.3.1)
+      zod:
+        specifier: 4.6.6
+        version: 4.6.6
+    devDependencies:
+      '@types/react':
+        specifier: 19.3.0
+        version: 19.3.0
+      '@types/react-dom':
+        specifier: 19.3.0
+        version: 19.3.0(@types/react@19.3.0)
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+
+packages:
+
+  '@ag-ui/core@1.0.0':
+    resolution: {integrity: sha512-yCRhsQvb4+lmGMrDsi4TOJxqKpm/kb3H64wwL+Z90jNVrkhy17RErfzsNgybfbjNKLM0nenEDYDVJsZHJJSigQ==}
+    peerDependencies:
+      zod: ^3.25.18 || ^4.0.0
+    peerDependenciesMeta:
+      zod:
+        optional: true
+
+  '@cfworker/json-schema@4.1.4':
+    resolution: {integrity: sha512-20rPE8EX0dSg6JGOVe31HpqsLYZTDSlcFJZA5mpZqQxcZ71vh/SXCMX+UuHO1mMcZBDKeb752z+3L8IWa+0Svg==}
+
+  '@json-render/core@0.21.3':
+    resolution: {integrity: sha512-sgzPtRhRB5wkhrbLtPm9bAhna5Q0x/U0vUpb3S/VEutouWEvvZRebHhpM5XiEjRM5Shv4W70VMZ8pGcGcz7j+A==}
+    peerDependencies:
+      zod: ^4.0.0
+
+  '@json-render/react@0.21.3':
+    resolution: {integrity: sha512-+/i0vPRQ164KzvNdPpQleLp+WjfRS2zYRIujLbRZUEmqiQb+WtEi1i9tZMYL/dRFOUzeNveu421KDzI11Wounw==}
+    peerDependencies:
+      react: ^19.2.3
+
+  '@standard-schema/spec@1.1.0':
+    resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
+
+  '@tanstack/ai-client@1.0.1':
+    resolution: {integrity: sha512-G/557Gzxwp159EYTSLIQvwn1lVgMeznu8S9OAukB+U/ZTXMwridnsC2hOoYV1OCT6FQsz6TPqz6WHsoilM1P3A==}
+
+  '@tanstack/ai-event-client@1.0.0':
+    resolution: {integrity: sha512-RXlk6XkIYU4n25QYoCmETKiFjPnEpwvQv5Ve62pdtHaEVP//VZUdwGSRGCf/PATgwYdib8FT49tPmqnKtXPDhw==}
+
+  '@tanstack/ai-react@1.0.1':
+    resolution: {integrity: sha512-jNcTe8kpSgaY0554qkhwPQ08wa8b5y7p0JUhkCpSRb8tzy7Wa4Zd+vWiv7wA6XJTloSrvXphBLNltB0jHRvBMw==}
+    peerDependencies:
+      '@mcp-ui/client': ^7
+      '@tanstack/ai': ^1.0.1
+      '@types/react': '>=18.0.0'
+      react: '>=18.0.0'
+      react-dom: '>=18.0.0'
+    peerDependenciesMeta:
+      '@mcp-ui/client':
+        optional: true
+      react-dom:
+        optional: true
+
+  '@tanstack/ai-utils@1.0.0':
+    resolution: {integrity: sha512-0Nl9rUmS3zTGKP8dPmyS2zJ18mieAheKqS9V+390vjViJvD6kpP+1gdCdHkNUqQsSzSFvb32QW8bkTVCAOv0qA==}
+
+  '@tanstack/ai@1.0.1':
+    resolution: {integrity: sha512-oddcGha40pa0MMWdMogvljNiul6OY3H+V9fDOS6DZ+2+8KdUXxWfOf8QDYtkat6xAuZf4E4Clc7b1RAewbxSkA==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      '@opentelemetry/api': '>=1.9.0'
+    peerDependenciesMeta:
+      '@opentelemetry/api':
+        optional: true
+
+  '@tanstack/devtools-event-client@0.4.4':
+    resolution: {integrity: sha512-6T5Yop/793YI+H+5J8Hsyj4kCih9sl4t3ElLgKioW5hk3ocn+ZdSJ94tT7vL7uabxSugWYBZlOTMPzEw2puvQw==}
+    engines: {node: '>=18'}
+    hasBin: true
+
+  '@tanstack/markdown@0.0.13':
+    resolution: {integrity: sha512-ZSQP2ulBvlPzdpZeRheBJnaELo7e4ET/D/XrfgweHyqhhLMN5vUJJAUl7ufSRd7GlfO/vwdzjKPh0E0JwqJkDA==}
+    peerDependencies:
+      octane: '>=0.1.12'
+      react: '>=18'
+    peerDependenciesMeta:
+      octane:
+        optional: true
+      react:
+        optional: true
+
+  '@tanstack/store@0.11.2':
+    resolution: {integrity: sha512-sJ4mjol8uQsHV0gOJzzjwXfh2Fwm+Sz0+8deqiTm4jGbMdjzNSW+xZCFm0kUa870uhd8yi+DpKnZb5Kc4apa0Q==}
+
+  '@types/react-dom@19.3.0':
+    resolution: {integrity: sha512-ZI7bU42mZXXKHn/qNLEw2IrbiINU7X5+vfgdixBHkCNpYWXjKgfQ/P+uyGb5CjOLB9UcnTeg3rylQtV2hym44Q==}
+    peerDependencies:
+      '@types/react': ^19.3.0
+
+  '@types/react@19.3.0':
+    resolution: {integrity: sha512-N0rFCuH9YoxG9/m61l9MfpJKfmLOVU0em7ipIz6TRgSSkvReLB9vL85GB+yr8Bs5leqpvg96JSwF4ZS1s4viQg==}
+
+  csstype@3.2.3:
+    resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
+
+  fast-json-patch@3.1.1:
+    resolution: {integrity: sha512-vf6IHUX2SBcA+5/+4883dsIjpBTqmfBjmYiWK1savxQmFk4JfBMLa7ynTYOs1Rolp/T1betJxHiGD3g1Mn8lUQ==}
+
+  partial-json@0.1.7:
+    resolution: {integrity: sha512-Njv/59hHaokb/hRUjce3Hdv12wd60MtM9Z5Olmn+nehe0QDAsRtRbJPvJ0Z91TusF0SuZRIvnM+S4l6EIP8leA==}
+
+  react-dom@19.3.1:
+    resolution: {integrity: sha512-Y0bARz53lhEC1NMCASs0/j+faB/zqt3R8hpvg1e8+61ZVJ4UL0UdC4cBbXfZMcIuhrfgeILTLe+ZeBCavQPtKQ==}
+    peerDependencies:
+      react: ^19.3.1
+
+  react@19.3.1:
+    resolution: {integrity: sha512-QNhWdt7nrgVWWQG58QuGsAR3jv3Hbe4mb4vz7w2csnHavciZJgda1CPNaldF6eVxv90ud3jUXpKlHL69gO38yw==}
+    engines: {node: '>=0.10.0'}
+
+  scheduler@0.28.0:
+    resolution: {integrity: sha512-juorfCmIkIw8tT+p5BXSm6PJjQF/ycEYmKyzURCIt/RaZIhL+PulbQ9Yu2z1HdOJDdqDTlxA1+xKBmHXJsczAw==}
+
+  typescript@5.9.3:
+    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
+  zod@4.6.6:
+    resolution: {integrity: sha512-4UmzQUF5fxvfcYHlbjBmejU+w+hbDnWFx4aS8kBx7nPBHcO2SqPbpAG8snbdg+Xse4pRefR98hgjFgIMCI/UhA==}
+
+snapshots:
+
+  '@ag-ui/core@1.0.0(zod@4.6.6)':
+    optionalDependencies:
+      zod: 4.6.6
+
+  '@cfworker/json-schema@4.1.4': {}
+
+  '@json-render/core@0.21.3(zod@4.6.6)':
+    dependencies:
+      zod: 4.6.6
+
+  '@json-render/react@0.21.3(react@19.3.1)(zod@4.6.6)':
+    dependencies:
+      '@json-render/core': 0.21.3(zod@4.6.6)
+      react: 19.3.1
+    transitivePeerDependencies:
+      - zod
+
+  '@standard-schema/spec@1.1.0': {}
+
+  '@tanstack/ai-client@1.0.1(zod@4.6.6)':
+    dependencies:
+      '@tanstack/ai': 1.0.1(zod@4.6.6)
+      '@tanstack/ai-event-client': 1.0.0
+      '@tanstack/ai-utils': 1.0.0
+      '@tanstack/store': 0.11.2
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+      - zod
+
+  '@tanstack/ai-event-client@1.0.0':
+    dependencies:
+      '@tanstack/devtools-event-client': 0.4.4
+
+  '@tanstack/ai-react@1.0.1(@tanstack/ai@1.0.1(zod@4.6.6))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(zod@4.6.6)':
+    dependencies:
+      '@tanstack/ai': 1.0.1(zod@4.6.6)
+      '@tanstack/ai-client': 1.0.1(zod@4.6.6)
+      '@tanstack/markdown': 0.0.13(react@19.3.1)
+      '@types/react': 19.3.0
+      react: 19.3.1
+    optionalDependencies:
+      react-dom: 19.3.1(react@19.3.1)
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+      - octane
+      - zod
+
+  '@tanstack/ai-utils@1.0.0': {}
+
+  '@tanstack/ai@1.0.1(zod@4.6.6)':
+    dependencies:
+      '@ag-ui/core': 1.0.0(zod@4.6.6)
+      '@cfworker/json-schema': 4.1.4
+      '@standard-schema/spec': 1.1.0
+      '@tanstack/ai-event-client': 1.0.0
+      '@tanstack/ai-utils': 1.0.0
+      fast-json-patch: 3.1.1
+      partial-json: 0.1.7
+    transitivePeerDependencies:
+      - zod
+
+  '@tanstack/devtools-event-client@0.4.4': {}
+
+  '@tanstack/markdown@0.0.13(react@19.3.1)':
+    optionalDependencies:
+      react: 19.3.1
+
+  '@tanstack/store@0.11.2': {}
+
+  '@types/react-dom@19.3.0(@types/react@19.3.0)':
+    dependencies:
+      '@types/react': 19.3.0
+
+  '@types/react@19.3.0':
+    dependencies:
+      csstype: 3.2.3
+
+  csstype@3.2.3: {}
+
+  fast-json-patch@3.1.1: {}
+
+  partial-json@0.1.7: {}
+
+  react-dom@19.3.1(react@19.3.1):
+    dependencies:
+      react: 19.3.1
+      scheduler: 0.28.0
+
+  react@19.3.1: {}
+
+  scheduler@0.28.0: {}
+
+  typescript@5.9.3: {}
+
+  zod@4.6.6: {}

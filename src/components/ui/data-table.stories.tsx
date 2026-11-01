@@ -190,6 +190,7 @@ function TanStackExample() {
 }
 
 export const TanStackComposition: Story = {
-  parameters: { docs: { description: { story: "Compose column definitions, filtering, sorting, visibility, selection, and pagination with TanStack Table. TanStackDataTable renders the resulting row model using EnoughUI Table primitives." } } },
+  name: "Composition",
+  parameters: { docs: { description: { story: "Compose column definitions, filtering, sorting, visibility, selection, and pagination using EnoughUI Table primitives." } } },
   render: () => <TanStackExample />,
 }

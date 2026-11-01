@@ -1,4 +1,5 @@
 @import "tailwindcss" source(none);
+@import "./agent-ui.css";
 @source "../components";
 @source "../astro";
 @source "../lib";

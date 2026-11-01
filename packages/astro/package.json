@@ -1,6 +1,6 @@
 {
   "name": "@enoughtools/ui-astro",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Native EnoughUI components and design tokens for Astro.",
   "type": "module",
   "license": "MIT",
@@ -9,7 +9,7 @@
     "url": "https://github.com/enoughtools/enough-ui.git",
     "directory": "packages/astro"
   },
-  "homepage": "https://ui.enoughtools.com",
+  "homepage": "https://enoughui.com",
   "bugs": "https://github.com/enoughtools/enough-ui/issues",
   "files": [
     "dist",
@@ -38,10 +38,13 @@
     },
     "./styles.css": "./dist/styles.css",
     "./components.css": "./dist/components.css",
+    "./compatibility.json": "./dist/compatibility.json",
     "./utils": {
       "types": "./dist/lib/utils.d.ts",
       "import": "./dist/lib/utils.js"
     },
+    "./agent-confirmation": "./dist/astro/AgentConfirmation.astro",
+    "./agent-work": "./dist/astro/AgentWork.astro",
     "./alert": "./dist/astro/Alert.astro",
     "./alert-action": "./dist/astro/AlertAction.astro",
     "./alert-description": "./dist/astro/AlertDescription.astro",
@@ -86,6 +89,13 @@
     "./card-footer": "./dist/astro/CardFooter.astro",
     "./card-header": "./dist/astro/CardHeader.astro",
     "./card-title": "./dist/astro/CardTitle.astro",
+    "./code-block": "./dist/astro/CodeBlock.astro",
+    "./code-block-actions": "./dist/astro/CodeBlockActions.astro",
+    "./code-block-content": "./dist/astro/CodeBlockContent.astro",
+    "./code-block-footer": "./dist/astro/CodeBlockFooter.astro",
+    "./code-block-header": "./dist/astro/CodeBlockHeader.astro",
+    "./code-block-line": "./dist/astro/CodeBlockLine.astro",
+    "./code-block-title": "./dist/astro/CodeBlockTitle.astro",
     "./country-heatmap": "./dist/astro/CountryHeatmap.astro",
     "./direction-provider": "./dist/astro/DirectionProvider.astro",
     "./empty": "./dist/astro/Empty.astro",
@@ -107,6 +117,7 @@
     "./field-set": "./dist/astro/FieldSet.astro",
     "./field-title": "./dist/astro/FieldTitle.astro",
     "./group-label": "./dist/astro/GroupLabel.astro",
+    "./inline-citation": "./dist/astro/InlineCitation.astro",
     "./input": "./dist/astro/Input.astro",
     "./input-group": "./dist/astro/InputGroup.astro",
     "./input-group-addon": "./dist/astro/InputGroupAddon.astro",
@@ -154,6 +165,7 @@
     "./progress": "./dist/astro/Progress.astro",
     "./separator": "./dist/astro/Separator.astro",
     "./skeleton": "./dist/astro/Skeleton.astro",
+    "./sources": "./dist/astro/Sources.astro",
     "./spinner": "./dist/astro/Spinner.astro",
     "./table": "./dist/astro/Table.astro",
     "./table-body": "./dist/astro/TableBody.astro",
@@ -166,6 +178,11 @@
     "./textarea": "./dist/astro/Textarea.astro",
     "./tool-row": "./dist/astro/ToolRow.astro",
     "./top-nav": "./dist/astro/TopNav.astro",
+    "./trace": "./dist/astro/Trace.astro",
+    "./trace-description": "./dist/astro/TraceDescription.astro",
+    "./trace-icon": "./dist/astro/TraceIcon.astro",
+    "./trace-line": "./dist/astro/TraceLine.astro",
+    "./trace-title": "./dist/astro/TraceTitle.astro",
     "./typography": "./dist/astro/Typography.astro",
     "./typography-blockquote": "./dist/astro/TypographyBlockquote.astro",
     "./typography-h1": "./dist/astro/TypographyH1.astro",
@@ -181,9 +198,9 @@
     "./typography-small": "./dist/astro/TypographySmall.astro"
   },
   "dependencies": {
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "tailwind-merge": "^3.7.0"
+    "class-variance-authority": "0.7.1",
+    "clsx": "2.1.1",
+    "tailwind-merge": "3.7.0"
   },
   "peerDependencies": {
     "astro": "^7.0.0"

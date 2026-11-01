@@ -37,6 +37,10 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Build both renderer packages
         run: pnpm build
+      - name: Install optional agentic UI example dependencies
+        run: pnpm --dir examples/agentic-ui install --frozen-lockfile
+      - name: Verify frozen upstream and public interface fixtures
+        run: pnpm check:compatibility
       - name: Validate tag and package metadata
         run: node scripts/release.mjs check
       - name: Check React and story types

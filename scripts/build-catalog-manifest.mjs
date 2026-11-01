@@ -115,7 +115,7 @@ function componentName(title, exportName) {
 function rewriteImports(source, renderer) {
   if (renderer === 'react') {
     return source.replace(/(['"])\.\/([a-z0-9-]+)\.js\1/g, (_, quote, module) => `${quote}@enoughtools/ui-react/${module}${quote}`)
-      .replace(/(['"])\.\.\/\.\.\/hooks\/use-toast\.js\1/g, (_, quote) => `${quote}@enoughtools/ui-react/use-toast${quote}`);
+      .replace(/(['"])\.\.\/\.\.\/hooks\/([a-z0-9-]+)\.js\1/g, (_, quote, name) => `${quote}@enoughtools/ui-react/${name}${quote}`);
   }
   return source.replace(/(['"])\.\.\/\.\.\/src\/astro\/([A-Za-z0-9]+)\.astro\1/g, (_, quote, component) => `${quote}@enoughtools/ui-astro/${words(component).toLowerCase().replaceAll(' ', '-')}${quote}`)
     .replace("import type { VariantProps } from 'class-variance-authority';\nimport { buttonVariants } from '../../src/lib/variants.js';", "import type { ComponentProps } from 'astro/types';")
@@ -145,6 +145,7 @@ async function fixtureSource(file, source, ast, statement, renderer) {
       const helper = await readFile(resolve(dirname(file), '../../lib/direction-icons.ts'), 'utf8');
       snippet = snippet.replace(node.getText(ast), helper.replace(/^export /gm, '').trim());
     }
+
   }
   if (renderer !== 'astro') return { source: snippet, imports: [...new Set(imports)] };
   const examples = [];

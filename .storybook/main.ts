@@ -11,6 +11,7 @@ const config: StorybookConfig = {
     options: { integrations: [react({ include: ['**/src/components/**/*.tsx'] })] },
   },
   viteFinal(config) {
+    config.resolve = { ...config.resolve, dedupe: [...(config.resolve?.dedupe ?? []), 'react', 'react-dom'] };
     config.plugins = [...(config.plugins ?? []), tailwindcss()];
     return config;
   },

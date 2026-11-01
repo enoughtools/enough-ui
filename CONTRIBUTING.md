@@ -9,6 +9,7 @@ Use Node.js 24 LTS and the pnpm version declared in `package.json`. CI also chec
 ```sh
 pnpm install --frozen-lockfile
 pnpm build
+pnpm --dir examples/agentic-ui install --frozen-lockfile
 pnpm storybook
 ```
 
@@ -22,6 +23,18 @@ Parity means equivalent supported use cases, visual states, and accessibility be
 
 Use proportional sans-serif or serif typography everywhere, including numbers, code treatments, metadata, and keyboard hints. The compatibility token `--font-mono` must remain mapped to `--font-sans`. Use the shared theme for spacing, color, focus treatment, disabled states, and reduced motion.
 
+## shadcn interface standard
+
+Compatibility is scoped to the Radix catalog and full commit in `docs/shadcn-radix-parity.json`. Base UI and React Aria are separate interfaces; matching export names do not establish matching props. Keep EnoughUI semver independent of the shadcn CLI, and publish the baseline through renderer compatibility metadata.
+
+Prefer imported compound parts and ordinary composition over component factories or new state abstractions. Use existing Button, Item, InputGroup, Trace and CodeBlock for agent workflow recipes. New core primitives should solve a reusable gap; workflow and domain-specific wrappers must be identified as additions. Preserve native attributes, refs, callback/value types, standard variants/sizes, controlled state and documented defaults. Use the primitive's actual state attributes rather than copying a selector across unrelated controls.
+
+Use existing variants and semantic tokens before ad hoc styling. Preserve accessible overlay titles, valid compound nesting and semantic triggers. Keep loading and status presentation composable instead of inventing incompatible props on existing components.
+
+`pnpm check:compatibility` verifies frozen upstream evidence, catalog completeness, export kinds and targeted positive/negative public type fixtures. Every new `requiredProps` entry must be executable through that gate. Add behavior evidence beyond the type fixtures, then rebuild and verify public artifacts. Do not advance the baseline just because upstream moved. `pnpm check:upstream` reports live changes for deliberate adoption; exact runtime dependency pins move through the same review and tests.
+
+When citing upstream PR decisions, distinguish merged, superseded, author-withdrawn, procedural, stale and unexplained outcomes. A closed PR is not evidence of technical rejection. Check current source and attribute maintainer, author and community statements accurately. See the [audit](docs/agentic-ui-audit-2026-10-31.html) and [parity contract](docs/parity.md).
+
 ## Stories and verification
 
 Storybook Astro is the component catalog, alongside React stories. Add examples for both renderers where supported and reuse those stories in rendering tests. Keep examples small enough to demonstrate the actual API. Do not create a separate showcase site.
@@ -30,6 +43,8 @@ Run the checks relevant to your change and the full sequence before requesting r
 
 ```sh
 pnpm build
+pnpm --dir examples/agentic-ui install --frozen-lockfile
+pnpm check:compatibility
 pnpm typecheck
 pnpm check:astro
 pnpm test
@@ -37,12 +52,15 @@ pnpm exec playwright install chromium
 pnpm build-storybook
 pnpm verify:previews
 pnpm verify:catalog
+pnpm verify:source
 pnpm verify:package
 pnpm verify:stories
 pnpm verify:browser
 ```
 
 The catalog build captures real story images with Playwright. Install Chromium before its first build; generated previews stay out of Git.
+
+On a host that terminates a long browser run, split the same built catalog with `node scripts/verify-stories.mjs --batch=1/4` through `--batch=4/4`. Each batch runs its stories and their interaction/mobile scenarios unchanged. After every batch passes, run `node scripts/merge-story-reports.mjs 4`; it verifies that all reports describe the same catalog and cover every story exactly once before writing the combined report. Do not replace a complete scan with an arbitrary story filter.
 
 For interactive controls, cover keyboard navigation, focus movement and restoration, accessible state, disabled behavior, and controlled/uncontrolled state where supported. For shared styling, inspect both renderers in light and dark themes, narrow layouts, and visible focus states. Package verification must exercise installed archives in isolated React and Astro projects so repository dependencies cannot hide missing files or dependency declarations.
 

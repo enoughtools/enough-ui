@@ -1,0 +1,8 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { codeBlockLineVariants } from '../lib/agent-ui.js';
+import { cn } from '../lib/utils.js';
+type Props = HTMLAttributes<'span'> & { variant?: 'default' | 'added' | 'removed' | 'highlighted'; value?: string };
+const { class: className, variant = 'default', value, ...attributes } = Astro.props;
+---
+<span data-slot="code-block-line" data-variant={variant} class={cn(codeBlockLineVariants({variant}), className)} {...attributes}><span data-slot="code-block-line-content" class="min-w-0">{value !== undefined ? (value || '\n') : Astro.slots.has('default') ? <slot /> : '\n'}</span></span>
