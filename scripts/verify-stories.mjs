@@ -5,12 +5,18 @@ import { resolve, extname, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import AxeBuilder from '@axe-core/playwright';
+import { createHash } from 'node:crypto';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const catalog = resolve(root, 'storybook-static');
 const output = resolve(root, 'artifacts/storybook');
 const filter = process.argv.find((arg) => arg.startsWith('--story='))?.slice(8);
-const matches = (id) => !filter || filter.split(',').some((part) => id.includes(part));
+const batchArgument = process.argv.find(arg => arg.startsWith('--batch='))?.slice(8);
+const batch = batchArgument?.match(/^(\d+)\/(\d+)$/)?.slice(1).map(Number);
+if (batchArgument && (!batch || batch[0] < 1 || batch[1] < batch[0] || batch[1] > 100)) throw new Error('Use --batch=INDEX/COUNT, with 1 <= INDEX <= COUNT <= 100.');
+let batchIds;
+const filterMatches = (id) => !filter || filter.split(',').some((part) => id.includes(part));
+const matches = (id) => filterMatches(id) && (!batchIds || batchIds.has(id));
 const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff2': 'font/woff2' };
 let server;
 let browser;
@@ -37,12 +43,16 @@ try {
     await new Promise((done) => server.listen(0, '127.0.0.1', done));
     url = `http://127.0.0.1:${server.address().port}`;
   }
-  const index = await (await fetch(`${url}/index.json`)).json();
-  const stories = Object.values(index.entries).filter((entry) => entry.type === 'story' && matches(entry.id));
+  const indexText = await (await fetch(`${url}/index.json`)).text();
+  const catalogDigest = createHash('sha256').update(indexText).digest('hex');
+  const index = JSON.parse(indexText);
+  const inventory = Object.values(index.entries).filter((entry) => entry.type === 'story' && filterMatches(entry.id));
+  const stories = batch ? inventory.slice(Math.floor(inventory.length * (batch[0]-1)/batch[1]), Math.floor(inventory.length * batch[0]/batch[1])) : inventory;
+  if (batch) batchIds = new Set(stories.map(entry=>entry.id));
   assert.ok(stories.length, 'The catalog must contain stories matching the requested filter.');
   if (!filter) {
-    assert.ok(stories.some((entry) => entry.title.startsWith('Astro/')), 'Native Astro stories must be present.');
-    assert.ok(stories.some((entry) => entry.title.startsWith('UI/')), 'React stories must be present.');
+    assert.ok(inventory.some((entry) => entry.title.startsWith('Astro/')), 'Native Astro stories must be present.');
+    assert.ok(inventory.some((entry) => entry.title.startsWith('UI/')), 'React stories must be present.');
   }
   browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
@@ -113,6 +123,95 @@ try {
   const focused = async (locator) => { const target = await locator.elementHandle(); assert.ok(target, 'The focus target must exist.'); await page.waitForFunction((element) => element === document.activeElement, target); };
   const focus = async (locator) => { await locator.focus(); await focused(locator); };
   const attr = async (locator, name, value) => { const element = await locator.elementHandle(); assert.ok(element); await page.waitForFunction(({ element, name, value }) => element.getAttribute(name) === value, { element, name, value }); };
+
+  await scenario('ui-trace--expandable', async () => {
+    const trigger=page.getByRole('button',{name:'Ran pnpm test'});
+    await focus(trigger); await page.keyboard.press('Enter'); await attr(trigger,'aria-expanded','true');
+    await page.getByText('All tests passed.').waitFor();
+    await page.keyboard.press('Space'); await attr(trigger,'aria-expanded','false');
+  });
+  await scenario('ui-code-block--numbered', async () => {
+    await context.grantPermissions(['clipboard-read','clipboard-write']);
+    await page.getByRole('button',{name:'Copy',exact:true}).click();
+    await page.getByRole('button',{name:'Copied',exact:true}).waitFor();
+    assert.equal(await page.evaluate(()=>navigator.clipboard.readText()),'const ready = true;\n\nexport { ready };\n');
+  });
+  await scenario('ai-agent-confirmation--failed-submission', async () => {
+    await page.getByRole('button',{name:'Approve'}).click();
+    await page.getByRole('alert').waitFor();
+    assert.equal(await page.getByRole('button',{name:'Approve'}).isEnabled(),true);
+  });
+  await scenario('ai-prompt-composer--failure', async () => {
+    const input=page.getByRole('textbox',{name:'Message'});
+    await focus(input); await page.keyboard.press('Enter'); await page.getByRole('alert').waitFor();
+    assert.equal(await input.inputValue(),'Help me plan the launch.');
+    await page.setViewportSize({width:375,height:812});
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+    await page.setViewportSize({width:1280,height:900});
+  });
+  await scenario('ai-agent-confirmation--pending', async () => {
+    await page.setViewportSize({width:375,height:812});
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+    await scan('ai-agent-confirmation--pending','mobile confirmation');
+    await page.getByRole('button',{name:'Approve',exact:true}).click();
+    await page.getByRole('status').filter({hasText:'Approved'}).waitFor();
+    assert.equal(await page.getByRole('button',{name:'Approve',exact:true}).count(),0);
+    await page.setViewportSize({width:1280,height:900});
+  });
+  await scenario('ai-prompt-composer--empty', async () => {
+    const input=page.getByRole('textbox',{name:'Message'});
+    assert.equal(await page.getByRole('button',{name:'Send',exact:true}).isEnabled(),false);
+    assert.equal(await input.evaluate(element=>getComputedStyle(element.closest('[data-slot="input-group"]')).opacity),'1');
+    await focus(input);
+    await input.fill('Prepare the launch.');
+    assert.equal(await page.getByRole('button',{name:'Send',exact:true}).isEnabled(),true);
+  });
+  await scenario('ai-prompt-composer--controlled', async () => {
+    const input = page.getByRole('textbox',{name:'Message'});
+    const initial = await input.evaluate(element => element.clientHeight);
+    await input.fill(Array.from({length:18},(_,index)=>`Line ${index+1}: prepare the launch.`).join('\n'));
+    await page.waitForFunction(height => document.querySelector('textarea').clientHeight > height,initial);
+    const expanded = await input.evaluate(element => element.clientHeight);
+    assert.ok(expanded <= 240, 'The composer must cap its height for long drafts.');
+    await input.fill('A short message.');
+    await page.waitForFunction(height => document.querySelector('textarea').clientHeight < height,expanded);
+    await page.getByRole('button',{name:'Message mode: Plan'}).click();
+    await page.getByRole('menuitemradio',{name:'Review',exact:true}).click();
+    await page.getByRole('button',{name:'Message mode: Review'}).waitFor();
+    assert.equal(await input.inputValue(),'A short message.');
+    await page.getByRole('button',{name:'Send',exact:true}).click();
+    await page.getByRole('button',{name:'Stop',exact:true}).click();
+    await focused(input);
+  });
+  await scenario('ai-prompt-composer--with-attachment', async () => {
+    await page.setViewportSize({width:375,height:812});
+    await page.getByText('PDF · 13 KB',{exact:true}).waitFor();
+    await page.getByRole('button',{name:'Remove launch-brief.pdf'}).click();
+    assert.equal(await page.getByText('launch-brief.pdf',{exact:true}).count(),0);
+    await focused(page.getByRole('textbox',{name:'Message'}));
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+    await scan('ai-prompt-composer--with-attachment','mobile attachments');
+    await page.setViewportSize({width:1280,height:900});
+  });
+  await scenario('ai-sources--inline', async () => {
+    const trigger=page.getByRole('button',{name:'Source 1: shadcn Trace'});
+    await focus(trigger); await page.keyboard.press('Enter');
+    await page.getByRole('link',{name:'shadcn Trace',exact:true}).waitFor();
+    await page.keyboard.press('Escape'); await focused(trigger);
+  });
+  await scenario('ai-generated-ui--progressive', async () => {
+    const field=page.getByRole('textbox',{name:'Review notes'});
+    await field.fill('Keep the public props.');
+    const handle=await field.elementHandle();
+    await page.getByRole('button',{name:'Append UI chunk'}).click();
+    assert.equal(await field.evaluate((element,previous)=>element===previous,handle),true);
+    assert.equal(await field.inputValue(),'Keep the public props.');
+    await page.getByRole('button',{name:'Submit notes'}).click();
+    await page.getByText('Submitted: Keep the public props.').waitFor();
+  });
+
 
   await scenario('ui-interactive-catalog--checkbox', async () => {
     const checkbox = page.getByRole('checkbox', { name: 'Accept terms' });
@@ -355,7 +454,7 @@ try {
     assert.ok(bounds.x >= 0 && bounds.x + bounds.width <= 390, 'The tooltip must remain inside the viewport.');
   });
   await mkdir(output, { recursive: true });
-  await writeFile(resolve(output, 'report.json'), JSON.stringify({ storyCount: stories.length, verified, failures }, null, 2));
+  await writeFile(resolve(output, batch ? `report-batch-${batch[0]}-of-${batch[1]}.json` : 'report.json'), JSON.stringify({ storyCount: stories.length, catalogDigest, batch, storyIds: stories.map(entry=>entry.id), verified, failures }, null, 2));
   console.log(`Storybook verification: ${verified.length} checks passed across ${stories.length} catalog stories; ${failures.length} failures.`);
   if (failures.length) process.exitCode = 1;
 } finally {

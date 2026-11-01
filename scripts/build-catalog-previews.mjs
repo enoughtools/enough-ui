@@ -50,6 +50,7 @@ const examples = {
   'navigation-menu': { click: ['button', 'Products'], capture: '[data-slot="navigation-menu"], [data-slot="navigation-menu-viewport"]' },
   popover: { id: 'ui-popover--default', click: ['button', 'Edit dimensions'], capture: '#storybook-root, [data-slot="popover-content"]' },
   progress: { id: 'ui-progress--with-label', width: 420 },
+  'prompt-composer': { id: 'ai-prompt-composer--with-attachment' },
   questionnaire: { width: 560 },
   'search-field': { width: 580 },
   select: { click: ['combobox', 'Framework'], capture: '[data-slot="select-trigger"], [role="listbox"]' },

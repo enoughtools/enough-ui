@@ -61,3 +61,12 @@ test('every renderer package import resolves to a public export and private help
   assert.ok(component('chart').react[0].imports.some((statement) => statement.includes('ChartContainer') && statement.includes('@enoughtools/ui-react/chart')));
   assert.ok(component('conversation').astro[0].imports.some((statement) => statement.includes('Message from') && statement.includes('@enoughtools/ui-astro/message')));
 });
+
+test('agent catalog examples stay independent of optional external runtimes', () => {
+  const generated = component('generated-ui');
+  assert.ok(generated.react.length > 0);
+  for (const story of generated.react) {
+    assert.doesNotMatch(story.source, /TanStack|json-render|examples\/agentic-ui/i);
+    assert.doesNotMatch(story.id, /tan-stack/i);
+  }
+});

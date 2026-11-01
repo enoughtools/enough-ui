@@ -1,8 +1,8 @@
 # shadcn/ui parity contract
 
-EnoughUI targets the public component surface and documented capabilities of shadcn/ui while retaining its own visual language. The reference is the **Radix catalog at commit [295a1f114a138f23b5dfee0e0c6812394dfeb90c](https://github.com/shadcn-ui/ui/tree/295a1f114a138f23b5dfee0e0c6812394dfeb90c/apps/v4/registry/bases/radix/ui)**, committed October 2, 2026 and verified October 3, 2026.
+EnoughUI targets the public component surface and documented capabilities of shadcn/ui while retaining its own visual language. The reference is the **Radix catalog at commit [c0d63c339d6cd2fc26135590a54cf1f362269451](https://github.com/shadcn-ui/ui/tree/c0d63c339d6cd2fc26135590a54cf1f362269451/apps/v4/registry/bases/radix/ui)**, committed October 31, 2026 and verified November 1, 2026.
 
-The [machine-readable baseline](./shadcn-radix-parity.json) accounts for **65 current documented families plus legacy Form compatibility**. It records every named public export of the 61 current Radix registry modules, each source blob, required native Astro components, and behavior that must be reviewed. Date Picker, Data Table and Typography are documented compositions rather than interchangeable upstream modules. Their EnoughUI component APIs are explicitly adopted conveniences. Legacy Toast remains available alongside Sonner; legacy Form follows the upstream React Hook Form adapter.
+The [machine-readable baseline](./shadcn-radix-parity.json) accounts for **67 current documented families plus legacy Form compatibility**. It records every named public export of the 63 current Radix registry modules, each source blob, required native Astro components, and behavior that must be reviewed. Date Picker, Data Table and Typography are documented compositions rather than interchangeable upstream modules. Their EnoughUI component APIs are explicitly adopted conveniences. Legacy Toast remains available alongside Sonner; legacy Form follows the upstream React Hook Form adapter.
 
 shadcn/ui also has Base UI and React Aria catalogs. Provider-specific APIs from those catalogs are outside this pinned contract. The current Radix Combobox itself uses Base UI, and Questionnaire and Message Scroller use the upstream headless React primitives. “Radix catalog” identifies the chosen component surface, not a requirement that every family depend on Radix.
 
@@ -21,7 +21,7 @@ Native Astro components use proportional typography and the same variant definit
 | Renderer | Families |
 | --- | --- |
 | Native Astro | Alert, Aspect Ratio, Attachment, Badge, Breadcrumb, Bubble, Button, Button Group, Card, Country Heatmap, Empty, Field, Input, Input Group, Item, Kbd, Label, Marker, Message, Native Select, Pagination, Progress, Separator, Skeleton, Spinner, Table, Textarea, Typography. |
-| Native presentation with optional island behavior | Avatar: deterministic server-rendered image/fallback presentation; browser image-loading detection and delayed fallback require React. |
+| Native presentation with optional island behavior | Avatar: deterministic image/fallback presentation; browser loading detection requires React. Trace: static lines in Astro; disclosures use React. CodeBlock: static content/lines in Astro; clipboard behavior uses React. |
 | React islands | Accordion, Alert Dialog, Calendar, Carousel, Chart, Checkbox, Collapsible, Combobox, Command, Context Menu, Data Table, Date Picker, Dialog, Direction context, Drawer, Dropdown Menu, Form, Hover Card, Input OTP, Menubar, Message Scroller, Navigation Menu, Popover, Questionnaire, Radio Group, Resizable, Scroll Area, Select, Sheet, Sidebar, Slider, Sonner, Switch, Tabs, Toast, Toggle, Toggle Group, Tooltip. |
 
 The manifest is authoritative for each required native component name, including compound parts. Additional native helpers include Direction's HTML wrapper and Popover header/title/description; the interactive Popover remains a React island.
@@ -103,3 +103,13 @@ The manifest's capability list is a review target. Export coverage does not auto
 5. Rebuild both packages and verify their artifacts before claiming the new baseline.
 
 Existing EnoughUI patterns and branded variants may remain as documented additions. They must not replace a required upstream export or silently accept an unsupported standard variant.
+
+## Immutable evidence and interface fixtures
+
+`docs/shadcn-snapshot.json` archives 141 upstream source, documentation, metadata and dependency files at the declared commit with Git blob IDs and SHA-256 hashes. `pnpm check:compatibility` verifies this archive and independent catalog completeness offline, then compiles positive and negative public usage fixtures against the reconstructed reference, EnoughUI source, and built public root/subpath exports. It enforces every declared `requiredProps` value and distinguishes runtime from type exports. These targeted fixtures do not establish universal generic/overload assignability or every documented behavior.
+
+`pnpm check:upstream` verifies archived blobs against the immutable remote tree and reports live catalog, documentation, registry metadata and dependency changes. Discovery does not automatically change the supported baseline. Update the archive and implementation together in a reviewed adoption batch. The reference fixture environment uses the pinned `radix-ui` development package and installed exact production primitives; lockfile integrity records make that environment reproducible.
+
+Both renderer archives export `compatibility.json` with the full provider-qualified baseline and exact EnoughUI production dependency evidence. EnoughUI versions remain independent of the CLI. Runtime primitives are pinned to tested versions; upgrade them promptly through the same checks. Type compatibility also requires the consumer's supported React/TypeScript environment.
+
+Trace and CodeBlock have native presentation in addition to React behavior. Their disclosure/copy controls use React islands; native CodeBlockContent accepts `value` for safe plain-text numbering. AgentConfirmation, PromptComposer, Sources, InlineCitation and AgentWork are EnoughUI compositions, outside the upstream parity count. Native receipts and work transcripts are static. The [agentic UI guide](./agentic-ui.md) defines these renderer differences and optional integrations.

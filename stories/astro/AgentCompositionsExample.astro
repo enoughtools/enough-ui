@@ -1,0 +1,13 @@
+---
+import Sources from '../../src/astro/Sources.astro';
+import InlineCitation from '../../src/astro/InlineCitation.astro';
+import AgentConfirmation from '../../src/astro/AgentConfirmation.astro';
+import AgentWork from '../../src/astro/AgentWork.astro';
+const source = {id:'upstream',title:'shadcn Trace',href:'https://ui.shadcn.com/docs/components/radix/trace',description:'Upstream public interface.'};
+---
+<div class="flex flex-col gap-4">
+<p>The agent read the source.<InlineCitation source={source} index={1} /></p>
+<Sources sources={[source]} />
+<AgentConfirmation request={{id:'build',title:'Run the build?',description:'Runs pnpm build.'}} resolution="approved" />
+<AgentWork steps={[{id:'agent',title:'Research agent',status:'completed',steps:[{id:'read',title:'Read upstream interface',status:'completed',output:'Matched the public exports.'}]}]} />
+</div>

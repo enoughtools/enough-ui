@@ -1,0 +1,16 @@
+---
+import Trace from './Trace.astro';
+import TraceLine from './TraceLine.astro';
+import TraceIcon from './TraceIcon.astro';
+import TraceTitle from './TraceTitle.astro';
+import TraceDescription from './TraceDescription.astro';
+import CodeBlock from './CodeBlock.astro';
+import CodeBlockContent from './CodeBlockContent.astro';
+import AgentWork from './AgentWork.astro';
+import type { HTMLAttributes } from 'astro/types';
+import { agentWorkStyles, agentStepIcons, agentStepLabels, agentStepIconClass, agentStepTitleClass, type AgentStep } from '../lib/agent-work.js';
+import { cn } from '../lib/utils.js';
+type Props = HTMLAttributes<'div'> & { steps: readonly AgentStep[] };
+const { steps, class:className, ...attributes } = Astro.props;
+---
+<Trace class={cn(agentWorkStyles.Root,className)} {...attributes}>{steps.map(step => <div class={agentWorkStyles.Step} data-step-id={step.id} data-step-status={step.status??'completed'}><TraceLine class={agentWorkStyles.Line} status={step.status === 'error' || step.status === 'pending' ? step.status : undefined}><TraceIcon><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class={agentStepIconClass(step.status??'completed')}><path d={agentStepIcons[step.status??'completed']} /></svg></TraceIcon><span class="sr-only">{agentStepLabels[step.status??'completed']}: </span><TraceTitle class={cn(agentWorkStyles.Title,agentStepTitleClass(step.status??'completed'))}>{step.title}</TraceTitle>{(step.description || step.status === 'cancelled') && <TraceDescription>{step.status === 'cancelled' ? 'Cancelled' : step.description}</TraceDescription>}</TraceLine>{(step.output !== undefined || step.steps?.length) && <div class={agentWorkStyles.Detail}>{step.output !== undefined && <CodeBlock size="sm" variant={step.status === 'error' ? 'destructive' : 'default'}><CodeBlockContent wrap value={step.output} /></CodeBlock>}{step.steps && <AgentWork steps={step.steps} />}</div>}</div>)}</Trace>

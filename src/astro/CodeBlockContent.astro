@@ -1,0 +1,9 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { codeBlockStyles } from '../lib/agent-ui.js';
+import { cn } from '../lib/utils.js';
+import CodeBlockLine from './CodeBlockLine.astro';
+type Props = HTMLAttributes<'pre'> & { wrap?: boolean; lineNumbers?: boolean; startLine?: number; value?: string };
+const { class: className, wrap = false, lineNumbers = false, startLine = 1, value, style, ...attributes } = Astro.props;
+---
+<pre data-slot="code-block-content" data-wrap={wrap || undefined} data-numbered={lineNumbers || undefined} dir="ltr" tabindex="0" style={[`counter-reset:line ${startLine - 1}`, style]} class={cn(codeBlockStyles.Content, className)} {...attributes}><code data-slot="code-block-code" class={codeBlockStyles.Code}>{value !== undefined ? lineNumbers ? value.replace(/\n$/, '').split('\n').map(line => <CodeBlockLine value={line} />) : value : <slot />}</code></pre>

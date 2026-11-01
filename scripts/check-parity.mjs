@@ -69,11 +69,14 @@ export async function inspectParity({ rootDir = repositoryRoot, built = false } 
       issues.push(`${family.id}: missing React source module.`);
     } else {
       const moduleSymbol = checker.getSymbolAtLocation(source);
-      const exports = new Set(moduleSymbol ? checker.getExportsOfModule(moduleSymbol).map(symbol => symbol.name) : []);
+      const symbols = new Map(moduleSymbol ? checker.getExportsOfModule(moduleSymbol).map(symbol => [symbol.name, symbol.flags & ts.SymbolFlags.Alias ? checker.getAliasedSymbol(symbol) : symbol]) : []);
+      const exports = new Set(symbols.keys());
       const required = [...family.react.runtimeExports, ...family.react.typeExports];
       const missing = required.filter(name => !exports.has(name));
       if (missing.length) issues.push(`${family.id}: missing public exports: ${missing.join(', ')}.`);
       else reactFamilies++;
+      for (const name of family.react.runtimeExports) if (symbols.has(name) && !(symbols.get(name).flags & ts.SymbolFlags.Value)) issues.push(`${family.id}: ${name} must be a runtime export.`);
+      for (const name of family.react.typeExports) if (symbols.has(name) && !(symbols.get(name).flags & ts.SymbolFlags.Type)) issues.push(`${family.id}: ${name} must export a type.`);
     }
 
     for (const name of family.astro.requiredComponents) {

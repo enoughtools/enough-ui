@@ -37,8 +37,12 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Build both renderer packages
         run: pnpm build
+      - name: Install optional agentic UI example dependencies
+        run: pnpm --dir examples/agentic-ui install --frozen-lockfile
       - name: Check React and story types
         run: pnpm typecheck
+      - name: Verify frozen upstream and public interface fixtures
+        run: pnpm check:compatibility
       - name: Check native Astro components
         run: pnpm check:astro
       - name: Run component and story rendering tests

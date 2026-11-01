@@ -144,6 +144,8 @@ Use Node 22.14+ and pnpm 10.34.5. Source in `src/` is the source of truth. The r
 ```sh
 pnpm install --frozen-lockfile
 pnpm build
+pnpm --dir examples/agentic-ui install --frozen-lockfile
+pnpm check:compatibility
 pnpm typecheck
 pnpm check:astro
 pnpm test
@@ -191,6 +193,10 @@ pnpm deploy:catalog
 Deployment uses Cloudflare Workers static assets with the custom domains in `wrangler.jsonc`. Authenticate Wrangler to the account that owns `enoughtools.com` and `reb.run` before publishing. `deploy:catalog` rebuilds the renderer packages and Storybook before uploading. Catalog browser checks save screenshots and a report in `artifacts/catalog/`.
 
 See [contributing](CONTRIBUTING.md) for component, parity, accessibility, and review requirements; [release instructions](docs/releasing.md) for npm setup and publishing; [recurring maintenance](docs/maintenance.md) for automated security and compatibility work; and [security policy](SECURITY.md) for reporting vulnerabilities.
+
+## Agentic UI
+
+Trace and CodeBlock provide the building blocks for agent activity and output. AgentConfirmation, PromptComposer, Sources and AgentWork compose the existing controls into agent interfaces. Native Astro presents static content; live controls use React islands. See the [agentic UI guide](docs/agentic-ui.md) for APIs, renderer differences and optional developer integration examples.
 
 ## License
 

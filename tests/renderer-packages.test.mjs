@@ -85,6 +85,24 @@ test('both packages ship identical compiled styles', async () => {
   }
 });
 
+test('renderer archives expose the same exact compatibility baseline and dependency evidence', async () => {
+  const baseline = JSON.parse(await readFile(join(root, 'docs/shadcn-radix-parity.json'), 'utf8'));
+  let reference;
+  for (const renderer of ['react', 'astro']) {
+    const metadata = JSON.parse(await readFile(join(root, 'packages', renderer, 'dist/compatibility.json'), 'utf8'));
+    assert.equal(metadata.id, `shadcn-radix-${baseline.reference.commit}`);
+    assert.equal(metadata.reference.commit, baseline.reference.commit);
+    const pkg = await readManifest(join(root, 'packages', renderer));
+    assert.equal(pkg.exports['./compatibility.json'], './dist/compatibility.json');
+    for (const [name, version] of Object.entries(pkg.dependencies)) {
+      assert.match(version, /^\d+\.\d+\.\d+(?:-[\w.-]+)?$/);
+      assert.equal(metadata.dependencies[name], version);
+    }
+    if (reference) assert.deepEqual(metadata, reference);
+    reference = metadata;
+  }
+});
+
 test('Astro graph rejects transitive React imports and references outside its package', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'enough-ui-artifact-'));
   try {

@@ -1,12 +1,12 @@
 # EnoughUI
 
-[![EnoughUI. Enough to build on. Components for React and Astro, with square edges, clear type, and shared foundations.](https://raw.githubusercontent.com/enoughtools/enough-ui/v0.5.0/docs/assets/repository/repo-hero.png)](https://ui.enoughtools.com)
+[![EnoughUI. Enough to build on. Components for React and Astro, with square edges, clear type, and shared foundations.](https://raw.githubusercontent.com/enoughtools/enough-ui/v0.6.0/docs/assets/repository/repo-hero.png)](https://ui.enoughtools.com)
 
 **[Explore the live demo](https://ui.enoughtools.com)** · [Original demo address](https://enoughui.reb.run) · [React on npm](https://www.npmjs.com/package/@enoughtools/ui-react) · [Astro on npm](https://www.npmjs.com/package/@enoughtools/ui-astro)
 
 EnoughUI is a component library for React, Astro and SwiftUI, with proportional typography, square shapes, and shared design tokens. Fine rules, paper surfaces, editorial serif headings, and purposeful indigo give it a clear visual language. It follows shadcn/ui’s Radix component catalog while preserving EnoughUI’s identity.
 
-[![Real EnoughUI Storybook examples: a questionnaire, a visitors chart, a native Astro card, and an open framework combobox.](https://raw.githubusercontent.com/enoughtools/enough-ui/v0.5.0/docs/assets/repository/component-overview.png)](https://ui.enoughtools.com)
+[![Real EnoughUI Storybook examples: a questionnaire, a visitors chart, a native Astro card, and an open framework combobox.](https://raw.githubusercontent.com/enoughtools/enough-ui/v0.6.0/docs/assets/repository/component-overview.png)](https://ui.enoughtools.com)
 
 Try the components, switch renderers, inspect their source, and make them yours in the [live catalog](https://ui.enoughtools.com). These previews come from the same stories used in rendering and interaction checks. The [Enough brand resources](https://brand.enoughtools.com) provide the approved logo, palette, and typography.
 
@@ -20,9 +20,9 @@ Try the components, switch renderers, inspect their source, and make them yours 
 
 Both web packages include compiled CSS and their own component entry points. Native Astro components render HTML without hydration. Interactive controls use the same React implementation in React apps and Astro islands, so their state and accessibility behavior stay consistent.
 
-The [parity contract](https://github.com/enoughtools/enough-ui/blob/v0.5.0/docs/parity.md) records the pinned upstream catalog, required exports, renderer mapping, and intentional differences. A catalog or export count alone does not establish behavioral parity. The project verifies source contracts, story rendering, interactions, browser accessibility, and isolated package consumers.
+The [parity contract](https://github.com/enoughtools/enough-ui/blob/v0.6.0/docs/parity.md) records the pinned upstream catalog, required exports, renderer mapping, and intentional differences. A catalog or export count alone does not establish behavioral parity. The project verifies source contracts, story rendering, interactions, browser accessibility, and isolated package consumers.
 
-[CountryHeatmap](https://github.com/enoughtools/enough-ui/blob/v0.5.0/docs/country-heatmap.md) adds a responsive world map with shared color scales and an exact-value table in both React and native Astro. It uses public-domain Natural Earth boundaries and works without hydration. [Try the country heatmap](https://ui.enoughtools.com/?path=/catalog/country-heatmap).
+[CountryHeatmap](https://github.com/enoughtools/enough-ui/blob/v0.6.0/docs/country-heatmap.md) adds a responsive world map with shared color scales and an exact-value table in both React and native Astro. It uses public-domain Natural Earth boundaries and works without hydration. [Try the country heatmap](https://ui.enoughtools.com/?path=/catalog/country-heatmap).
 
 ## SwiftUI
 
@@ -40,7 +40,7 @@ EnoughThemeProvider {
 }
 ```
 
-The [Swift guide](https://github.com/enoughtools/enough-ui/blob/v0.5.0/packages/swift/README.md) covers the component API, native equivalents, platform differences, theming and installation. Run `swift run --package-path examples/swift-catalog EnoughUICatalog` for the native examples. The Swift library has no third-party dependencies and does not need Node or npm. Its palette is generated from the shared web theme. Native system controls retain their Apple behavior and styling.
+The [Swift guide](https://github.com/enoughtools/enough-ui/blob/v0.6.0/packages/swift/README.md) covers the component API, native equivalents, platform differences, theming and installation. Run `swift run --package-path examples/swift-catalog EnoughUICatalog` for the native examples. The Swift library has no third-party dependencies and does not need Node or npm. Its palette is generated from the shared web theme. Native system controls retain their Apple behavior and styling.
 
 ## React
 
@@ -144,6 +144,8 @@ Use Node 22.14+ and pnpm 10.34.5. Source in `src/` is the source of truth. The r
 ```sh
 pnpm install --frozen-lockfile
 pnpm build
+pnpm --dir examples/agentic-ui install --frozen-lockfile
+pnpm check:compatibility
 pnpm typecheck
 pnpm check:astro
 pnpm test
@@ -190,8 +192,12 @@ pnpm deploy:catalog
 
 Deployment uses Cloudflare Workers static assets with the custom domains in `wrangler.jsonc`. Authenticate Wrangler to the account that owns `enoughtools.com` and `reb.run` before publishing. `deploy:catalog` rebuilds the renderer packages and Storybook before uploading. Catalog browser checks save screenshots and a report in `artifacts/catalog/`.
 
-See [contributing](https://github.com/enoughtools/enough-ui/blob/v0.5.0/CONTRIBUTING.md) for component, parity, accessibility, and review requirements; [release instructions](https://github.com/enoughtools/enough-ui/blob/v0.5.0/docs/releasing.md) for npm setup and publishing; [recurring maintenance](https://github.com/enoughtools/enough-ui/blob/v0.5.0/docs/maintenance.md) for automated security and compatibility work; and [security policy](https://github.com/enoughtools/enough-ui/blob/v0.5.0/SECURITY.md) for reporting vulnerabilities.
+See [contributing](https://github.com/enoughtools/enough-ui/blob/v0.6.0/CONTRIBUTING.md) for component, parity, accessibility, and review requirements; [release instructions](https://github.com/enoughtools/enough-ui/blob/v0.6.0/docs/releasing.md) for npm setup and publishing; [recurring maintenance](https://github.com/enoughtools/enough-ui/blob/v0.6.0/docs/maintenance.md) for automated security and compatibility work; and [security policy](https://github.com/enoughtools/enough-ui/blob/v0.6.0/SECURITY.md) for reporting vulnerabilities.
+
+## Agentic UI
+
+Trace and CodeBlock provide the building blocks for agent activity and output. AgentConfirmation, PromptComposer, Sources and AgentWork compose the existing controls into agent interfaces. Native Astro presents static content; live controls use React islands. See the [agentic UI guide](https://github.com/enoughtools/enough-ui/blob/v0.6.0/docs/agentic-ui.md) for APIs, renderer differences and optional developer integration examples.
 
 ## License
 
-[MIT](https://github.com/enoughtools/enough-ui/blob/v0.5.0/LICENSE), with upstream attribution in [third-party notices](https://github.com/enoughtools/enough-ui/blob/v0.5.0/THIRD_PARTY_NOTICES.md).
+[MIT](https://github.com/enoughtools/enough-ui/blob/v0.6.0/LICENSE), with upstream attribution in [third-party notices](https://github.com/enoughtools/enough-ui/blob/v0.6.0/THIRD_PARTY_NOTICES.md).

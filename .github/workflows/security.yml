@@ -33,6 +33,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Audit every severity and dependency type
         run: pnpm audit --audit-level low
+      - name: Audit optional agentic UI integrations
+        run: pnpm --dir examples/agentic-ui audit --audit-level low
 
   codeql:
     runs-on: ubuntu-latest

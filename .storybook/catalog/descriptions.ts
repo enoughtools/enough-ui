@@ -10,6 +10,15 @@ export const categoryOrder = [
 ] as const;
 
 export const componentInfo: Record<string, { description: string; category: string }> = {
+  trace: { description: 'Present streamed tool activity, plans, and nested agent steps.', category: 'Conversation' },
+  'code-block': { description: 'Display code, diffs, and command output with optional copying and highlighting.', category: 'Data' },
+  'agent-confirmation': { description: 'Request a tool decision and preserve the recorded outcome.', category: 'Conversation' },
+  'agent-work': { description: 'Compose tools, plans, subagents, and test results from Trace.', category: 'Conversation' },
+  'prompt-composer': { description: 'Write an agent message with attachments and send or stop controls.', category: 'Conversation' },
+  sources: { description: 'Show accessible source links and inline citations.', category: 'Conversation' },
+  'generated-ui': { description: 'See an interface take shape while preserving what you have entered.', category: 'Conversation' },
+  'agent-primitives': { description: 'Render static traces and code blocks in native Astro.', category: 'Conversation' },
+  'agent-compositions': { description: 'Render sources, approval receipts, and work transcripts without hydration.', category: 'Conversation' },
   'field-error': { description: 'Connect validation feedback to its form field.', category: 'Forms' },
   accordion: { description: 'Reveal related sections of content one panel at a time.', category: 'Layout' },
   'alert-dialog': { description: 'Ask for confirmation before an action that needs a deliberate decision.', category: 'Feedback' },

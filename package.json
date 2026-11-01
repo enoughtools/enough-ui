@@ -1,6 +1,6 @@
 {
   "name": "@rebnz/enough-ui",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "EnoughUI: reusable React, Astro and SwiftUI components and design tokens.",
   "type": "module",
   "license": "MIT",
@@ -17,6 +17,11 @@
     },
     "./styles.css": "./dist/styles.css",
     "./components.css": "./dist/components.css",
+    "./compatibility.json": "./dist/compatibility.json",
+    "./use-highlighted-code": {
+      "types": "./dist/hooks/use-highlighted-code.d.ts",
+      "import": "./dist/hooks/use-highlighted-code.js"
+    },
     "./use-toast": {
       "types": "./dist/hooks/use-toast.d.ts",
       "import": "./dist/hooks/use-toast.js"
@@ -28,6 +33,14 @@
     "./accordion": {
       "types": "./dist/components/ui/accordion.d.ts",
       "import": "./dist/components/ui/accordion.js"
+    },
+    "./agent-confirmation": {
+      "types": "./dist/components/ui/agent-confirmation.d.ts",
+      "import": "./dist/components/ui/agent-confirmation.js"
+    },
+    "./agent-work": {
+      "types": "./dist/components/ui/agent-work.d.ts",
+      "import": "./dist/components/ui/agent-work.js"
     },
     "./alert": {
       "types": "./dist/components/ui/alert.d.ts",
@@ -92,6 +105,10 @@
     "./checkbox": {
       "types": "./dist/components/ui/checkbox.d.ts",
       "import": "./dist/components/ui/checkbox.js"
+    },
+    "./code-block": {
+      "types": "./dist/components/ui/code-block.d.ts",
+      "import": "./dist/components/ui/code-block.js"
     },
     "./collapsible": {
       "types": "./dist/components/ui/collapsible.d.ts",
@@ -217,6 +234,10 @@
       "types": "./dist/components/ui/progress.d.ts",
       "import": "./dist/components/ui/progress.js"
     },
+    "./prompt-composer": {
+      "types": "./dist/components/ui/prompt-composer.d.ts",
+      "import": "./dist/components/ui/prompt-composer.js"
+    },
     "./questionnaire": {
       "types": "./dist/components/ui/questionnaire.d.ts",
       "import": "./dist/components/ui/questionnaire.js"
@@ -264,6 +285,10 @@
     "./sonner": {
       "types": "./dist/components/ui/sonner.d.ts",
       "import": "./dist/components/ui/sonner.js"
+    },
+    "./sources": {
+      "types": "./dist/components/ui/sources.d.ts",
+      "import": "./dist/components/ui/sources.js"
     },
     "./spinner": {
       "types": "./dist/components/ui/spinner.d.ts",
@@ -313,10 +338,16 @@
       "types": "./dist/components/ui/top-nav.d.ts",
       "import": "./dist/components/ui/top-nav.js"
     },
+    "./trace": {
+      "types": "./dist/components/ui/trace.d.ts",
+      "import": "./dist/components/ui/trace.js"
+    },
     "./typography": {
       "types": "./dist/components/ui/typography.d.ts",
       "import": "./dist/components/ui/typography.js"
     },
+    "./astro/agent-confirmation": "./dist/astro/AgentConfirmation.astro",
+    "./astro/agent-work": "./dist/astro/AgentWork.astro",
     "./astro/alert": "./dist/astro/Alert.astro",
     "./astro/alert-action": "./dist/astro/AlertAction.astro",
     "./astro/alert-description": "./dist/astro/AlertDescription.astro",
@@ -361,6 +392,13 @@
     "./astro/card-footer": "./dist/astro/CardFooter.astro",
     "./astro/card-header": "./dist/astro/CardHeader.astro",
     "./astro/card-title": "./dist/astro/CardTitle.astro",
+    "./astro/code-block": "./dist/astro/CodeBlock.astro",
+    "./astro/code-block-actions": "./dist/astro/CodeBlockActions.astro",
+    "./astro/code-block-content": "./dist/astro/CodeBlockContent.astro",
+    "./astro/code-block-footer": "./dist/astro/CodeBlockFooter.astro",
+    "./astro/code-block-header": "./dist/astro/CodeBlockHeader.astro",
+    "./astro/code-block-line": "./dist/astro/CodeBlockLine.astro",
+    "./astro/code-block-title": "./dist/astro/CodeBlockTitle.astro",
     "./astro/country-heatmap": "./dist/astro/CountryHeatmap.astro",
     "./astro/direction-provider": "./dist/astro/DirectionProvider.astro",
     "./astro/empty": "./dist/astro/Empty.astro",
@@ -382,6 +420,7 @@
     "./astro/field-set": "./dist/astro/FieldSet.astro",
     "./astro/field-title": "./dist/astro/FieldTitle.astro",
     "./astro/group-label": "./dist/astro/GroupLabel.astro",
+    "./astro/inline-citation": "./dist/astro/InlineCitation.astro",
     "./astro/input": "./dist/astro/Input.astro",
     "./astro/input-group": "./dist/astro/InputGroup.astro",
     "./astro/input-group-addon": "./dist/astro/InputGroupAddon.astro",
@@ -429,6 +468,7 @@
     "./astro/progress": "./dist/astro/Progress.astro",
     "./astro/separator": "./dist/astro/Separator.astro",
     "./astro/skeleton": "./dist/astro/Skeleton.astro",
+    "./astro/sources": "./dist/astro/Sources.astro",
     "./astro/spinner": "./dist/astro/Spinner.astro",
     "./astro/table": "./dist/astro/Table.astro",
     "./astro/table-body": "./dist/astro/TableBody.astro",
@@ -441,6 +481,11 @@
     "./astro/textarea": "./dist/astro/Textarea.astro",
     "./astro/tool-row": "./dist/astro/ToolRow.astro",
     "./astro/top-nav": "./dist/astro/TopNav.astro",
+    "./astro/trace": "./dist/astro/Trace.astro",
+    "./astro/trace-description": "./dist/astro/TraceDescription.astro",
+    "./astro/trace-icon": "./dist/astro/TraceIcon.astro",
+    "./astro/trace-line": "./dist/astro/TraceLine.astro",
+    "./astro/trace-title": "./dist/astro/TraceTitle.astro",
     "./astro/typography": "./dist/astro/Typography.astro",
     "./astro/typography-blockquote": "./dist/astro/TypographyBlockquote.astro",
     "./astro/typography-h1": "./dist/astro/TypographyH1.astro",
@@ -475,8 +520,8 @@
     "verify:package": "node scripts/verify-renderer-packages.mjs",
     "verify:browser": "node scripts/verify-renderer-packages.mjs --consumer --browser",
     "check:astro": "astro check --tsconfig tsconfig.astro.json",
-    "test:astro": "vitest run --config vitest.astro.config.ts",
-    "test:units": "vitest run --config vitest.units.config.ts",
+    "test:astro": "vitest run --config vitest.astro.config.ts --maxWorkers=2",
+    "test:units": "vitest run --config vitest.units.config.ts --maxWorkers=2",
     "verify:stories": "node scripts/verify-stories.mjs",
     "verify:consumer": "node scripts/verify-renderer-packages.mjs --consumer",
     "prestorybook": "node scripts/build-catalog-manifest.mjs && node scripts/build-catalog-editor.mjs",
@@ -490,58 +535,61 @@
     "build:swift-tokens": "node scripts/build-swift-tokens.mjs",
     "check:swift-tokens": "node scripts/build-swift-tokens.mjs --check",
     "test:swift": "swift test",
-    "pack:swift": "node scripts/pack-swift.mjs"
+    "pack:swift": "node scripts/pack-swift.mjs",
+    "check:compatibility": "node scripts/check-upstream.mjs && node scripts/check-contracts.mjs",
+    "check:upstream": "node scripts/check-upstream.mjs --online"
   },
   "peerDependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "dependencies": {
-    "@base-ui/react": "^1.9.0",
-    "@radix-ui/react-accordion": "^1.3.1",
-    "@radix-ui/react-alert-dialog": "^1.2.1",
-    "@radix-ui/react-aspect-ratio": "^1.2.0",
-    "@radix-ui/react-avatar": "^1.3.1",
-    "@radix-ui/react-checkbox": "^1.4.1",
-    "@radix-ui/react-collapsible": "^1.2.1",
-    "@radix-ui/react-context-menu": "^2.4.1",
-    "@radix-ui/react-dialog": "^1.3.1",
-    "@radix-ui/react-direction": "^1.2.0",
-    "@radix-ui/react-dropdown-menu": "^2.2.1",
-    "@radix-ui/react-hover-card": "^1.2.1",
-    "@radix-ui/react-label": "^2.1.17",
-    "@radix-ui/react-menubar": "^1.2.1",
-    "@radix-ui/react-navigation-menu": "^1.4.1",
-    "@radix-ui/react-popover": "^1.3.1",
-    "@radix-ui/react-progress": "^1.2.1",
-    "@radix-ui/react-radio-group": "^1.5.1",
-    "@radix-ui/react-scroll-area": "^1.4.0",
-    "@radix-ui/react-select": "^2.4.1",
-    "@radix-ui/react-separator": "^1.2.0",
-    "@radix-ui/react-slider": "^1.6.1",
-    "@radix-ui/react-slot": "^1.5.0",
-    "@radix-ui/react-switch": "^1.4.1",
-    "@radix-ui/react-tabs": "^1.2.1",
-    "@radix-ui/react-toast": "^1.3.1",
-    "@radix-ui/react-toggle": "^1.2.1",
-    "@radix-ui/react-toggle-group": "^1.2.1",
-    "@radix-ui/react-tooltip": "^1.4.1",
-    "@shadcn/react": "^0.3.1",
-    "@tanstack/react-table": "^8.21.3",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "cmdk": "^1.1.1",
-    "date-fns": "^4.4.0",
-    "embla-carousel-react": "^8.6.0",
-    "input-otp": "^1.5.0",
-    "lucide-react": "^1.66.0",
-    "react-day-picker": "^10.0.2",
-    "react-hook-form": "^7.91.0",
-    "react-resizable-panels": "^4.16.0",
-    "recharts": "^3.10.1",
-    "sonner": "^2.0.8",
-    "tailwind-merge": "^3.7.0",
-    "vaul": "^1.1.2"
+    "@base-ui/react": "1.9.0",
+    "@radix-ui/react-accordion": "1.3.1",
+    "@radix-ui/react-alert-dialog": "1.2.1",
+    "@radix-ui/react-aspect-ratio": "1.2.0",
+    "@radix-ui/react-avatar": "1.3.1",
+    "@radix-ui/react-checkbox": "1.4.1",
+    "@radix-ui/react-collapsible": "1.2.1",
+    "@radix-ui/react-context-menu": "2.4.1",
+    "@radix-ui/react-dialog": "1.3.1",
+    "@radix-ui/react-direction": "1.2.0",
+    "@radix-ui/react-dropdown-menu": "2.2.1",
+    "@radix-ui/react-hover-card": "1.2.1",
+    "@radix-ui/react-label": "2.1.17",
+    "@radix-ui/react-menubar": "1.2.1",
+    "@radix-ui/react-navigation-menu": "1.4.1",
+    "@radix-ui/react-popover": "1.3.1",
+    "@radix-ui/react-progress": "1.2.1",
+    "@radix-ui/react-radio-group": "1.5.1",
+    "@radix-ui/react-scroll-area": "1.4.0",
+    "@radix-ui/react-select": "2.4.1",
+    "@radix-ui/react-separator": "1.2.0",
+    "@radix-ui/react-slider": "1.6.1",
+    "@radix-ui/react-slot": "1.5.0",
+    "@radix-ui/react-switch": "1.4.1",
+    "@radix-ui/react-tabs": "1.2.1",
+    "@radix-ui/react-toast": "1.3.1",
+    "@radix-ui/react-toggle": "1.2.1",
+    "@radix-ui/react-toggle-group": "1.2.1",
+    "@radix-ui/react-tooltip": "1.4.1",
+    "@shadcn/react": "0.3.1",
+    "@tanstack/react-table": "8.21.3",
+    "class-variance-authority": "0.7.1",
+    "clsx": "2.1.1",
+    "cmdk": "1.1.1",
+    "date-fns": "4.4.0",
+    "embla-carousel-react": "8.6.0",
+    "input-otp": "1.5.0",
+    "lucide-react": "1.66.0",
+    "react-day-picker": "10.0.2",
+    "react-hook-form": "7.91.0",
+    "react-resizable-panels": "4.16.0",
+    "recharts": "3.10.1",
+    "shiki": "4.5.0",
+    "sonner": "2.0.8",
+    "tailwind-merge": "3.7.0",
+    "vaul": "1.1.2"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
@@ -565,6 +613,7 @@
     "happy-dom": "^21.0.4",
     "monaco-editor": "^0.57.0",
     "playwright": "^1.64.1",
+    "radix-ui": "1.4.3",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "storybook": "^10.6.5",

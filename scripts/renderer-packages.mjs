@@ -44,6 +44,7 @@ export function reactExports(names, hooks = ['use-toast']) {
     '.': jsExport('index'),
     './styles.css': './dist/styles.css',
     './components.css': './dist/components.css',
+    './compatibility.json': './dist/compatibility.json',
     ...Object.fromEntries(hooks.map(name => [`./${name}`, jsExport(`hooks/${name}`)])),
     './utils': jsExport('lib/utils'),
     ...Object.fromEntries(names.map(name => [`./${name}`, jsExport(`components/ui/${name}`)])),
@@ -55,6 +56,7 @@ export function astroExports(names) {
     '.': jsExport('index'),
     './styles.css': './dist/styles.css',
     './components.css': './dist/components.css',
+    './compatibility.json': './dist/compatibility.json',
     './utils': jsExport('lib/utils'),
     ...Object.fromEntries(names.map(name => [`./${kebabCase(name)}`, `./dist/astro/${name}.astro`])),
   };
@@ -138,7 +140,7 @@ export async function buildRendererPackages(root, rootManifest, reactNames, astr
       const source = (await readFile(join(dist, file), 'utf8')).replace(/^\/\/[#@] sourceMappingURL=.*(?:\r?\n|$)/gm, '');
       await writeFile(destination, source);
     }
-    for (const name of ['styles.css', 'components.css']) await cp(join(dist, name), join(directory, 'dist', name));
+    for (const name of ['styles.css', 'components.css', 'compatibility.json']) await cp(join(dist, name), join(directory, 'dist', name));
     if (renderer === 'astro') {
       const barrel = astroNames.map(name => `export { default as ${name} } from "./astro/${name}.astro";`).join('\n') + '\n';
       await writeFile(join(directory, 'dist/index.js'), barrel);
