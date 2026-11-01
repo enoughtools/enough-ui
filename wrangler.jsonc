@@ -8,7 +8,9 @@
   },
   "routes": [
     { "pattern": "enoughui.reb.run", "custom_domain": true },
-    { "pattern": "ui.enoughtools.com", "custom_domain": true }
+    { "pattern": "ui.enoughtools.com", "custom_domain": true },
+    { "pattern": "enoughui.com", "custom_domain": true },
+    { "pattern": "www.enoughui.com", "custom_domain": true }
   ],
   "workers_dev": false,
   "preview_urls": false
