@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
-import { createServer } from 'node:http';
-import { readFile, stat, mkdir, writeFile } from 'node:fs/promises';
-import { resolve, extname, sep } from 'node:path';
+import { createCatalogServer } from './catalog-server.mjs';
+import { readFile, mkdir, writeFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import AxeBuilder from '@axe-core/playwright';
@@ -10,15 +10,7 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const directory = resolve(root, 'storybook-static');
 const output = resolve(root, 'artifacts/swift-gallery');
 const manifest = JSON.parse(await readFile(resolve(root, '.storybook/catalog/swift-manifest.json'), 'utf8'));
-const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.woff2': 'font/woff2' };
-const server = createServer(async (request, response) => {
-  try {
-    const path = resolve(directory, '.' + decodeURIComponent(new URL(request.url, 'http://localhost').pathname));
-    assert.ok(path === directory || path.startsWith(directory + sep));
-    const file = (await stat(path)).isDirectory() ? resolve(path, 'index.html') : path;
-    response.writeHead(200, { 'content-type': mime[extname(file)] ?? 'application/octet-stream' }).end(await readFile(file));
-  } catch { response.writeHead(404).end('Not found'); }
-});
+const server = createCatalogServer(directory);
 await new Promise(done => server.listen(0, '127.0.0.1', done));
 const url = process.env.STORYBOOK_URL ?? `http://127.0.0.1:${server.address().port}`;
 const browser = await chromium.launch();
