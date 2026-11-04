@@ -33,7 +33,10 @@ export async function checkUpstream({ online = false } = {}) {
   const manifest = JSON.parse(await readFile(new URL('../docs/shadcn-radix-parity.json', import.meta.url)));
   const issues = inspectSnapshot(snapshot, manifest);
   if (online) {
-    const response = await fetch(`https://api.github.com/repos/shadcn-ui/ui/git/trees/${snapshot.commit}?recursive=1`);
+    // Keep the outbound reference independent of file data; adoption updates this pin.
+    const referenceCommit = 'c0d63c339d6cd2fc26135590a54cf1f362269451';
+    if (snapshot.commit !== referenceCommit) throw new Error('Archived commit does not match the supported upstream reference.');
+    const response = await fetch(`https://api.github.com/repos/shadcn-ui/ui/git/trees/${referenceCommit}?recursive=1`);
     if (!response.ok) throw new Error(`Upstream provenance unavailable: ${response.status}`);
     const tree = await response.json();
     if (tree.truncated) throw new Error('Upstream returned a truncated tree.');
