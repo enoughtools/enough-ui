@@ -44,6 +44,8 @@ EnoughThemeProvider {
 
 The [Swift guide](https://github.com/enoughtools/enough-ui/blob/v0.6.0/packages/swift/README.md) covers the component API, native equivalents, platform differences, theming and installation. Run `swift run --package-path examples/swift-catalog EnoughUICatalog` for the native examples. The Swift library has no third-party dependencies and does not need Node or npm. Its palette is generated from the shared web theme. Native system controls retain their Apple behavior and styling.
 
+Browse the dedicated [Swift gallery](https://enoughui.com/swift) for 24 component families, real macOS and iPhone captures in light and dark appearance, complete Swift examples, and installation instructions. The screenshots and runnable native demo share the same compiled fixtures. React and Astro continue to share the web gallery.
+
 ## React
 
 ```sh
@@ -177,7 +179,7 @@ Rebuild after source changes. Local development must follow the directory or an 
 pnpm storybook
 ```
 
-The public catalog lives at [enoughui.com](https://enoughui.com), with [enoughui.reb.run](https://enoughui.reb.run) retained as an alternate address. The [EnoughTools product page](https://enoughtools.com/ui) introduces the library. Its custom Storybook manager provides component search, category filters, live React/Astro previews, example selection, source, responsive previews, and controls for supported story arguments. Source uses a read-only Monaco viewer with syntax highlighting, line numbers, search, wrapping, and separate native Astro files. Its scripts and workers are hosted with the site and load when Source opens. The **Storybook** link on a component opens the standard manager with full controls, docs, and accessibility tools.
+The public catalog lives at [enoughui.com](https://enoughui.com), with `ui.enoughtools.com`, `enoughui.reb.run` and `www.enoughui.com` permanently redirecting to the same path on the canonical domain. Its custom Storybook manager provides component search, category filters, live React/Astro previews, example selection, source, responsive previews, and controls for supported story arguments. Source uses a read-only Monaco viewer with syntax highlighting, line numbers, search, wrapping, and separate native Astro files. Its scripts and workers are hosted with the site and load when Source opens. The **Storybook** link on a component opens the standard manager with full controls, docs, and accessibility tools.
 
 One [Storybook Astro](https://storybook-astro.org/) catalog contains the native **Astro** stories and **UI** React stories. Portable rendering tests reuse those stories, and browser tests use the built catalog. A static build goes to `storybook-static/`; there is no separate showcase application. The catalog manifest is generated from those same source fixtures before development and production builds.
 

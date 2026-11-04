@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { after, test } from 'node:test';
-import { artifactGraph, astroComponentNames, astroExports, componentNames, hookNames, reactExports, rootExports, packageReadme } from '../scripts/renderer-packages.mjs';
+import { artifactGraph, astroComponentNames, astroExports, componentNames, hookNames, reactExports, rootExports, packageReadme, importsOf } from '../scripts/renderer-packages.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const packCache = await mkdtemp(join(tmpdir(), 'enough-ui-pack-cache-'));
@@ -13,14 +13,14 @@ after(() => rm(packCache, { recursive: true, force: true }));
 const readManifest = async directory => JSON.parse(await readFile(join(directory, 'package.json'), 'utf8'));
 
 test('package documentation resolves artwork and guides without rewriting examples or external links', () => {
-  const source = '[![Preview](docs/assets/brand/repo-hero.png)](https://ui.enoughtools.com)\n[Parity](docs/parity.md)\n[License](./LICENSE)\n[Demo](https://ui.enoughtools.com)\n[React](#react)\nimport DateControl from "./DateControl";';
+  const source = '[![Preview](docs/assets/brand/repo-hero.png)](https://enoughui.com)\n[Parity](docs/parity.md)\n[License](./LICENSE)\n[Demo](https://enoughui.com)\n[React](#react)\nimport DateControl from "./DateControl";';
   const result = packageReadme(source, '0.4.0');
   assert.match(result, /!\[Preview\]\(https:\/\/raw\.githubusercontent\.com\/enoughtools\/enough-ui\/v0\.4\.0\/docs\/assets\/brand\/repo-hero\.png\)/);
   assert.match(result, /\[Parity\]\(https:\/\/github\.com\/enoughtools\/enough-ui\/blob\/v0\.4\.0\/docs\/parity\.md\)/);
   assert.match(result, /\[License\]\(https:\/\/github\.com\/enoughtools\/enough-ui\/blob\/v0\.4\.0\/LICENSE\)/);
-  assert.ok(result.includes('[Demo](https://ui.enoughtools.com)'));
+  assert.ok(result.includes('[Demo](https://enoughui.com)'));
   assert.ok(result.includes('[React](#react)'));
-  assert.ok(result.includes(')](https://ui.enoughtools.com)'));
+  assert.ok(result.includes(')](https://enoughui.com)'));
   assert.ok(result.includes('import DateControl from "./DateControl";'));
 });
 
@@ -113,9 +113,32 @@ test('Astro graph rejects transitive React imports and references outside its pa
     await assert.rejects(artifactGraph(directory, ['astro/Button.astro'], 'astro'), /Native Astro cannot depend on react/);
     await writeFile(join(directory, 'lib/helper.js'), 'export { helper } from "../../private.js";\n');
     await assert.rejects(artifactGraph(directory, ['astro/Button.astro'], 'astro'), /Invalid astro artifact import/);
-    await writeFile(join(directory, 'astro/Button.astro'), '<button /><script>import React from "react";</script>\n');
-    await assert.rejects(artifactGraph(directory, ['astro/Button.astro'], 'astro'), /Native Astro cannot depend on react/);
+    for (const script of [
+      '<script>import React from "react";</script>',
+      '<SCRIPT>import React from "react";</SCRIPT>',
+      '<ScRiPt>import React from "react";</sCrIpT >',
+      '<SCRIPT SRC="react"></SCRIPT>',
+      '<script>import React from "react";</script\t\n bar>',
+      '<script data-label=">">import React from "react";</script/>',
+      '<script SRC=react></script>',
+      '<script src="&#114;eact"></script>',
+    ]) {
+      await writeFile(join(directory, 'astro/Button.astro'), `<button />${script}\n`);
+      await assert.rejects(artifactGraph(directory, ['astro/Button.astro'], 'astro'), /Native Astro cannot depend on react/, script);
+    }
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
+});
+
+test('Astro import discovery ignores template prose and comments while preserving script text', () => {
+  const source = `---
+import { clsx } from "clsx";
+const example = '<script src="not-a-dependency"></script>';
+---
+<!-- <script src="also-not-a-dependency"></script> -->
+<p>import React from "react";</p>
+<script>import first from "first&amp;module"; // trailing comment</script>
+<script>import second from "second-module";</script>`;
+  assert.deepEqual(importsOf(source, 'Example.astro'), ['clsx', 'first&amp;module', 'second-module']);
 });

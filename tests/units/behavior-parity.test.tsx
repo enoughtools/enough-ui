@@ -12,7 +12,7 @@ import {
   type ColumnDef,
   type RowSelectionState,
   type SortingState,
-} from '@tanstack/react-table';
+} from '@tanstack/react-table-v8';
 
 import {
   Dialog,

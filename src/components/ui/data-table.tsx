@@ -2,7 +2,16 @@
 
 import * as React from "react"
 import type { CheckedState } from "@radix-ui/react-checkbox"
-import { flexRender, type Table as TanStackTable } from "@tanstack/react-table"
+import {
+  flexRender,
+  type Table as TableV9,
+  type stockFeatures,
+  type RowData,
+  type TableFeatures,
+  type HeaderContext,
+  type CellContext,
+} from "@tanstack/react-table"
+import type { Table as TanStackTable } from "@tanstack/react-table-v8"
 
 import { cn } from "../../lib/utils.js"
 import { directionIconClass, sortIndicatorPaths } from "../../lib/direction-icons.js"
@@ -379,33 +388,90 @@ function DataTable<TData>({
   )
 }
 
-type TanStackDataTableProps<TData> = Omit<React.HTMLAttributes<HTMLDivElement>, "children"> & {
-  /** A table created by useReactTable; filtering, sorting and pagination stay in your control. */
-  table: TanStackTable<TData>
+type TanStackDataTableProps<TData, TFeatures extends TableFeatures = typeof stockFeatures> = Omit<React.HTMLAttributes<HTMLDivElement>, "children"> & {
+  /** A v8 useReactTable instance or a v9 useTable instance. Filtering, sorting and pagination stay in your control. */
+  table: TanStackTable<TData> | (TableV9<TFeatures, TData & RowData> & RenderedTableView<HeaderContext<TFeatures, TData & RowData>, CellContext<TFeatures, TData & RowData>>)
   caption?: React.ReactNode
   emptyMessage?: React.ReactNode
 }
 
+type TableCellView<C extends object> = {
+  id: string
+  column: { columnDef: { cell?: React.ReactNode | React.ComponentType<C> } }
+  getContext(): C
+}
+
+type TableHeaderView<H extends object> = {
+  id: string
+  colSpan: number
+  isPlaceholder: boolean
+  column: {
+    getCanSort?(): boolean
+    getIsSorted?(): false | "asc" | "desc"
+    columnDef: { header?: React.ReactNode | React.ComponentType<H> }
+  }
+  getContext(): H
+}
+
+type RenderedTableView<H extends object, C extends object> = {
+  getHeaderGroups(): { id: string; headers: TableHeaderView<H>[] }[]
+  getRowModel(): { rows: {
+    id: string
+    getIsSelected?(): boolean
+    getVisibleCells?(): TableCellView<C>[]
+    getAllCells(): TableCellView<C>[]
+  }[] }
+  getVisibleLeafColumns?(): unknown[]
+  getAllLeafColumns(): unknown[]
+}
+
+// Render only the shared table capabilities; version-specific state stays with
+// the caller. Optional v9 features can be omitted without changing the markup.
+function renderTableView<H extends object, C extends object>(table: RenderedTableView<H, C>) {
+  return {
+    headers: table.getHeaderGroups().map(group => ({
+      id: group.id,
+      headers: group.headers.map(header => ({
+        id: header.id,
+        colSpan: header.colSpan,
+        sort: header.column.getCanSort?.() ? header.column.getIsSorted?.() || "none" : undefined,
+        content: header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext()),
+      })),
+    })),
+    rows: table.getRowModel().rows.map(row => ({
+      id: row.id,
+      selected: row.getIsSelected?.() ?? false,
+      cells: (row.getVisibleCells?.() ?? row.getAllCells()).map(cell => ({
+        id: cell.id,
+        content: flexRender(cell.column.columnDef.cell, cell.getContext()),
+      })),
+    })),
+    columns: (table.getVisibleLeafColumns?.() ?? table.getAllLeafColumns()).length,
+  }
+}
+
 /** Renders TanStack's current row model using EnoughUI's Table primitives. */
-function TanStackDataTable<TData>({
+function TanStackDataTable<TData, TFeatures extends TableFeatures = typeof stockFeatures>({
   table,
   caption,
   emptyMessage = "No results found.",
   className,
   ...props
-}: TanStackDataTableProps<TData>) {
-  const rows = table.getRowModel().rows
+}: TanStackDataTableProps<TData, TFeatures>) {
+  // Narrow versions separately so each cell callback keeps its own context type.
+  const view = "store" in table ? renderTableView(table) : renderTableView(table)
+  const rows = view.rows
 
   return (
     <div data-slot="data-table" className={cn("w-full", className)} {...props}>
       <Table>
         {caption && <TableCaption>{caption}</TableCaption>}
         <TableHeader>
-          {table.getHeaderGroups().map((group) => (
+          {view.headers.map((group) => (
             <TableRow key={group.id} className="hover:bg-transparent">
               {group.headers.map((header) => (
-                <TableHead key={header.id} scope={header.colSpan > 1 ? "colgroup" : "col"} colSpan={header.colSpan} aria-sort={header.colSpan === 1 && header.column.getCanSort() ? header.column.getIsSorted() === "asc" ? "ascending" : header.column.getIsSorted() === "desc" ? "descending" : "none" : undefined}>
-                  {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                <TableHead key={header.id} scope={header.colSpan > 1 ? "colgroup" : "col"} colSpan={header.colSpan} aria-sort={header.colSpan === 1 && header.sort ? header.sort === "asc" ? "ascending" : header.sort === "desc" ? "descending" : "none" : undefined}>
+                  {header.content}
                 </TableHead>
               ))}
             </TableRow>
@@ -413,16 +479,16 @@ function TanStackDataTable<TData>({
         </TableHeader>
         <TableBody>
           {rows.length ? rows.map((row) => (
-            <TableRow key={row.id} data-state={row.getIsSelected() ? "selected" : undefined}>
-              {row.getVisibleCells().map((cell) => (
+            <TableRow key={row.id} data-state={row.selected ? "selected" : undefined}>
+              {row.cells.map((cell) => (
                 <TableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  {cell.content}
                 </TableCell>
               ))}
             </TableRow>
           )) : (
             <TableRow>
-              <TableCell colSpan={Math.max(1, table.getVisibleLeafColumns().length)} className="h-24 text-center">
+              <TableCell colSpan={Math.max(1, view.columns)} className="h-24 text-center">
                 {emptyMessage}
               </TableCell>
             </TableRow>

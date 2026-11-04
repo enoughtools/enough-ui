@@ -113,3 +113,9 @@ Existing EnoughUI patterns and branded variants may remain as documented additio
 Both renderer archives export `compatibility.json` with the full provider-qualified baseline and exact EnoughUI production dependency evidence. EnoughUI versions remain independent of the CLI. Runtime primitives are pinned to tested versions; upgrade them promptly through the same checks. Type compatibility also requires the consumer's supported React/TypeScript environment.
 
 Trace and CodeBlock have native presentation in addition to React behavior. Their disclosure/copy controls use React islands; native CodeBlockContent accepts `value` for safe plain-text numbering. AgentConfirmation, PromptComposer, Sources, InlineCitation and AgentWork are EnoughUI compositions, outside the upstream parity count. Native receipts and work transcripts are static. The [agentic UI guide](./agentic-ui.md) defines these renderer differences and optional integrations.
+
+## TanStack Table versions
+
+`TanStackDataTable` accepts existing v8 `useReactTable` instances and v9 `useTable` instances. The v8 public prop contract remains supported through the internal `@tanstack/react-table-v8` compatibility dependency; existing applications can keep passing their v8 table objects. New applications should use `@tanstack/react-table` v9. Both versions share the same EnoughUI table markup and styles.
+
+V9 tables can omit optional features. Enable sorting, selection, visibility, filtering and pagination in the table's own feature configuration when those behaviors are needed. EnoughUI renders the caller's current row model and does not take ownership of table state. The `TanStackV9Composition` Storybook example demonstrates grouped headers, custom cells and interactive features; the existing composition demonstrates the v8 integration. In Astro, these stateful tables remain React islands.

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
-import { createServer } from 'node:http';
+import { createCatalogServer } from './catalog-server.mjs';
 import { readFile, stat, mkdir, writeFile } from 'node:fs/promises';
-import { resolve, extname, sep } from 'node:path';
+import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import AxeBuilder from '@axe-core/playwright';
@@ -9,7 +9,6 @@ import AxeBuilder from '@axe-core/playwright';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const catalog = resolve(root, 'storybook-static');
 const output = resolve(root, 'artifacts/catalog');
-const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff2': 'font/woff2' };
 const verified = [];
 const failures = [];
 const notes = [];
@@ -21,15 +20,7 @@ try {
   let url = process.env.STORYBOOK_URL;
   if (!url) {
     await stat(resolve(catalog, 'index.json')).catch(() => { throw new Error('Build the shared Storybook catalog first: pnpm build-storybook'); });
-    server = createServer(async (request, response) => {
-      try {
-        const path = resolve(catalog, '.' + decodeURIComponent(new URL(request.url, 'http://localhost').pathname));
-        if (path !== catalog && !path.startsWith(catalog + sep)) { response.writeHead(403).end(); return; }
-        const file = (await stat(path)).isDirectory() ? resolve(path, 'index.html') : path;
-        response.writeHead(200, { 'content-type': mime[extname(file)] ?? 'application/octet-stream' });
-        response.end(await readFile(file));
-      } catch { response.writeHead(404).end('Not found'); }
-    });
+    server = createCatalogServer(catalog);
     await new Promise((done) => server.listen(0, '127.0.0.1', done));
     url = `http://127.0.0.1:${server.address().port}`;
   }

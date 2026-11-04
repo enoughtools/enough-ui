@@ -111,9 +111,11 @@ createRoot(document.getElementById('root')!).render(<main><h1>Installed React pa
   <AgentConfirmation request={{id:'packed-approval',title:'Verify package?'}} onDecision={async () => {}} />
 </main>);
 `);
+  // Vite supplies the asset declarations required by checked CSS imports in TS6.
+  await writeFile(join(directory, 'vite-env.d.ts'), '/// <reference types="vite/client" />\n');
   await writeJSON(join(directory, 'tsconfig.json'), {
     compilerOptions: { target: 'ES2022', lib: ['ES2022', 'DOM', 'DOM.Iterable'], module: 'NodeNext', moduleResolution: 'NodeNext', jsx: 'react-jsx', strict: true, noEmit: true, skipLibCheck: false },
-    include: ['main.tsx'],
+    include: ['main.tsx', 'vite-env.d.ts'],
   });
   const imports = Object.entries(input.manifest.exports).filter(([, target]) => typeof target !== 'string').map(([key]) => key === '.' ? input.name : input.name + key.slice(1));
   await writeFile(join(directory, 'smoke.mjs'), `
