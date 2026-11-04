@@ -537,7 +537,10 @@
     "test:swift": "swift test",
     "pack:swift": "node scripts/pack-swift.mjs",
     "check:compatibility": "node scripts/check-upstream.mjs && node scripts/check-contracts.mjs",
-    "check:upstream": "node scripts/check-upstream.mjs --online"
+    "check:upstream": "node scripts/check-upstream.mjs --online",
+    "build:swift-gallery": "node scripts/build-swift-gallery.mjs",
+    "capture:swift-gallery": "node scripts/capture-swift-gallery.mjs",
+    "verify:swift-gallery": "node scripts/verify-swift-gallery.mjs"
   },
   "peerDependencies": {
     "react": "^19.0.0",
