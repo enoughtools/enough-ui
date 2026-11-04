@@ -15,8 +15,8 @@ importers:
         specifier: 0.21.3
         version: 0.21.3(zod@4.6.6)
       '@json-render/react':
-        specifier: 0.21.3
-        version: 0.21.3(react@19.3.1)(zod@4.6.6)
+        specifier: 0.21.4
+        version: 0.21.4(react@19.3.1)(zod@4.6.6)
       '@tanstack/ai':
         specifier: 1.0.1
         version: 1.0.1(zod@4.6.6)
@@ -64,8 +64,13 @@ packages:
     peerDependencies:
       zod: ^4.0.0
 
-  '@json-render/react@0.21.3':
-    resolution: {integrity: sha512-+/i0vPRQ164KzvNdPpQleLp+WjfRS2zYRIujLbRZUEmqiQb+WtEi1i9tZMYL/dRFOUzeNveu421KDzI11Wounw==}
+  '@json-render/core@0.21.4':
+    resolution: {integrity: sha512-UqjpdDOmr7a9ISZisgQvgeKuBpiNQesS7PNgcstwTBlutMbgS/5fbNThvpEk4E35eMe2bpBVzwOPuaNY3xthNw==}
+    peerDependencies:
+      zod: ^4.0.0
+
+  '@json-render/react@0.21.4':
+    resolution: {integrity: sha512-pCOhhgpBQBZV8NDLx0TTMapeWqGzDGPDgaIcYg9xHm35XglqxkcG2QgzzhE/VUSz3uqkWW0s8mCYO/jGP/hZHQ==}
     peerDependencies:
       react: ^19.2.3
 
@@ -172,9 +177,13 @@ snapshots:
     dependencies:
       zod: 4.6.6
 
-  '@json-render/react@0.21.3(react@19.3.1)(zod@4.6.6)':
+  '@json-render/core@0.21.4(zod@4.6.6)':
     dependencies:
-      '@json-render/core': 0.21.3(zod@4.6.6)
+      zod: 4.6.6
+
+  '@json-render/react@0.21.4(react@19.3.1)(zod@4.6.6)':
+    dependencies:
+      '@json-render/core': 0.21.4(zod@4.6.6)
       react: 19.3.1
     transitivePeerDependencies:
       - zod
