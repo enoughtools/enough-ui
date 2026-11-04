@@ -50,7 +50,7 @@ try {
       target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext,
       moduleResolution: ts.ModuleResolutionKind.Bundler, jsx: ts.JsxEmit.ReactJSX,
       strict: true, skipLibCheck: true, noEmit: true, esModuleInterop: true,
-      baseUrl: root, ...(label === 'built' ? {} : { paths: { '#ui/*': [target] } }),
+      ...(label === 'built' ? {} : { paths: { '#ui/*': [target] } }),
     });
     const errors = ts.getPreEmitDiagnostics(program);
     if (errors.length) throw new Error(`${label} interface fixtures failed:\n${ts.formatDiagnosticsWithColorAndContext(errors, { getCurrentDirectory: () => root, getCanonicalFileName: file => file, getNewLine: () => '\n' })}`);

@@ -95,7 +95,7 @@ test('renderer archives expose the same exact compatibility baseline and depende
     const pkg = await readManifest(join(root, 'packages', renderer));
     assert.equal(pkg.exports['./compatibility.json'], './dist/compatibility.json');
     for (const [name, version] of Object.entries(pkg.dependencies)) {
-      assert.match(version, /^\d+\.\d+\.\d+(?:-[\w.-]+)?$/);
+      assert.match(version, /^(?:npm:(?:@[^/]+\/)?[^@]+@)?\d+\.\d+\.\d+(?:-[\w.-]+)?$/);
       assert.equal(metadata.dependencies[name], version);
     }
     if (reference) assert.deepEqual(metadata, reference);
