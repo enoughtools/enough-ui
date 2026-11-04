@@ -1,0 +1,8 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { traceStyles } from '../lib/agent-ui.js';
+import { cn } from '../lib/utils.js';
+type Props = HTMLAttributes<'span'> & { status?: 'running' | 'error' | 'pending' };
+const { class: className, status, ...attributes } = Astro.props;
+---
+<span data-slot="trace-line" data-status={status} class={cn(traceStyles.Line, className)} {...attributes}><slot /></span>

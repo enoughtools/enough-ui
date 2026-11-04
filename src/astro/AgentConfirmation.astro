@@ -1,0 +1,13 @@
+---
+import Item from './Item.astro';
+import ItemContent from './ItemContent.astro';
+import ItemTitle from './ItemTitle.astro';
+import ItemDescription from './ItemDescription.astro';
+import { cn } from '../lib/utils.js';
+import { confirmationStyles } from '../lib/agent-ui.js';
+import type { HTMLAttributes } from 'astro/types';
+type Props = HTMLAttributes<'div'> & { request: { id: string; title: string; description?: string }; resolution: 'approved' | 'denied' | 'expired' | 'cancelled' };
+const { request, resolution, class:className, ...attributes } = Astro.props;
+const labels = { approved: 'Approved', denied: 'Denied', expired: 'Request expired', cancelled: 'Request cancelled' };
+---
+<Item variant="outline" size="sm" class={cn(confirmationStyles.Root,className)} data-request-id={request.id} data-resolution={resolution} {...attributes}><ItemContent><ItemTitle>{request.title}</ItemTitle>{request.description && <ItemDescription>{request.description}</ItemDescription>}<p role="status" class={confirmationStyles.Receipt}><svg aria-hidden="true" class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={resolution === 'approved' ? 'M5 12l4 4L19 6' : resolution === 'expired' ? 'M12 8v4l3 2M20 12a8 8 0 1 1-16 0a8 8 0 1 1 16 0' : 'M6 6l12 12M6 18L18 6'} /></svg>{labels[resolution]}</p></ItemContent></Item>

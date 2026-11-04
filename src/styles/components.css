@@ -1,11 +1,14 @@
 @layer theme, base, components, utilities;
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities) source(none);
+@import "./agent-ui.css";
+
 @import "./spinner.css" layer(components);
 @source "../components";
 @source "../astro";
 @source "../lib";
 @plugin "tailwindcss-animate";
+
 
 
 

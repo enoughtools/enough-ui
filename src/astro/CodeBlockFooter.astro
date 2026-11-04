@@ -1,0 +1,8 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { codeBlockStyles } from '../lib/agent-ui.js';
+import { cn } from '../lib/utils.js';
+type Props = HTMLAttributes<'div'>;
+const { class: className, ...attributes } = Astro.props;
+---
+<div data-slot="code-block-footer" class={cn(codeBlockStyles.Footer, className)} {...attributes}><slot /></div>

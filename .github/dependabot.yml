@@ -17,3 +17,12 @@ updates:
     schedule:
       interval: daily
     open-pull-requests-limit: 5
+  - package-ecosystem: npm
+    directory: /examples/agentic-ui
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 5
+    groups:
+      security:
+        applies-to: security-updates
+        patterns: ["*"]

@@ -1,6 +1,14 @@
 # Changelog
 
-## Unreleased
+## 0.6.0
+
+- Add shadcn-compatible Trace and Code Block primitives, including React syntax highlighting for streamed code, copying, numbered lines and diffs. Native Astro provides static traces and code presentation.
+- Add Agent Work, Prompt Composer, Agent Confirmation, Sources and inline citations. Cover streamed task state, retry, approval receipts, growing drafts, file attachments, send/stop and keyboard focus recovery.
+- Refresh the shared catalog with runtime-neutral agent examples, native Astro stories, responsive layouts and real component previews. Keep optional runtime integrations in a separate developer example package.
+- Advance the pinned shadcn Radix baseline to `c0d63c339d6cd2fc26135590a54cf1f362269451`. Ship compatibility metadata with both packages and verify immutable upstream evidence plus public interface fixtures. EnoughUI versions remain independent of the shadcn CLI.
+- Pin production dependencies exactly and include the optional example in security and compatibility checks. Existing public component interfaces remain supported; Base UI is outside the pinned Radix contract.
+- Point catalog and component links to the live `enoughui.com` address; preserve existing alternate domains.
+- SwiftUI remains available under the shared release tag; this release adds web components only.
 
 - Make `enoughui.com` the canonical website domain, update package homepages and gallery metadata, and permanently redirect the previous domains and `www` while preserving deep links.
 

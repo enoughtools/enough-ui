@@ -1,0 +1,6 @@
+---
+import { sourceStyles, sourceHref, type SourceReference } from '../lib/sources.js';
+interface Props { source: SourceReference; index: number }
+const { source, index } = Astro.props;
+---
+<a class={sourceStyles.Link} href={sourceHref(source.href)} aria-label={`Source ${index}: ${source.title}`} title={source.description}>[{index}]</a>

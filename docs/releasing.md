@@ -111,3 +111,8 @@ The reusable Swift workflow checks generated palette freshness, tests macOS rend
 After the first tagged Swift release, submit `https://github.com/enoughtools/enough-ui.git` through [Swift Package Index](https://swiftpackageindex.com/add-a-package). Its maintainers decide when to accept and index it. A submission does not mean listing is live. Indexing is independent of SwiftPM installation.
 
 CocoaPods, Carthage binaries and Homebrew are not targets for this SwiftUI source library. See the [Swift distribution guide](../packages/swift/README.md#distribution) for the rationale. RepoReach adoption is a separate consuming-product migration.
+## Component interface baseline
+
+Renderer versions remain EnoughUI versions. They do not mirror the shadcn CLI version. Both archives expose `compatibility.json` with the exact Radix baseline commit, scope and tested production dependency pins. Keep that metadata in release notes and advance the baseline only after the frozen provenance, public type fixtures, renderer stories and packed consumers pass. `pnpm check:compatibility` is the offline gate; `pnpm check:upstream` verifies immutable evidence online and reports upstream source, documentation, metadata and dependency changes separately.
+
+The optional agentic UI example has its own lockfile and dependencies. Install it before checking all stories, and audit it alongside the core lockfile. It is not published with either UI renderer package. See [agentic UI](./agentic-ui.md).

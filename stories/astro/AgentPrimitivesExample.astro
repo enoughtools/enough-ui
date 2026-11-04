@@ -1,0 +1,23 @@
+---
+import Trace from '../../src/astro/Trace.astro';
+import TraceLine from '../../src/astro/TraceLine.astro';
+import TraceIcon from '../../src/astro/TraceIcon.astro';
+import TraceTitle from '../../src/astro/TraceTitle.astro';
+import TraceDescription from '../../src/astro/TraceDescription.astro';
+import CodeBlock from '../../src/astro/CodeBlock.astro';
+import CodeBlockHeader from '../../src/astro/CodeBlockHeader.astro';
+import CodeBlockTitle from '../../src/astro/CodeBlockTitle.astro';
+import CodeBlockContent from '../../src/astro/CodeBlockContent.astro';
+import CodeBlockLine from '../../src/astro/CodeBlockLine.astro';
+interface Props { diff?: boolean; wrap?: boolean; }
+const { diff = false, wrap = false } = Astro.props;
+---
+<Trace>
+  <TraceLine><TraceIcon>✓</TraceIcon><TraceTitle>Read the source</TraceTitle><TraceDescription>2 files</TraceDescription></TraceLine>
+  <TraceLine status="running"><TraceTitle>Running tests</TraceTitle></TraceLine>
+  <TraceLine status="error"><TraceTitle>Failed to publish</TraceTitle></TraceLine>
+</Trace>
+<CodeBlock variant={diff ? 'destructive' : 'default'}>
+  <CodeBlockHeader><CodeBlockTitle>release.ts</CodeBlockTitle></CodeBlockHeader>
+  {diff ? <CodeBlockContent lineNumbers wrap={wrap} startLine={10}><CodeBlockLine variant="removed" value="const ready = false;" /><CodeBlockLine variant="added" value="const ready = true;" /><CodeBlockLine /><CodeBlockLine variant="highlighted" value="export { ready };" /></CodeBlockContent> : <CodeBlockContent lineNumbers wrap={wrap} startLine={10} value={'const ready = true;\n\nexport { ready };\n'} />}
+</CodeBlock>

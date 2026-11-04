@@ -1,0 +1,56 @@
+@layer components {
+  .enough-agent-step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    inset-inline-start: 7px;
+    top: 26px;
+    bottom: -10px;
+    width: 1px;
+    background: var(--color-border-mid);
+    pointer-events: none;
+  }
+  /* GitHub's light keyword colors miss AA on EnoughUI's paper surface. */
+  .enough-highlight-token {
+    color: color-mix(
+      in srgb,
+      var(--shiki-light, var(--color-ink)) 85%,
+      var(--color-ink)
+    );
+  }
+  .dark .enough-highlight-token {
+    color: color-mix(
+      in srgb,
+      var(--shiki-dark, var(--color-ink)) 85%,
+      var(--color-ink)
+    );
+  }
+  [data-slot="code-block-content"][data-numbered]
+    [data-slot="code-block-line"] {
+    display: grid;
+    grid-template-columns: 3ch minmax(0, 1fr);
+    counter-increment: line;
+  }
+  [data-slot="code-block-content"][data-numbered]
+    [data-slot="code-block-line"]::before {
+    content: counter(line);
+    color: var(--color-text-3);
+    padding-inline-end: 1ch;
+    text-align: right;
+    user-select: none;
+  }
+  [data-slot="code-block-line"][data-variant="added"]::after,
+  [data-slot="code-block-line"][data-variant="removed"]::after {
+    position: absolute;
+    inset-inline-end: 0.25rem;
+    user-select: none;
+    pointer-events: none;
+  }
+  [data-slot="code-block-line"][data-variant="added"]::after {
+    content: "+";
+    color: var(--color-ok);
+  }
+  [data-slot="code-block-line"][data-variant="removed"]::after {
+    content: "−";
+    color: var(--color-warn);
+  }
+}

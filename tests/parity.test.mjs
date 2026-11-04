@@ -5,7 +5,7 @@ import { inspectParity, readParityManifest, validateParityManifest } from '../sc
 test('the pinned baseline accounts for every current Radix family and legacy Form', async () => {
   const manifest = await readParityManifest();
   assert.deepEqual(validateParityManifest(manifest), []);
-  assert.equal(manifest.families.length, 66);
+  assert.equal(manifest.families.length, 68);
   assert.equal(manifest.families.find(family => family.id === 'form').origin, 'legacy-registry');
   assert.equal(manifest.families.find(family => family.id === 'sonner').origin, 'radix-registry');
   assert.equal(manifest.families.find(family => family.id === 'date-picker').origin, 'documentation-composition');

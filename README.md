@@ -2,7 +2,7 @@
 
 [![EnoughUI. Enough to build on. Components for React and Astro, with square edges, clear type, and shared foundations.](docs/assets/repository/repo-hero.png)](https://enoughui.com)
 
-**[Explore the live demo](https://enoughui.com)** · [React on npm](https://www.npmjs.com/package/@enoughtools/ui-react) · [Astro on npm](https://www.npmjs.com/package/@enoughtools/ui-astro)
+**[Explore the live demo](https://enoughui.com)** · [Original demo address](https://enoughui.reb.run) · [React on npm](https://www.npmjs.com/package/@enoughtools/ui-react) · [Astro on npm](https://www.npmjs.com/package/@enoughtools/ui-astro)
 
 EnoughUI is a component library for React, Astro and SwiftUI, with proportional typography, square shapes, and shared design tokens. Fine rules, paper surfaces, editorial serif headings, and purposeful indigo give it a clear visual language. It follows shadcn/ui’s Radix component catalog while preserving EnoughUI’s identity.
 
@@ -23,6 +23,8 @@ Both web packages include compiled CSS and their own component entry points. Nat
 The [parity contract](docs/parity.md) records the pinned upstream catalog, required exports, renderer mapping, and intentional differences. A catalog or export count alone does not establish behavioral parity. The project verifies source contracts, story rendering, interactions, browser accessibility, and isolated package consumers.
 
 [CountryHeatmap](docs/country-heatmap.md) adds a responsive world map with shared color scales and an exact-value table in both React and native Astro. It uses public-domain Natural Earth boundaries and works without hydration. [Try the country heatmap](https://enoughui.com/?path=/catalog/country-heatmap).
+
+Agent interfaces now include [Agent Work](https://enoughui.com/?path=/catalog/agent-work), [Prompt Composer](https://enoughui.com/?path=/catalog/prompt-composer), [confirmations](https://enoughui.com/?path=/catalog/agent-confirmation), [sources](https://enoughui.com/?path=/catalog/sources), and [Code Block](https://enoughui.com/?path=/catalog/code-block). Browse the live examples or read the [agentic UI guide](docs/agentic-ui.md).
 
 ## SwiftUI
 
@@ -146,6 +148,8 @@ Use Node 22.14+ and pnpm 10.34.5. Source in `src/` is the source of truth. The r
 ```sh
 pnpm install --frozen-lockfile
 pnpm build
+pnpm --dir examples/agentic-ui install --frozen-lockfile
+pnpm check:compatibility
 pnpm typecheck
 pnpm check:astro
 pnpm test
@@ -193,6 +197,10 @@ pnpm deploy:catalog
 Deployment uses Cloudflare Workers static assets with the custom domains in `wrangler.jsonc`. Authenticate Wrangler to the account that owns `enoughtools.com` and `reb.run` before publishing. `deploy:catalog` rebuilds the renderer packages and Storybook before uploading. Catalog browser checks save screenshots and a report in `artifacts/catalog/`.
 
 See [contributing](CONTRIBUTING.md) for component, parity, accessibility, and review requirements; [release instructions](docs/releasing.md) for npm setup and publishing; [recurring maintenance](docs/maintenance.md) for automated security and compatibility work; and [security policy](SECURITY.md) for reporting vulnerabilities.
+
+## Agentic UI
+
+Trace and CodeBlock provide the building blocks for agent activity and output. AgentConfirmation, PromptComposer, Sources and AgentWork compose the existing controls into agent interfaces. Native Astro presents static content; live controls use React islands. See the [agentic UI guide](docs/agentic-ui.md) for APIs, renderer differences and optional developer integration examples.
 
 ## License
 

@@ -1,0 +1,8 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { sourceStyles, sourceHref, type SourceReference } from '../lib/sources.js';
+import { cn } from '../lib/utils.js';
+type Props = HTMLAttributes<'section'> & { sources: readonly SourceReference[]; label?: string };
+const { sources, label = 'Sources', class: className, ...attributes } = Astro.props;
+---
+<section aria-label={label} class={cn(sourceStyles.Root, className)} {...attributes}><h3 class="font-semibold">{label}</h3><ol class={sourceStyles.List}>{sources.map(source => <li class={sourceStyles.Item}><a class={sourceStyles.Link} href={sourceHref(source.href)}>{source.title}</a>{source.description && <p class={sourceStyles.Description}>{source.description}</p>}</li>)}</ol></section>

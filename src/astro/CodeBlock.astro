@@ -1,0 +1,8 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { codeBlockVariants } from '../lib/agent-ui.js';
+import { cn } from '../lib/utils.js';
+type Props = HTMLAttributes<'div'> & { variant?: 'default' | 'destructive'; size?: 'default' | 'sm' };
+const { class: className, variant = 'default', size = 'default', ...attributes } = Astro.props;
+---
+<div data-slot="code-block" data-variant={variant} data-size={size} class={cn(codeBlockVariants({variant}), className)} {...attributes}><slot /></div>

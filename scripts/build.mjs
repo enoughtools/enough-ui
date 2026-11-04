@@ -26,6 +26,16 @@ await cp(join(root, 'src/astro'), join(root, 'dist/astro'), {
 });
 await writeFile(join(root, 'dist/index.js'), '"use client";\n\n' + barrel.replace(/^export type .*\n/gm, ''));
 await writeFile(join(root, 'dist/index.d.ts'), barrel);
+const parity = JSON.parse(await readFile(join(root, 'docs/shadcn-radix-parity.json'), 'utf8'));
+await writeFile(join(root, 'dist/compatibility.json'), JSON.stringify({
+  schemaVersion: 1,
+  enoughUIVersion: manifest.version,
+  id: `shadcn-radix-${parity.reference.commit}`,
+  reference: parity.reference,
+  scope: 'Radix public interfaces; native Astro presentation differs as documented. Base UI and React Aria catalogs are outside this contract.',
+  guarantee: parity.guarantee,
+  dependencies: manifest.dependencies,
+}, null, 2) + '\n');
 // The generated barrels have no source file to map back to.
 await Promise.all(['index.js.map', 'index.d.ts.map'].map(name => rm(join(root, 'dist', name), { force: true })));
 
