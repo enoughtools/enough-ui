@@ -1,4 +1,5 @@
 import * as React from 'react';
+import '@testing-library/jest-dom/vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, test } from 'vitest';
 import { composeStories, renderStory } from '@storybook-astro/framework/testing';
@@ -77,6 +78,13 @@ for (const [file, module] of Object.entries(modules)) {
         const reference = new DOMParser().parseFromString(markup, 'text/html');
         const react = reference.querySelector(pair.selector) ?? reference.body.firstElementChild!;
         expect(native!.getAttribute('class')).toBe(react!.getAttribute('class'));
+        if (family === 'TopNav') {
+          // Default names must retain the visible brand, including Astro slots.
+          for (const header of [native!, react!]) {
+            const home = header.querySelector(`a[href="${args.homeHref ?? '/'}"]`)!;
+            expect(home).toHaveAccessibleName(home.textContent!.trim());
+          }
+        }
       });
     }
   });

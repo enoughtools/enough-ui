@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
-import { createServer } from 'node:http';
+import { createCatalogServer } from './catalog-server.mjs';
 import { readFile, stat, mkdir, writeFile } from 'node:fs/promises';
-import { resolve, extname, sep } from 'node:path';
+import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import AxeBuilder from '@axe-core/playwright';
@@ -11,7 +11,6 @@ const catalog = resolve(root, 'storybook-static');
 const output = resolve(root, 'artifacts/storybook');
 const filter = process.argv.find((arg) => arg.startsWith('--story='))?.slice(8);
 const matches = (id) => !filter || filter.split(',').some((part) => id.includes(part));
-const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff2': 'font/woff2' };
 let server;
 let browser;
 const failures = [];
@@ -25,15 +24,7 @@ try {
   let url = process.env.STORYBOOK_URL;
   if (!url) {
     await stat(resolve(catalog, 'index.json')).catch(() => { throw new Error('Build the shared Astro/React Storybook first: pnpm build-storybook'); });
-    server = createServer(async (request, response) => {
-      try {
-        const path = resolve(catalog, '.' + decodeURIComponent(new URL(request.url, 'http://localhost').pathname));
-        if (path !== catalog && !path.startsWith(catalog + sep)) { response.writeHead(403).end(); return; }
-        const file = (await stat(path)).isDirectory() ? resolve(path, 'index.html') : path;
-        response.writeHead(200, { 'content-type': mime[extname(file)] ?? 'application/octet-stream' });
-        response.end(await readFile(file));
-      } catch { response.writeHead(404).end('Not found'); }
-    });
+    server = createCatalogServer(catalog);
     await new Promise((done) => server.listen(0, '127.0.0.1', done));
     url = `http://127.0.0.1:${server.address().port}`;
   }
@@ -205,22 +196,34 @@ try {
     await page.getByText('1 of 1 rows selected', { exact: true }).waitFor();
     assert.equal(await page.getByRole('button', { name: 'Next page' }).isDisabled(), true);
   });
+  await scenario('ui-data-table--tan-stack-v-9-composition', async () => {
+    assert.equal(await page.locator('#storybook-root tbody tr').count(), 3);
+    await page.getByRole('button', { name: 'Project', exact: true }).click();
+    await page.waitForFunction(() => document.querySelector('#storybook-root tbody tr')?.textContent?.includes('Atlas Index'));
+    await page.getByRole('checkbox', { name: 'Select Atlas Index' }).check();
+    await attr(page.locator('#storybook-root tbody tr').first(), 'data-state', 'selected');
+    await page.getByRole('button', { name: 'Next page', exact: true }).click();
+    await page.waitForFunction(() => document.querySelector('#storybook-root tbody tr')?.textContent?.includes('Northstar'));
+    await page.getByLabel('Filter projects').fill('Atlas');
+    await page.waitForFunction(() => document.querySelectorAll('#storybook-root tbody tr').length === 1);
+    assert.equal(await page.getByRole('button', { name: 'Next page', exact: true }).isDisabled(), true);
+  });
   await scenario('ui-calendar--default', async () => {
-    const day = page.getByRole('button', { name: 'Monday, October 12th, 2026', exact: true });
+    const day = page.getByRole('button', { name: '12, Monday, October 12th, 2026', exact: true });
     await focus(day); await page.keyboard.press('ArrowRight');
-    const next = page.getByRole('button', { name: 'Tuesday, October 13th, 2026', exact: true });
+    const next = page.getByRole('button', { name: '13, Tuesday, October 13th, 2026', exact: true });
     await focused(next);
     await page.keyboard.press('Enter'); await attr(page.locator('[data-slot="calendar-day-button"][data-day="10/13/2026"]'), 'data-selected-single', 'true');
   });
   await scenario('ui-calendar--disabled-dates', async () => {
-    assert.equal(await page.getByRole('button', { name: 'Saturday, October 10th, 2026', exact: true }).isDisabled(), true);
-    await focus(page.getByRole('button', { name: 'Friday, October 9th, 2026', exact: true })); await page.keyboard.press('ArrowRight');
-    await focused(page.getByRole('button', { name: 'Monday, October 12th, 2026', exact: true }));
+    assert.equal(await page.getByRole('button', { name: '10, Saturday, October 10th, 2026', exact: true }).isDisabled(), true);
+    await focus(page.getByRole('button', { name: '9, Friday, October 9th, 2026', exact: true })); await page.keyboard.press('ArrowRight');
+    await focused(page.getByRole('button', { name: '12, Monday, October 12th, 2026', exact: true }));
   });
   await scenario('ui-date-picker--default', async () => {
     const trigger = page.getByRole('button', { name: 'Appointment date: Pick a date', exact: true });
     await focus(trigger); await page.keyboard.press('Enter');
-    const day = page.getByRole('button', { name: 'Monday, October 12th, 2026', exact: true }); await day.waitFor();
+    const day = page.getByRole('button', { name: '12, Monday, October 12th, 2026', exact: true }); await day.waitFor();
     await focus(day); await page.keyboard.press('Enter'); await day.waitFor({ state: 'hidden' });
     const selected = page.getByRole('button', { name: 'Appointment date: October 12th, 2026', exact: true });
     await focused(selected);

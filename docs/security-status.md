@@ -1,17 +1,38 @@
-# Upstream dependency status
+# Dependency security status
 
-Reviewed October 3, 2026. This records specific findings; it is not a blanket security certification.
+Reviewed November 1, 2026. This records a dependency audit, not a blanket security certification. See [recurring maintenance](maintenance.md) for detection and remediation schedules.
 
-## Patched development dependency
+## Dependency updates
 
-The lockfile uses devalue 5.9.4 for Astro and its React integration. This includes the maintainer's [5.9.3 security fixes](https://github.com/sveltejs/devalue/releases/tag/v5.9.3). Serialization, script escaping, malformed input rejection, Buffer isolation, and native Astro story rendering were checked after the update. Neither public renderer package declares devalue as a runtime dependency.
+The maintenance refresh updates the React/Radix dependencies within their existing major versions and upgrades the Astro, Storybook, Vite, Vitest, Wrangler and Happy DOM development toolchain. Happy DOM moves to 21.0.4 to fix its host code execution advisory. DayPicker moves to v10 after checking its removed deprecated APIs against our calendar and date-picker wrappers; consumers relying on deprecated v9 props must follow the [upstream migration guide](https://daypicker.dev/upgrading). Calendar day labels include the visible day text alongside the full date and selection context for voice control. The committed lockfile resolves all 19 Dependabot findings open at the start of the review, plus additional transitive findings from `pnpm audit`.
 
-## Open upstream advisory
+Two scoped overrides are necessary while parent dependencies retain vulnerable constraints:
 
-[GHSA-ch52-4w7c-c8xp](https://github.com/advisories/GHSA-ch52-4w7c-c8xp) affects http-cache-semantics through 4.2.0; no patched version is published as of this review. Keep the Dependabot alert open.
+- `monaco-editor>dompurify`: at least 3.4.17, replacing Monaco 0.57.0's exact 3.4.15 dependency. This addresses the template and shadow-root sanitization advisories in the catalog editor.
+- `@joshwooding/vite-plugin-react-docgen-typescript>glob`: at least 14.0.2 (resolved to 14.0.3), bringing minimatch 11.0.3. This addresses glob and minimatch findings in Storybook's documentation tooling. The Storybook build exercises this integration after the major transitive upgrade.
 
-The installed dependency belongs to the Astro development toolchain. The advisory concerns a shared cache returning another user's cached response after an attacker supplies a `max-stale` directive. The current library and static Storybook catalog provide no authenticated shared-response cache.
+Remove each override when its parent supports the fixed dependency. Keep source-viewer behavior and Storybook build checks in the validation path.
 
-Inspection of Astro 7.3.2 found this dependency in build-time remote image handling, using `storable()` and `timeToLive()`, without calls to the vulnerable `satisfiesWithoutRevalidation()` path. EnoughUI's stories do not use Astro's image-processing components. Our assessment is that the current catalog does not exercise the vulnerable path; this is an inference from the installed code and current usage.
+The earlier open `http-cache-semantics` finding is no longer present: Astro now resolves 4.3.0. Updated sanitize-html 2.18.1 also removes the unpatched deepmerge dependency from the installed tree.
 
-Neither public EnoughUI renderer artifact includes this dependency. Applications remain responsible for their framework's dependencies and caching configuration. Reassess if authenticated remote-image fetching, proxying, or shared response caching is introduced, and update the lockfile when an upstream fix becomes available.
+`pnpm audit --audit-level low` reports **no known vulnerabilities** across the full locked dependency tree. No advisory exceptions, dismissed findings or severity filters were used to reach that result. New advisories can change the result at any time.
+
+## Other security surfaces
+
+GitHub Dependabot and secret scanning returned no open alerts on November 1. Secret scanning and push protection remain enabled. The first CodeQL analysis of main reported six high-severity findings in repository tooling: five filesystem races in the local catalog servers and one case-sensitive HTML script-tag matcher in the artifact dependency checker.
+
+The follow-up uses one catalog server that reads metadata and content through the same open file handle, confines resolved assets to the catalog directory, and rejects paths and symlinks escaping that directory. Astro script dependency discovery uses an HTML parser for script elements and source attributes, including unusual closing-tag syntax, while scanning frontmatter separately. The parser is a development dependency and is not added to either public renderer package. Regression tests exercise served assets, directory indexes, malformed URLs, path/symlink escapes and hidden React imports. CodeQL results must confirm closure after the follow-up merges; no findings are dismissed or suppressed.
+
+The CodeQL action init/analyze steps use the same updated revision. All Node setup steps request the latest matching version instead of relying on a cached minor version: a previous Node 22 CI failure selected 22.23.3 while Astro requires at least 22.23.4.
+
+Daily GitHub audits detect newly published dependency advisories even without a code change. The T3 security task checks every six hours and attempts fixes at every severity; unavailable upstream fixes or failed verification remain explicit blockers rather than being silently dismissed.
+
+## November 4 dependency review
+
+The Storybook Astro 1.14.0 update passed the complete CI matrix and was merged in PR #25. The TypeScript 6.0.3 update requires the isolated React consumer to include Vite's client declarations for CSS side-effect imports; the consumer now uses the standard Vite environment declaration while retaining strict TypeScript checking and archive/export validation.
+
+The TanStack Table 9 update keeps the existing v8 table adapter API through a compatibility dependency (`@tanstack/react-table-v8`). The same renderer also accepts v9 `useTable` instances, including tables with optional features omitted. Existing v8 behavior tests remain, and a v9 Storybook composition covers grouped headers, custom cells, sorting, selection, filtering and pagination. New integrations should use v9; the v8 dependency remains while the public v8 contract is supported.
+
+Node type definitions are updated to 26.6.6 with the full Node 22/24 CI matrix retained. No newer runtime APIs are introduced by this update. Both public renderer packages keep their existing runtime engine requirements.
+
+TypeScript 6 landed in PR #29, superseding Dependabot PR #26. The remaining batch includes the changes from Dependabot PRs #27 and #28, which can be closed as superseded after it merges. No vulnerability findings are suppressed.

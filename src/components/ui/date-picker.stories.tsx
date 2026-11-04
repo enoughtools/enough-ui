@@ -55,7 +55,7 @@ function CompositionDemo() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button type="button" variant="outline" aria-label={`Deadline: ${selected ? format(selected, "PPP") : "Pick a date"}`}>
+        <Button type="button" variant="outline" aria-label={`Deadline: ${selected ? format(selected, "PPP") : "Pick a deadline"}`}>
           <CalendarIcon aria-hidden="true" />
           {selected ? format(selected, "PPP") : "Pick a deadline"}
         </Button>

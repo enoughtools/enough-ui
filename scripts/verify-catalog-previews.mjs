@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
-import { createServer } from 'node:http';
+import { createCatalogServer } from './catalog-server.mjs';
 import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
-import { extname, resolve, sep } from 'node:path';
+import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 
@@ -9,7 +9,6 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const catalog = resolve(root, 'storybook-static');
 const output = resolve(root, 'artifacts/catalog-previews');
 const manifest = JSON.parse(await readFile(resolve(root, '.storybook/catalog/manifest.json'), 'utf8'));
-const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.woff2': 'font/woff2' };
 const verified = [];
 const failures = [];
 const runtimeErrors = [];
@@ -22,15 +21,7 @@ try {
   await mkdir(output, { recursive: true });
   if (!url) {
     await stat(resolve(catalog, 'index.json')).catch(() => { throw new Error('Build the catalog and its previews first: pnpm build-storybook'); });
-    server = createServer(async (request, response) => {
-      try {
-        const path = resolve(catalog, '.' + decodeURIComponent(new URL(request.url, 'http://localhost').pathname));
-        if (path !== catalog && !path.startsWith(catalog + sep)) { response.writeHead(403).end(); return; }
-        const file = (await stat(path)).isDirectory() ? resolve(path, 'index.html') : path;
-        response.writeHead(200, { 'content-type': mime[extname(file)] ?? 'application/octet-stream' });
-        response.end(await readFile(file));
-      } catch { response.writeHead(404).end('Not found'); }
-    });
+    server = createCatalogServer(catalog);
     await new Promise((done) => server.listen(0, '127.0.0.1', done));
     url = `http://127.0.0.1:${server.address().port}`;
   }

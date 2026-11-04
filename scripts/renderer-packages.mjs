@@ -1,6 +1,7 @@
 import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { dirname, join, relative, resolve } from 'node:path';
 import ts from 'typescript';
+import { Parser } from 'htmlparser2';
 
 export const kebabCase = name => name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').replace(/([A-Z])([A-Z][a-z])/g, '$1-$2').toLowerCase();
 const publicFile = name => !name.startsWith('_') && !/\.(?:stories|test|spec)\./.test(name);
@@ -71,13 +72,20 @@ export function importsOf(source, filename) {
   // Astro frontmatter and script blocks are code; template prose is not.
   const scriptSources = [];
   if (filename.endsWith('.astro')) {
-    const frontmatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/)?.[1] ?? '';
-    const scripts = [...source.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)];
-    for (const [, attributes] of scripts) {
-      const src = attributes.match(/\bsrc\s*=\s*(['"])(.*?)\1/);
-      if (src) scriptSources.push(src[2]);
-    }
-    source = [frontmatter, ...scripts.map(([, , code]) => code)].join('\n');
+    const frontmatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
+    const scripts = [];
+    let script;
+    new Parser({
+      onopentag(name, attributes) {
+        if (name !== 'script') return;
+        script = [];
+        scripts.push(script);
+        if (attributes.src) scriptSources.push(attributes.src);
+      },
+      ontext(text) { script?.push(text); },
+      onclosetag(name) { if (name === 'script') script = undefined; },
+    }).end(source.slice(frontmatter?.[0].length ?? 0));
+    source = [frontmatter?.[1] ?? '', ...scripts.map(parts => parts.join(''))].join('\n');
   }
   return [...scriptSources, ...ts.preProcessFile(source, true, true).importedFiles.map(file => file.fileName)];
 }

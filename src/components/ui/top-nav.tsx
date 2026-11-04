@@ -14,6 +14,7 @@ export interface TopNavProps {
   active?: string;
   brand?: React.ReactNode;
   homeHref?: string;
+  /** Optional logo name; include the visible brand text when overriding it. */
   homeLabel?: string;
   skipToHref?: string;
   showLauncher?: boolean;
@@ -31,7 +32,7 @@ export function TopNav({
   active,
   brand = 'EnoughUI',
   homeHref = '/',
-  homeLabel = 'Home',
+  homeLabel,
   skipToHref = '#main',
   onPalette,
   showLauncher = Boolean(onPalette),
