@@ -2,6 +2,7 @@ import * as monaco from 'monaco-editor/editor/editor.api.js';
 import '../../node_modules/monaco-editor/esm/vs/base/browser/ui/codicons/codicon/codicon.css';
 import 'monaco-editor/languages/definitions/typescript/register.js';
 import 'monaco-editor/languages/definitions/javascript/register.js';
+import 'monaco-editor/languages/definitions/swift/register.js';
 import 'monaco-editor/editor/browser/coreCommands.js';
 import 'monaco-editor/editor/contrib/find/browser/findController.js';
 import 'monaco-editor/editor/contrib/folding/browser/folding.js';

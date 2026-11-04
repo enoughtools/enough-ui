@@ -44,6 +44,8 @@ pnpm verify:browser
 
 The catalog build captures real story images with Playwright. Install Chromium before its first build; generated previews stay out of Git.
 
+The Swift page lives in the same Storybook manager at `/swift`. Its source examples are compiled files in `examples/swift-catalog/Sources/EnoughUICatalog/Gallery`; the native demo runs those exact views. Run `pnpm capture:swift-gallery` on a Mac with Xcode and an installed iOS simulator to refresh committed native screenshots and their provenance. The command creates and removes its own capture simulator. Website builds use those checked-in captures, and `pnpm verify:swift-gallery` checks the built page, all four appearances, source copying, navigation and accessible mobile layouts. Regenerate captures when changing native example source.
+
 For interactive controls, cover keyboard navigation, focus movement and restoration, accessible state, disabled behavior, and controlled/uncontrolled state where supported. For shared styling, inspect both renderers in light and dark themes, narrow layouts, and visible focus states. Package verification must exercise installed archives in isolated React and Astro projects so repository dependencies cannot hide missing files or dependency declarations.
 
 ## Pull requests

@@ -6,6 +6,8 @@ EnoughUI brings the same paper surfaces, fine rules, proportional typography, sq
 
 ## Install
 
+Explore the [Swift gallery](https://enoughui.com/swift) for native macOS and iPhone previews, light/dark appearances and copyable Swift source. Its 24 component families use the same compiled examples as the runnable native demo. The website shows screenshots; try interactions in the native demo.
+
 In Xcode, choose **File → Add Package Dependencies**, enter `https://github.com/enoughtools/enough-ui.git`, select a release containing the Swift package (0.5.0 or later), and add the **EnoughUI** product to your app target.
 
 For a Swift package:

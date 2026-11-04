@@ -77,7 +77,7 @@ export const ReducedMotion: Story = {
     <Spinner
       size="lg"
       label="Static loading indicator"
-      className="[&>span]:animate-none"
+      className="[&>svg]:animate-none"
     />
   ),
 }

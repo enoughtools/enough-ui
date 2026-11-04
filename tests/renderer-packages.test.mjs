@@ -13,14 +13,14 @@ after(() => rm(packCache, { recursive: true, force: true }));
 const readManifest = async directory => JSON.parse(await readFile(join(directory, 'package.json'), 'utf8'));
 
 test('package documentation resolves artwork and guides without rewriting examples or external links', () => {
-  const source = '[![Preview](docs/assets/brand/repo-hero.png)](https://ui.enoughtools.com)\n[Parity](docs/parity.md)\n[License](./LICENSE)\n[Demo](https://ui.enoughtools.com)\n[React](#react)\nimport DateControl from "./DateControl";';
+  const source = '[![Preview](docs/assets/brand/repo-hero.png)](https://enoughui.com)\n[Parity](docs/parity.md)\n[License](./LICENSE)\n[Demo](https://enoughui.com)\n[React](#react)\nimport DateControl from "./DateControl";';
   const result = packageReadme(source, '0.4.0');
   assert.match(result, /!\[Preview\]\(https:\/\/raw\.githubusercontent\.com\/enoughtools\/enough-ui\/v0\.4\.0\/docs\/assets\/brand\/repo-hero\.png\)/);
   assert.match(result, /\[Parity\]\(https:\/\/github\.com\/enoughtools\/enough-ui\/blob\/v0\.4\.0\/docs\/parity\.md\)/);
   assert.match(result, /\[License\]\(https:\/\/github\.com\/enoughtools\/enough-ui\/blob\/v0\.4\.0\/LICENSE\)/);
-  assert.ok(result.includes('[Demo](https://ui.enoughtools.com)'));
+  assert.ok(result.includes('[Demo](https://enoughui.com)'));
   assert.ok(result.includes('[React](#react)'));
-  assert.ok(result.includes(')](https://ui.enoughtools.com)'));
+  assert.ok(result.includes(')](https://enoughui.com)'));
   assert.ok(result.includes('import DateControl from "./DateControl";'));
 });
 

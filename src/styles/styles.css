@@ -1,4 +1,5 @@
 @import "tailwindcss" source(none);
+@import "./spinner.css" layer(components);
 @source "../components";
 @source "../astro";
 @source "../lib";
@@ -170,11 +171,6 @@ html { scrollbar-gutter: stable; }
 
   /* Code and keyboard hints follow the same proportional type as the UI. */
   code, kbd, samp, pre { font-family: var(--font-sans); }
-
-  /* Reset border radius globally just in case */
-  * {
-    border-radius: 0 !important;
-  }
 
   /* The design has essentially no motion; honour the preference for none at all. */
   @media (prefers-reduced-motion: reduce) {

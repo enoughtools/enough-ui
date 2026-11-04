@@ -16,23 +16,27 @@ interface SpinnerProps
 }
 
 const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
-  ({ className, size, label = "Loading", ...props }, ref) => (
+  ({ className, size, label = "Loading", "aria-hidden": ariaHidden, ...props }, ref) => (
     <span
+      {...props}
       ref={ref}
       data-slot="spinner"
-      role="status"
-      aria-label={label}
+      role={ariaHidden === true || ariaHidden === "true" ? undefined : props.role ?? "status"}
+      aria-hidden={ariaHidden}
+      aria-label={ariaHidden === true || ariaHidden === "true" ? undefined : props["aria-label"] ?? label}
       className={cn(spinnerVariants({ size }), className)}
-      {...props}
     >
       <svg
-        className="animate-spin motion-reduce:animate-none h-full w-full"
+        data-slot="spinner-icon"
+        aria-hidden="true"
+        focusable="false"
+        style={{ width: "100%", height: "100%" }}
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <rect x="3" y="3" width="18" height="18" stroke="var(--color-ink)" strokeWidth="4" />
-        <rect x="3" y="3" width="9" height="9" fill="var(--color-accent)" />
+        <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2.5" opacity="0.2" />
+        <path d="M12 3a9 9 0 0 1 9 9" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
       </svg>
     </span>
   )

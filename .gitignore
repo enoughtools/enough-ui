@@ -41,3 +41,5 @@ docs/extraction-manifest.json
 .swiftpm/
 DerivedData/
 *.xcuserstate
+
+.storybook/catalog/swift-manifest.json
