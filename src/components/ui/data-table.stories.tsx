@@ -1,5 +1,6 @@
+import { useTable, stockFeatures, createSortedRowModel, createFilteredRowModel, createPaginatedRowModel, sortFns, filterFns, type ColumnDef as ColumnDefV9 } from "@tanstack/react-table"
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { useReactTable, getCoreRowModel, getFilteredRowModel, getSortedRowModel, getPaginationRowModel, type ColumnDef } from "@tanstack/react-table"
+import { useReactTable, getCoreRowModel, getFilteredRowModel, getSortedRowModel, getPaginationRowModel, type ColumnDef } from "@tanstack/react-table-v8"
 
 import { DataTable, TanStackDataTable, type DataTableColumn } from "./data-table.js"
 import { Button } from "./button.js"
@@ -193,3 +194,29 @@ export const TanStackComposition: Story = {
   parameters: { docs: { description: { story: "Compose column definitions, filtering, sorting, visibility, selection, and pagination with TanStack Table. TanStackDataTable renders the resulting row model using EnoughUI Table primitives." } } },
   render: () => <TanStackExample />,
 }
+
+const v9Features = {
+  ...stockFeatures,
+  sortedRowModel: createSortedRowModel(),
+  filteredRowModel: createFilteredRowModel(),
+  paginatedRowModel: createPaginatedRowModel(),
+  sortFns,
+  filterFns,
+}
+const v9Columns: ColumnDefV9<typeof v9Features, Project>[] = [
+  { id: "select", header: "Select", cell: ({ row }) => <Checkbox aria-label={`Select ${row.original.name}`} checked={row.getIsSelected()} onCheckedChange={value => row.toggleSelected(value === true)} /> },
+  { header: "Project details", columns: [
+    { accessorKey: "name", header: ({ column }) => <Button variant="ghost" onClick={column.getToggleSortingHandler()} className="text-[var(--color-dark-text)] hover:bg-[var(--color-ink-2)] hover:text-[var(--color-dark-text)]">Project</Button> },
+    { accessorKey: "owner", header: "Owner" },
+  ] },
+  { accessorKey: "tasks", header: "Tasks", cell: ({ getValue }) => <strong>{getValue<number>()} tasks</strong> },
+]
+function TanStackV9Example() {
+  const table = useTable({ features: v9Features, data: projects, columns: v9Columns, getRowId: project => project.id, initialState: { pagination: { pageSize: 3, pageIndex: 0 } } })
+  return <div className="grid gap-4">
+    <label>Filter projects<Input value={(table.getColumn("name")?.getFilterValue() as string) ?? ""} onChange={event => table.getColumn("name")?.setFilterValue(event.target.value)} /></label>
+    <TanStackDataTable table={table} caption="TanStack v9 projects" />
+    <Button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>Next page</Button>
+  </div>
+}
+export const TanStackV9Composition: Story = { render: () => <TanStackV9Example /> }

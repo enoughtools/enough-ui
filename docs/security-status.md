@@ -31,9 +31,8 @@ Daily GitHub audits detect newly published dependency advisories even without a 
 
 The Storybook Astro 1.14.0 update passed the complete CI matrix and was merged in PR #25. The TypeScript 6.0.3 update requires the isolated React consumer to include Vite's client declarations for CSS side-effect imports; the consumer now uses the standard Vite environment declaration while retaining strict TypeScript checking and archive/export validation.
 
-Two non-security major updates need a separate compatibility decision and remain open:
+The TanStack Table 9 update keeps the existing v8 table adapter API through a compatibility dependency (`@tanstack/react-table-v8`). The same renderer also accepts v9 `useTable` instances, including tables with optional features omitted. Existing v8 behavior tests remain, and a v9 Storybook composition covers grouped headers, custom cells, sorting, selection, filtering and pagination. New integrations should use v9; the v8 dependency remains while the public v8 contract is supported.
 
-- PR #27, TanStack Table 9.3.1: the published module replaces `useReactTable` with `useTable` and changes the `Table` type to require feature and data type arguments. EnoughUI's public `TanStackDataTable` and documented compositions currently accept v8 tables. Installing v9 reproduced the CI errors in that public adapter. A v9 migration must preserve the existing v8 integration or be released with a documented breaking API change; replacing the dependency alone is not compatible.
-- PR #28, Node 26 type definitions: the CI/support baseline remains Node 22 and 24. Keep the Node 22 type definitions so development does not silently admit APIs unavailable on the oldest supported runtime. Reconsider the major type update together with a runtime support-policy change.
+Node type definitions are updated to 26.6.6 with the full Node 22/24 CI matrix retained. No newer runtime APIs are introduced by this update. Both public renderer packages keep their existing runtime engine requirements.
 
-Neither pending major update fixes an open vulnerability. Continue auditing all dependency types and severities and reassess these updates on subsequent maintenance runs.
+TypeScript 6 landed in PR #29, superseding Dependabot PR #26. The remaining batch includes the changes from Dependabot PRs #27 and #28, which can be closed as superseded after it merges. No vulnerability findings are suppressed.

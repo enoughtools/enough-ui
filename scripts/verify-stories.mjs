@@ -196,6 +196,18 @@ try {
     await page.getByText('1 of 1 rows selected', { exact: true }).waitFor();
     assert.equal(await page.getByRole('button', { name: 'Next page' }).isDisabled(), true);
   });
+  await scenario('ui-data-table--tan-stack-v-9-composition', async () => {
+    assert.equal(await page.locator('#storybook-root tbody tr').count(), 3);
+    await page.getByRole('button', { name: 'Project', exact: true }).click();
+    await page.waitForFunction(() => document.querySelector('#storybook-root tbody tr')?.textContent?.includes('Atlas Index'));
+    await page.getByRole('checkbox', { name: 'Select Atlas Index' }).check();
+    await attr(page.locator('#storybook-root tbody tr').first(), 'data-state', 'selected');
+    await page.getByRole('button', { name: 'Next page', exact: true }).click();
+    await page.waitForFunction(() => document.querySelector('#storybook-root tbody tr')?.textContent?.includes('Northstar'));
+    await page.getByLabel('Filter projects').fill('Atlas');
+    await page.waitForFunction(() => document.querySelectorAll('#storybook-root tbody tr').length === 1);
+    assert.equal(await page.getByRole('button', { name: 'Next page', exact: true }).isDisabled(), true);
+  });
   await scenario('ui-calendar--default', async () => {
     const day = page.getByRole('button', { name: '12, Monday, October 12th, 2026', exact: true });
     await focus(day); await page.keyboard.press('ArrowRight');

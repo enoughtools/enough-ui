@@ -103,3 +103,9 @@ The manifest's capability list is a review target. Export coverage does not auto
 5. Rebuild both packages and verify their artifacts before claiming the new baseline.
 
 Existing EnoughUI patterns and branded variants may remain as documented additions. They must not replace a required upstream export or silently accept an unsupported standard variant.
+
+## TanStack Table versions
+
+`TanStackDataTable` accepts existing v8 `useReactTable` instances and v9 `useTable` instances. The v8 public prop contract remains supported through the internal `@tanstack/react-table-v8` compatibility dependency; existing applications can keep passing their v8 table objects. New applications should use `@tanstack/react-table` v9. Both versions share the same EnoughUI table markup and styles.
+
+V9 tables can omit optional features. Enable sorting, selection, visibility, filtering and pagination in the table's own feature configuration when those behaviors are needed. EnoughUI renders the caller's current row model and does not take ownership of table state. The `TanStackV9Composition` Storybook example demonstrates grouped headers, custom cells and interactive features; the existing composition demonstrates the v8 integration. In Astro, these stateful tables remain React islands.
