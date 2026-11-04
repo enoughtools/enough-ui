@@ -26,3 +26,14 @@ The follow-up uses one catalog server that reads metadata and content through th
 The CodeQL action init/analyze steps use the same updated revision. All Node setup steps request the latest matching version instead of relying on a cached minor version: a previous Node 22 CI failure selected 22.23.3 while Astro requires at least 22.23.4.
 
 Daily GitHub audits detect newly published dependency advisories even without a code change. The T3 security task checks every six hours and attempts fixes at every severity; unavailable upstream fixes or failed verification remain explicit blockers rather than being silently dismissed.
+
+## November 4 dependency review
+
+The Storybook Astro 1.14.0 update passed the complete CI matrix and was merged in PR #25. The TypeScript 6.0.3 update requires the isolated React consumer to include Vite's client declarations for CSS side-effect imports; the consumer now uses the standard Vite environment declaration while retaining strict TypeScript checking and archive/export validation.
+
+Two non-security major updates need a separate compatibility decision and remain open:
+
+- PR #27, TanStack Table 9.3.1: the published module replaces `useReactTable` with `useTable` and changes the `Table` type to require feature and data type arguments. EnoughUI's public `TanStackDataTable` and documented compositions currently accept v8 tables. Installing v9 reproduced the CI errors in that public adapter. A v9 migration must preserve the existing v8 integration or be released with a documented breaking API change; replacing the dependency alone is not compatible.
+- PR #28, Node 26 type definitions: the CI/support baseline remains Node 22 and 24. Keep the Node 22 type definitions so development does not silently admit APIs unavailable on the oldest supported runtime. Reconsider the major type update together with a runtime support-policy change.
+
+Neither pending major update fixes an open vulnerability. Continue auditing all dependency types and severities and reassess these updates on subsequent maintenance runs.

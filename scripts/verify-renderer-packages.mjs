@@ -109,9 +109,11 @@ createRoot(document.getElementById('root')!).render(<main><h1>Installed React pa
   <CountryHeatmap title="Packaged country values" data={[{ code: 'MX', value: 42 }, { code: 'NZ', value: 0 }, { code: 'SG', value: 7 }]} />
 </main>);
 `);
+  // Vite supplies the asset declarations required by checked CSS imports in TS6.
+  await writeFile(join(directory, 'vite-env.d.ts'), '/// <reference types="vite/client" />\n');
   await writeJSON(join(directory, 'tsconfig.json'), {
     compilerOptions: { target: 'ES2022', lib: ['ES2022', 'DOM', 'DOM.Iterable'], module: 'NodeNext', moduleResolution: 'NodeNext', jsx: 'react-jsx', strict: true, noEmit: true, skipLibCheck: false },
-    include: ['main.tsx'],
+    include: ['main.tsx', 'vite-env.d.ts'],
   });
   const imports = Object.entries(input.manifest.exports).filter(([, target]) => typeof target !== 'string').map(([key]) => key === '.' ? input.name : input.name + key.slice(1));
   await writeFile(join(directory, 'smoke.mjs'), `
