@@ -91,7 +91,8 @@ async function verifyReact(input) {
     dependencies: { [input.name]: `file:${input.archive}`, react: development.devDependencies.react, 'react-dom': development.devDependencies['react-dom'] },
     devDependencies: Object.fromEntries(['typescript', '@types/react', '@types/react-dom', 'vite'].map(name => [name, development.devDependencies[name]])),
   });
-  run('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund'], directory);
+  // Type/build checks need dev tools even when NODE_ENV is production.
+  run('npm', ['install', '--include=dev', '--ignore-scripts', '--no-audit', '--no-fund'], directory);
   await writeFile(join(directory, 'index.html'), '<!doctype html><html lang="en"><head><title>EnoughUI package test</title></head><body><div id="root"></div><script type="module" src="/main.tsx"></script></body></html>');
   await writeFile(join(directory, 'main.tsx'), `
 import React from 'react';
@@ -186,7 +187,8 @@ async function verifyAstro(input) {
     dependencies: { [input.name]: `file:${input.archive}`, astro: development.devDependencies.astro },
     devDependencies: { '@astrojs/check': development.devDependencies['@astrojs/check'], typescript: development.devDependencies.typescript },
   });
-  run('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund'], directory);
+  // Type/build checks need dev tools even when NODE_ENV is production.
+  run('npm', ['install', '--include=dev', '--ignore-scripts', '--no-audit', '--no-fund'], directory);
   const installed = JSON.parse(await readFile(join(directory, 'package-lock.json'), 'utf8'));
   for (const name of Object.keys(installed.packages)) assert.doesNotMatch(name, /(?:^|\/)node_modules\/(?:react|react-dom|@astrojs\/react)$/, 'Astro consumer installs no React renderer');
   await writeJSON(join(directory, 'tsconfig.json'), { extends: 'astro/tsconfigs/strict', include: ['.astro/types.d.ts', '**/*'], exclude: ['dist'] });
