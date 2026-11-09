@@ -8,7 +8,7 @@
   "dependencies": {
     "@enoughtools/ui-react": "link:../../packages/react",
     "@json-render/core": "0.21.4",
-    "@json-render/react": "0.21.4",
+    "@json-render/react": "0.22.0",
     "@tanstack/ai": "1.0.1",
     "@tanstack/ai-client": "1.0.1",
     "@tanstack/ai-react": "1.0.1",
