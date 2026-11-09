@@ -10,7 +10,7 @@
     "@json-render/core": "0.21.4",
     "@json-render/react": "0.21.4",
     "@tanstack/ai": "1.0.1",
-    "@tanstack/ai-client": "1.0.1",
+    "@tanstack/ai-client": "1.1.0",
     "@tanstack/ai-react": "1.0.1",
     "react": "19.3.1",
     "react-dom": "19.3.1",
