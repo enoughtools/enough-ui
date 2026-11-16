@@ -21,6 +21,10 @@ T3 also supports webhook triggers. A signed GitHub webhook can reduce response l
 
 Use the source package as the source of truth and rebuild `dist` after dependency or source changes. Run the relevant CI checks, including both renderers when shared code or styling changes. Avoid running Storybook builds concurrently with the Astro rendering suite on a shared host; cap test workers when resources are constrained rather than relaxing assertions or timeouts. Review major upgrades and transitive overrides for compatibility. Remove overrides once the parent dependency includes a patched version.
 
+The development dependency `@emnapi/runtime` supplies the stable peer required by Astro’s `astro2tsx` tooling. Without it, pnpm can select the 2.x prerelease runtime alongside the 1.x core and `astro check` crashes with `this.bridge.setLastError is not a function`. Reevaluate this explicit peer when Astro updates its tooling dependencies.
+
+Astro is temporarily pinned to 7.4.7. Updating to 7.4.11 makes all 134 native story rendering tests fail: its markdown plugin calls `import.meta.resolve` inside Vite’s SSR module runner, which does not support that API. This reproduces with Storybook Astro 1.15.0 and 1.16.0; 1.16.0 passes with Astro 7.4.7. Retry newer Astro/tooling releases and remove the pin after the rendering suite and catalog pass.
+
 Fix real problems: duplicated or dead code, weak types, missing behavior tests, accessibility failures, needless dependencies or abstractions, and unclear documentation. Do not create filler commits, superficial rewrites, fake activity, or unnecessary public API churn. Report a no-change run when appropriate. Avoid overlapping maintenance work.
 
 ## Upstream compatibility
