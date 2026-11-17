@@ -597,7 +597,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
-    "@astrojs/react": "^7.1.8",
+    "@astrojs/react": "^7.1.9",
     "@axe-core/playwright": "^4.14.0",
     "@emnapi/runtime": "1.11.3",
     "@storybook-astro/framework": "1.16.0",
@@ -614,11 +614,11 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.3.0",
-    "astro": "7.4.7",
+    "astro": "7.4.12",
     "happy-dom": "^21.0.4",
     "htmlparser2": "^12.0.0",
     "monaco-editor": "^0.57.0",
-    "playwright": "^1.65.0",
+    "playwright": "^1.65.1",
     "radix-ui": "1.8.1",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
@@ -628,7 +628,7 @@
     "typescript": "~6.0.3",
     "vite": "^8.3.8",
     "vitest": "^5.0.5",
-    "wrangler": "4.161.0"
+    "wrangler": "4.162.0"
   },
   "private": true,
   "repository": {
