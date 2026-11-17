@@ -27,6 +27,12 @@ Astro is temporarily pinned to 7.4.7. Updating to 7.4.11 makes all 134 native st
 
 Fix real problems: duplicated or dead code, weak types, missing behavior tests, accessibility failures, needless dependencies or abstractions, and unclear documentation. Do not create filler commits, superficial rewrites, fake activity, or unnecessary public API churn. Report a no-change run when appropriate. Avoid overlapping maintenance work.
 
+## Unresolved security findings
+
+As of November 17, 2026, the root audit reports two high-severity paths for [GHSA-fc5q-39xc-vjpf](https://github.com/advisories/GHSA-fc5q-39xc-vjpf): picomatch 4.0.7 through `@astrojs/check > @astrojs/language-server > tinyglobby`, and picomatch 2.3.2 through `astro > unstorage > anymatch`. Both enter through development dependencies. Crafted repeated extglob patterns can cause exponential regex backtracking; this does not establish that every use is exploitable.
+
+The advisory has no patched version and npm's latest picomatch is 4.0.7. Upstream is tracking release guidance in [issue #247](https://github.com/micromatch/picomatch/issues/247), with proposed fixes including #237 and #246 still unmerged. Keep audit failures visible. On each security run, check for a maintained fix for both major versions (or a compatible parent replacement), update the lockfile, and run both renderer tests and consumer/catalog checks. Do not remove this finding until the dependency paths and audit confirm resolution.
+
 ## Upstream compatibility
 
 Compare the [official shadcn changelog](https://ui.shadcn.com/docs/changelog), [Radix catalog](https://ui.shadcn.com/docs/components/radix/accordion), and [source repository](https://github.com/shadcn-ui/ui) with `docs/shadcn-radix-parity.json`. Check new files, changed public exports and props, and documented behaviors, not just release tags or component counts.
