@@ -23,15 +23,13 @@ Use the source package as the source of truth and rebuild `dist` after dependenc
 
 The development dependency `@emnapi/runtime` supplies the stable peer required by Astro’s `astro2tsx` tooling. Without it, pnpm can select the 2.x prerelease runtime alongside the 1.x core and `astro check` crashes with `this.bridge.setLastError is not a function`. Reevaluate this explicit peer when Astro updates its tooling dependencies.
 
-Astro is temporarily pinned to 7.4.7. Updating to 7.4.11 makes all 134 native story rendering tests fail: its markdown plugin calls `import.meta.resolve` inside Vite’s SSR module runner, which does not support that API. This reproduces with Storybook Astro 1.15.0 and 1.16.0; 1.16.0 passes with Astro 7.4.7. Retry newer Astro/tooling releases and remove the pin after the rendering suite and catalog pass.
+Astro is temporarily pinned to 7.4.7. Updating to 7.4.11–7.4.13 makes all 134 native story rendering tests fail: its markdown plugin calls `import.meta.resolve` inside Vite’s SSR module runner, which does not support that API. This reproduces with Storybook Astro 1.15.0 and 1.16.0; 1.16.0 passes with Astro 7.4.7. Retry newer Astro/tooling releases and remove the pin after the rendering suite and catalog pass.
 
 Fix real problems: duplicated or dead code, weak types, missing behavior tests, accessibility failures, needless dependencies or abstractions, and unclear documentation. Do not create filler commits, superficial rewrites, fake activity, or unnecessary public API churn. Report a no-change run when appropriate. Avoid overlapping maintenance work.
 
-## Unresolved security findings
+## Security advisory history
 
-As of November 17, 2026, the root audit reports two high-severity paths for [GHSA-fc5q-39xc-vjpf](https://github.com/advisories/GHSA-fc5q-39xc-vjpf): picomatch 4.0.7 through `@astrojs/check > @astrojs/language-server > tinyglobby`, and picomatch 2.3.2 through `astro > unstorage > anymatch`. Both enter through development dependencies. Crafted repeated extglob patterns can cause exponential regex backtracking; this does not establish that every use is exploitable.
-
-The advisory has no patched version and npm's latest picomatch is 4.0.7. Upstream is tracking release guidance in [issue #247](https://github.com/micromatch/picomatch/issues/247), with proposed fixes including #237 and #246 still unmerged. Keep audit failures visible. On each security run, check for a maintained fix for both major versions (or a compatible parent replacement), update the lockfile, and run both renderer tests and consumer/catalog checks. Do not remove this finding until the dependency paths and audit confirm resolution.
+[GHSA-fc5q-39xc-vjpf](https://github.com/advisories/GHSA-fc5q-39xc-vjpf), previously reported against picomatch through the Astro development toolchain, was withdrawn upstream on November 18, 2026 as not a security issue. Root and example audits were clear on November 19; no exclusions or alert dismissals were added.
 
 ## Upstream compatibility
 
