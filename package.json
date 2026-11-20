@@ -628,7 +628,7 @@
     "typescript": "~6.0.3",
     "vite": "^8.3.8",
     "vitest": "^5.0.5",
-    "wrangler": "4.163.0"
+    "wrangler": "4.164.0"
   },
   "private": true,
   "repository": {
