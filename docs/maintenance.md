@@ -23,7 +23,7 @@ Use the source package as the source of truth and rebuild `dist` after dependenc
 
 The development dependency `@emnapi/runtime` supplies the stable peer required by Astro’s `astro2tsx` tooling. Without it, pnpm can select the 2.x prerelease runtime alongside the 1.x core and `astro check` crashes with `this.bridge.setLastError is not a function`. Reevaluate this explicit peer when Astro updates its tooling dependencies.
 
-Astro is temporarily pinned to 7.4.7. Updating to 7.4.11–7.4.13 makes all 134 native story rendering tests fail: its markdown plugin calls `import.meta.resolve` inside Vite’s SSR module runner, which does not support that API. This reproduces with Storybook Astro 1.15.0 and 1.16.0; 1.16.0 passes with Astro 7.4.7. Retry newer Astro/tooling releases and remove the pin after the rendering suite and catalog pass.
+Astro 7.4.13 is verified with Storybook Astro 1.18.0. Earlier framework versions failed native story rendering because Astro’s markdown plugin calls `import.meta.resolve` inside Vite’s SSR module runner. Framework 1.18.0 resolves this incompatibility; keep both renderer tests and consumer/catalog checks in upgrade validation.
 
 Fix real problems: duplicated or dead code, weak types, missing behavior tests, accessibility failures, needless dependencies or abstractions, and unclear documentation. Do not create filler commits, superficial rewrites, fake activity, or unnecessary public API churn. Report a no-change run when appropriate. Avoid overlapping maintenance work.
 
