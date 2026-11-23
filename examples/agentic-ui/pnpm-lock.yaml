@@ -12,20 +12,20 @@ importers:
         specifier: link:../../packages/react
         version: link:../../packages/react
       '@json-render/core':
-        specifier: 0.23.1
-        version: 0.23.1(zod@4.6.7)
+        specifier: 0.23.2
+        version: 0.23.2(zod@4.6.7)
       '@json-render/react':
-        specifier: 0.23.1
-        version: 0.23.1(react@19.3.1)(zod@4.6.7)
+        specifier: 0.23.2
+        version: 0.23.2(react@19.3.1)(zod@4.6.7)
       '@tanstack/ai':
-        specifier: 1.4.0
-        version: 1.4.0(zod@4.6.7)
+        specifier: 1.8.0
+        version: 1.8.0(zod@4.6.7)
       '@tanstack/ai-client':
-        specifier: 1.1.0
-        version: 1.1.0(zod@4.6.7)
+        specifier: 1.2.1
+        version: 1.2.1(zod@4.6.7)
       '@tanstack/ai-react':
         specifier: 1.0.2
-        version: 1.0.2(@tanstack/ai@1.4.0(zod@4.6.7))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(zod@4.6.7)
+        version: 1.0.2(@tanstack/ai@1.8.0(zod@4.6.7))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(zod@4.6.7)
       react:
         specifier: 19.3.1
         version: 19.3.1
@@ -59,24 +59,24 @@ packages:
   '@cfworker/json-schema@4.1.6':
     resolution: {integrity: sha512-YzVGTHXf4bzlyAL5KAvHYCdNbbt6zM5cYkAgxqxQPDQM6aZ4ShIIN5yJ+6q7YeonnevxT8k/LmD2tJi/jOiKkg==}
 
-  '@json-render/core@0.23.1':
-    resolution: {integrity: sha512-FVTxhxucSNdcZe9CWQ/767N/vtj4f5YLu5BEY8P8eXYs80tvbKh/26avadTEDaAMfCnnyGRsuA/POzyvA2O85A==}
+  '@json-render/core@0.23.2':
+    resolution: {integrity: sha512-2BRXjS2uWLLmlPnlw9kvtCYJFSmnYqBhUyqf6dx7MheKhedGoz80rf4s0XTdGDVue2MLwnFqpcamcEnHi1HLeQ==}
     peerDependencies:
       zod: ^4.0.0
 
-  '@json-render/react@0.23.1':
-    resolution: {integrity: sha512-brRkMkVi2944EhYG/oa/UbXXdgq5nHU7GWty4l/LDYO6TOrKDPyO2A6m+cXC5wC04oefkHfI3LPPA9lVVArFog==}
+  '@json-render/react@0.23.2':
+    resolution: {integrity: sha512-DzHB+UekHk5acxjFU2+qleFhCncOmYLEZXXQT6D3hlE0PsJ/kKEb2be0WfwqFJ0ypDC0DQmnKp3/pQDlW64oAQ==}
     peerDependencies:
       react: ^19.2.3
 
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
-  '@tanstack/ai-client@1.1.0':
-    resolution: {integrity: sha512-XMTdKzB9JG851Sztd/ywaL9D9Mw5DS87nV2i+5/Yq9dT+JKMcGoXCriztyO+djwxHu5ZGY32o9o29zbMMBo9VQ==}
+  '@tanstack/ai-client@1.2.1':
+    resolution: {integrity: sha512-m6EjS6pRdbOxMrIIgWm6QtOfCGBbAh2QnV7PJ6b64xfeq908bTYk5U2dJKQboFN2PuAIHFa02Udbvu6nU5tp8g==}
 
-  '@tanstack/ai-event-client@1.0.1':
-    resolution: {integrity: sha512-IURnn4oRKJbtbAuC3GcXRcuKHi8DrPmwuACqaTq6ApSGlyJyHhq0NTksKEmzql2Z12+njFjsKSXG9c7UbSHTxg==}
+  '@tanstack/ai-event-client@1.1.0':
+    resolution: {integrity: sha512-g4ctAzbvC1CuAjjTnp8iH5hlnFzVPJybVhuRMItUb5ISC4bQsrhUyhrsZ4QHW1brEpaAhfdss+MpdWux+7glUw==}
 
   '@tanstack/ai-react@1.0.2':
     resolution: {integrity: sha512-c4khP6tKUVWUI0rehUuBSJTGJ2lH99qvdkxT6aBxmvhZVCps3icJYso0PCXJTCwEadML3k8j3+7o6159cu42/A==}
@@ -95,8 +95,8 @@ packages:
   '@tanstack/ai-utils@1.1.0':
     resolution: {integrity: sha512-li47v/794azVLourgteS/+jjH/ZF+cIp/3RMVA1VybtKAFiMy3ZGxREU10OzfUghMzYLdfpK2l6ahvlWxNVHug==}
 
-  '@tanstack/ai@1.4.0':
-    resolution: {integrity: sha512-3f0D9gFCk8LUe9qAPCsRkjlXU2bqbIKKMGGo9P6Q6O0vR+5/0N/J3x1J2QWYY8L3LNvJliZBDnutudEIRzNU8w==}
+  '@tanstack/ai@1.8.0':
+    resolution: {integrity: sha512-y6Ya7qweT4U8gsi/t16cQkHXB2SLxmVJBvvjEPdkSvgDqGeea6LWRk3vpjzs12IsNAHK231DY9t4hTC0x3ZiAw==}
     engines: {node: '>=18'}
     peerDependencies:
       '@opentelemetry/api': '>=1.9.0'
@@ -288,37 +288,37 @@ snapshots:
 
   '@cfworker/json-schema@4.1.6': {}
 
-  '@json-render/core@0.23.1(zod@4.6.7)':
+  '@json-render/core@0.23.2(zod@4.6.7)':
     dependencies:
       zod: 4.6.7
 
-  '@json-render/react@0.23.1(react@19.3.1)(zod@4.6.7)':
+  '@json-render/react@0.23.2(react@19.3.1)(zod@4.6.7)':
     dependencies:
-      '@json-render/core': 0.23.1(zod@4.6.7)
+      '@json-render/core': 0.23.2(zod@4.6.7)
       react: 19.3.1
     transitivePeerDependencies:
       - zod
 
   '@standard-schema/spec@1.1.0': {}
 
-  '@tanstack/ai-client@1.1.0(zod@4.6.7)':
+  '@tanstack/ai-client@1.2.1(zod@4.6.7)':
     dependencies:
-      '@tanstack/ai': 1.4.0(zod@4.6.7)
-      '@tanstack/ai-event-client': 1.0.1
+      '@tanstack/ai': 1.8.0(zod@4.6.7)
+      '@tanstack/ai-event-client': 1.1.0
       '@tanstack/ai-utils': 1.1.0
       '@tanstack/store': 0.11.2
     transitivePeerDependencies:
       - '@opentelemetry/api'
       - zod
 
-  '@tanstack/ai-event-client@1.0.1':
+  '@tanstack/ai-event-client@1.1.0':
     dependencies:
       '@tanstack/devtools-event-client': 0.4.4
 
-  '@tanstack/ai-react@1.0.2(@tanstack/ai@1.4.0(zod@4.6.7))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(zod@4.6.7)':
+  '@tanstack/ai-react@1.0.2(@tanstack/ai@1.8.0(zod@4.6.7))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(zod@4.6.7)':
     dependencies:
-      '@tanstack/ai': 1.4.0(zod@4.6.7)
-      '@tanstack/ai-client': 1.1.0(zod@4.6.7)
+      '@tanstack/ai': 1.8.0(zod@4.6.7)
+      '@tanstack/ai-client': 1.2.1(zod@4.6.7)
       '@tanstack/markdown': 0.0.13(react@19.3.1)
       '@types/react': 19.3.0
       react: 19.3.1
@@ -331,12 +331,12 @@ snapshots:
 
   '@tanstack/ai-utils@1.1.0': {}
 
-  '@tanstack/ai@1.4.0(zod@4.6.7)':
+  '@tanstack/ai@1.8.0(zod@4.6.7)':
     dependencies:
       '@ag-ui/core': 1.0.0(zod@4.6.7)
       '@cfworker/json-schema': 4.1.6
       '@standard-schema/spec': 1.1.0
-      '@tanstack/ai-event-client': 1.0.1
+      '@tanstack/ai-event-client': 1.1.0
       '@tanstack/ai-utils': 1.1.0
       fast-json-patch: 3.1.1
       partial-json: 0.1.7
