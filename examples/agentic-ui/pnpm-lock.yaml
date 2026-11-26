@@ -24,8 +24,8 @@ importers:
         specifier: 1.2.1
         version: 1.2.1(zod@4.6.7)
       '@tanstack/ai-react':
-        specifier: 1.0.2
-        version: 1.0.2(@tanstack/ai@1.8.0(zod@4.6.7))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(zod@4.6.7)
+        specifier: 1.1.1
+        version: 1.1.1(@tanstack/ai@1.8.0(zod@4.6.7))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(zod@4.6.7)
       react:
         specifier: 19.3.1
         version: 19.3.1
@@ -78,11 +78,11 @@ packages:
   '@tanstack/ai-event-client@1.1.0':
     resolution: {integrity: sha512-g4ctAzbvC1CuAjjTnp8iH5hlnFzVPJybVhuRMItUb5ISC4bQsrhUyhrsZ4QHW1brEpaAhfdss+MpdWux+7glUw==}
 
-  '@tanstack/ai-react@1.0.2':
-    resolution: {integrity: sha512-c4khP6tKUVWUI0rehUuBSJTGJ2lH99qvdkxT6aBxmvhZVCps3icJYso0PCXJTCwEadML3k8j3+7o6159cu42/A==}
+  '@tanstack/ai-react@1.1.1':
+    resolution: {integrity: sha512-BAOSK+2w/g/r2l8NXbl0GgOR3hd+uqKalWwaFLPFEVSNzTwYIoHm27uX+1D+3Fo/DArwN6P2zLkhlDPK3+jaEg==}
     peerDependencies:
       '@mcp-ui/client': ^7
-      '@tanstack/ai': ^1.1.0
+      '@tanstack/ai': ^1.7.0
       '@types/react': '>=18.0.0'
       react: '>=18.0.0'
       react-dom: '>=18.0.0'
@@ -109,8 +109,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  '@tanstack/markdown@0.0.13':
-    resolution: {integrity: sha512-ZSQP2ulBvlPzdpZeRheBJnaELo7e4ET/D/XrfgweHyqhhLMN5vUJJAUl7ufSRd7GlfO/vwdzjKPh0E0JwqJkDA==}
+  '@tanstack/markdown@1.2.1':
+    resolution: {integrity: sha512-D/W8VHZe39mTGh74E5ZdmUPz9f/Gqso7ogKab3TRt3Mcto/IUGP94FTeI53hcNz1djwmo/s4hwU1og0rCPinOQ==}
     peerDependencies:
       octane: '>=0.1.12'
       react: '>=18'
@@ -315,11 +315,11 @@ snapshots:
     dependencies:
       '@tanstack/devtools-event-client': 0.4.4
 
-  '@tanstack/ai-react@1.0.2(@tanstack/ai@1.8.0(zod@4.6.7))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(zod@4.6.7)':
+  '@tanstack/ai-react@1.1.1(@tanstack/ai@1.8.0(zod@4.6.7))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(zod@4.6.7)':
     dependencies:
       '@tanstack/ai': 1.8.0(zod@4.6.7)
       '@tanstack/ai-client': 1.2.1(zod@4.6.7)
-      '@tanstack/markdown': 0.0.13(react@19.3.1)
+      '@tanstack/markdown': 1.2.1(react@19.3.1)
       '@types/react': 19.3.0
       react: 19.3.1
     optionalDependencies:
@@ -345,7 +345,7 @@ snapshots:
 
   '@tanstack/devtools-event-client@0.4.4': {}
 
-  '@tanstack/markdown@0.0.13(react@19.3.1)':
+  '@tanstack/markdown@1.2.1(react@19.3.1)':
     optionalDependencies:
       react: 19.3.1
 
