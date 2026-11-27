@@ -591,7 +591,7 @@
     "recharts": "3.10.1",
     "shiki": "4.6.0",
     "sonner": "2.0.8",
-    "tailwind-merge": "3.7.0",
+    "tailwind-merge": "3.7.1",
     "vaul": "1.1.2",
     "@tanstack/react-table-v8": "npm:@tanstack/react-table@8.21.3"
   },
