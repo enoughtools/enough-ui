@@ -617,7 +617,7 @@
     "astro": "7.4.13",
     "happy-dom": "^21.0.4",
     "htmlparser2": "^12.0.0",
-    "monaco-editor": "^0.57.0",
+    "monaco-editor": "^0.58.0",
     "playwright": "^1.65.1",
     "radix-ui": "1.8.1",
     "react": "^19.3.1",
@@ -628,7 +628,7 @@
     "typescript": "~6.0.3",
     "vite": "^8.3.8",
     "vitest": "^5.1.1",
-    "wrangler": "4.166.0"
+    "wrangler": "4.168.0"
   },
   "private": true,
   "repository": {
